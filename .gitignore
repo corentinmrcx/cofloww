@@ -1,0 +1,40 @@
+# ========================
+# Laravel (api/)
+# ========================
+api/vendor/
+api/.env
+api/.env.backup
+api/storage/logs/*.log
+api/database/database.sqlite
+api/storage/framework/cache/
+api/storage/framework/sessions/
+api/storage/framework/views/
+api/bootstrap/cache/
+api/.phpunit.result.cache
+
+# ========================
+# React / Vite (web/)
+# ========================
+web/node_modules/
+web/dist/
+web/.env
+web/.env.local
+web/.env.*.local
+
+# ========================
+# Docker
+# ========================
+.env
+*.env
+
+# ========================
+# OS
+# ========================
+.DS_Store
+Thumbs.db
+
+# ========================
+# IDE
+# ========================
+.vscode/
+*.swp

@@ -1,0 +1,20 @@
+services:
+
+  api:
+    build:
+      context: ./api
+      target: prod
+    volumes: []
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./web
+      target: prod
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+  db:
+    ports: []                      # ne pas exposer la BDD en prod
+    restart: unless-stopped

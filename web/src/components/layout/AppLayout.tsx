@@ -1,9 +1,9 @@
 import { Outlet } from 'react-router'
-import { Sidebar } from './Sidebar'
-import { Topbar } from './Topbar'
-import { BottomNav } from './BottomNav'
+import Sidebar from './Sidebar'
+import Topbar from './Topbar'
+import BottomNav from './BottomNav'
 
-export function AppLayout() {
+const AppLayout = () => {
   return (
     <div className="flex h-screen bg-background">
       <Sidebar />
@@ -19,3 +19,5 @@ export function AppLayout() {
     </div>
   )
 }
+
+export default AppLayout

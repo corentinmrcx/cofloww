@@ -1,12 +1,12 @@
 import { useLocation } from 'react-router'
-import { ThemeToggle } from '../ThemeToggle'
+import ThemeToggle from '../ThemeToggle'
 
 const pathTitles: Record<string, string> = {
   '/':         'Dashboard',
   '/settings': 'Settings',
 }
 
-export function Topbar() {
+const Topbar = () => {
   const { pathname } = useLocation()
   const title = pathTitles[pathname] ?? 'CoFloww'
 
@@ -19,3 +19,5 @@ export function Topbar() {
     </header>
   )
 }
+
+export default Topbar

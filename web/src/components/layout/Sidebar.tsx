@@ -1,9 +1,9 @@
 import { NavLink } from 'react-router'
 import { cn } from '../../lib/utils'
 import { navItems } from './navItems'
-import { ThemeToggle } from '../ThemeToggle'
+import ThemeToggle from '../ThemeToggle'
 
-export function Sidebar() {
+const Sidebar = () => {
   return (
     <aside className="hidden md:flex flex-col fixed inset-y-0 left-0 w-64 border-r border-border bg-sidebar">
       <div className="h-14 flex items-center px-6 border-b border-border shrink-0">
@@ -37,3 +37,5 @@ export function Sidebar() {
     </aside>
   )
 }
+
+export default Sidebar

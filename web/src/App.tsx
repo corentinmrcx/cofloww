@@ -1,12 +1,19 @@
-import { ThemeToggle } from './components/ThemeToggle'
+import { createBrowserRouter, RouterProvider } from 'react-router'
+import { AppLayout } from './components/layout/AppLayout'
+import { DashboardPage } from './views/DashboardPage'
+import { SettingsPage } from './views/SettingsPage'
 
-function App() {
-  return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center gap-4">
-      <h1 className="text-2xl font-bold">CoFloww</h1>
-      <ThemeToggle />
-    </div>
-  )
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <AppLayout />,
+    children: [
+      { index: true,         element: <DashboardPage /> },
+      { path: 'settings',    element: <SettingsPage />  },
+    ],
+  },
+])
+
+export default function App() {
+  return <RouterProvider router={router} />
 }
-
-export default App

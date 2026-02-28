@@ -12,7 +12,8 @@ export type LoginPayload = {
 }
 
 export type RegisterPayload = {
-  name: string
+  lastname: string
+  firstname: string
   email: string
   password: string
   password_confirmation: string

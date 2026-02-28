@@ -28,9 +28,15 @@ const RegisterForm = () => {
 
       <Form.Body>
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="name" className="text-sm font-medium"><T url={import.meta.url}>name</T></label>
-          <input id="name" type="text" autoComplete="name" placeholder={t('name_placeholder')} className={inputClass} {...field('name')} />
-          {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
+          <label htmlFor="lastname" className="text-sm font-medium"><T url={import.meta.url}>lastname</T></label>
+          <input id="lastname" type="text" autoComplete="family-name" placeholder={t('lastname_placeholder')} className={inputClass} {...field('lastname')} />
+          {errors.lastname && <p className="text-xs text-destructive">{errors.lastname.message}</p>}
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="firstname" className="text-sm font-medium"><T url={import.meta.url}>firstname</T></label>
+          <input id="firstname" type="text" autoComplete="given-name" placeholder={t('firstname_placeholder')} className={inputClass} {...field('firstname')} />
+          {errors.firstname && <p className="text-xs text-destructive">{errors.firstname.message}</p>}
         </div>
 
         <div className="flex flex-col gap-1.5">

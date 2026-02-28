@@ -1,8 +1,10 @@
 {
   "fr": {
     "title":                    "Créer un compte",
-    "name":                     "Nom",
-    "name_placeholder":         "Jean Dupont",
+    "lastname":                     "Nom",
+    "lastname_placeholder":         "Dupont",
+    "firstname":                    "Prénom",
+    "firstname_placeholder":        "Jean",
     "email":                    "Email",
     "email_placeholder":        "vous@exemple.com",
     "password":                 "Mot de passe",
@@ -16,8 +18,10 @@
   },
   "en": {
     "title":                    "Create an account",
-    "name":                     "Name",
-    "name_placeholder":         "John Doe",
+    "lastname":                     "Last name",
+    "lastname_placeholder":         "Doe",
+    "firstname":                    "First name",
+    "firstname_placeholder":        "John",
     "email":                    "Email",
     "email_placeholder":        "you@example.com",
     "password":                 "Password",

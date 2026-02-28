@@ -1,0 +1,28 @@
+{
+  "fr": {
+    "title":                "Connexion",
+    "email":                "Email",
+    "email_placeholder":    "vous@exemple.com",
+    "password":             "Mot de passe",
+    "password_placeholder": "••••••••",
+    "forgot_password":      "Mot de passe oublié ?",
+    "submit":               "Se connecter",
+    "submitting":           "Connexion…",
+    "no_account":           "Pas encore de compte ?",
+    "register":             "S'inscrire",
+    "error_credentials":    "Email ou mot de passe incorrect."
+  },
+  "en": {
+    "title":                "Sign in",
+    "email":                "Email",
+    "email_placeholder":    "you@example.com",
+    "password":             "Password",
+    "password_placeholder": "••••••••",
+    "forgot_password":      "Forgot password?",
+    "submit":               "Sign in",
+    "submitting":           "Signing in…",
+    "no_account":           "Don't have an account?",
+    "register":             "Sign up",
+    "error_credentials":    "Invalid email or password."
+  }
+}

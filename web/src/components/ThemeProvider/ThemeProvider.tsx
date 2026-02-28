@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ThemeContext, type Theme } from './useTheme'
+import { ThemeContext, type Theme } from '../../hooks/useTheme'
 
 function getInitialTheme(): Theme {
   const stored = localStorage.getItem('theme')

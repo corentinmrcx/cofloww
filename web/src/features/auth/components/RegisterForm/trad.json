@@ -1,0 +1,32 @@
+{
+  "fr": {
+    "title":                    "Créer un compte",
+    "name":                     "Nom",
+    "name_placeholder":         "Jean Dupont",
+    "email":                    "Email",
+    "email_placeholder":        "vous@exemple.com",
+    "password":                 "Mot de passe",
+    "password_placeholder":     "••••••••",
+    "password_confirmation":    "Confirmer le mot de passe",
+    "submit":                   "S'inscrire",
+    "submitting":               "Inscription…",
+    "already_account":          "Déjà un compte ?",
+    "login":                    "Se connecter",
+    "error":                    "Une erreur est survenue."
+  },
+  "en": {
+    "title":                    "Create an account",
+    "name":                     "Name",
+    "name_placeholder":         "John Doe",
+    "email":                    "Email",
+    "email_placeholder":        "you@example.com",
+    "password":                 "Password",
+    "password_placeholder":     "••••••••",
+    "password_confirmation":    "Confirm password",
+    "submit":                   "Sign up",
+    "submitting":               "Signing up…",
+    "already_account":          "Already have an account?",
+    "login":                    "Sign in",
+    "error":                    "Something went wrong."
+  }
+}

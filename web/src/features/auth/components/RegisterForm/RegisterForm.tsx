@@ -1,0 +1,72 @@
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Link } from 'react-router'
+import Form from '../../../../components/Form'
+import T, { useT } from '../../../../components/T'
+import { registerSchema, type RegisterSchema } from '../../schemas/auth.schemas'
+import { useRegister } from '../../hooks/useRegister'
+
+const inputClass = 'h-9 rounded-md border border-input bg-transparent px-3 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
+
+const RegisterForm = () => {
+  const t = useT(import.meta.url)
+  const { mutate: register, isPending, error } = useRegister()
+
+  const { register: field, handleSubmit, formState: { errors } } = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
+  })
+
+  const onSubmit = (data: RegisterSchema) => register(data)
+
+  return (
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form.Header>
+        <h1 className="text-2xl font-semibold tracking-tight">
+          <T url={import.meta.url}>title</T>
+        </h1>
+      </Form.Header>
+
+      <Form.Body>
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="name" className="text-sm font-medium"><T url={import.meta.url}>name</T></label>
+          <input id="name" type="text" autoComplete="name" placeholder={t('name_placeholder')} className={inputClass} {...field('name')} />
+          {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="email" className="text-sm font-medium"><T url={import.meta.url}>email</T></label>
+          <input id="email" type="email" autoComplete="email" placeholder={t('email_placeholder')} className={inputClass} {...field('email')} />
+          {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="password" className="text-sm font-medium"><T url={import.meta.url}>password</T></label>
+          <input id="password" type="password" autoComplete="new-password" placeholder={t('password_placeholder')} className={inputClass} {...field('password')} />
+          {errors.password && <p className="text-xs text-destructive">{errors.password.message}</p>}
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="password_confirmation" className="text-sm font-medium"><T url={import.meta.url}>password_confirmation</T></label>
+          <input id="password_confirmation" type="password" autoComplete="new-password" placeholder={t('password_placeholder')} className={inputClass} {...field('password_confirmation')} />
+          {errors.password_confirmation && <p className="text-xs text-destructive">{errors.password_confirmation.message}</p>}
+        </div>
+      </Form.Body>
+
+      <Form.Error message={error ? t('error') : null} />
+
+      <Form.Footer>
+        <button type="submit" disabled={isPending} className="w-full h-9 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50">
+          <T url={import.meta.url}>{isPending ? 'submitting' : 'submit'}</T>
+        </button>
+        <p className="text-xs text-muted-foreground">
+          <T url={import.meta.url}>already_account</T>{' '}
+          <Link to="/login" className="text-foreground hover:underline">
+            <T url={import.meta.url}>login</T>
+          </Link>
+        </p>
+      </Form.Footer>
+    </Form>
+  )
+}
+
+export { RegisterForm }

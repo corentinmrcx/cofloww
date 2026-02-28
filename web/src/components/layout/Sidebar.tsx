@@ -2,6 +2,7 @@ import { NavLink } from 'react-router'
 import { cn } from '../../lib/utils'
 import { navItems } from './navItems'
 import ThemeToggle from '../ThemeToggle'
+import { LangSelector } from '../LangSelector'
 
 const Sidebar = () => {
   return (
@@ -31,8 +32,9 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      <div className="p-4 border-t border-border">
+      <div className="p-4 border-t border-border flex items-center justify-between">
         <ThemeToggle />
+        <LangSelector />
       </div>
     </aside>
   )

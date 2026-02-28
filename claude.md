@@ -88,11 +88,10 @@ components/
 └── Button/
     ├── Button.tsx       ← le composant
     ├── index.ts         ← export public : export { default } from './Button'
-    ├── Button.css       ← styles spécifiques si besoin
-    └── Button.json      ← traductions du composant
+    └── Button.css       ← styles spécifiques si besoin
 ```
 
-Les composants simples (vraiment atomiques) peuvent rester en fichier unique. Dès qu'il y a des variantes, des sous-composants ou des traductions : répertoire.
+Les composants simples (vraiment atomiques) peuvent rester en fichier unique. Dès qu'il y a des variantes ou des sous-composants : répertoire.
 
 ### Responsabilité des composants
 
@@ -128,7 +127,7 @@ src/
 │   │   ├── hooks/
 │   │   └── types/
 │   └── investments/
-├── pages/               ← une page = un fichier, routing uniquement
+├── views/               ← une page = un fichier, routing uniquement
 ├── hooks/               ← hooks custom globaux (useAuth, useTheme...)
 ├── stores/              ← Zustand stores
 ├── services/            ← appels API (axios + React Query)
@@ -137,21 +136,55 @@ src/
 └── i18n/                ← dictionnaires de traduction globaux
 ```
 
-### Traduction (i18n)
+### Compound components (Slots)
 
-Chaque composant embarque ses propres traductions dans un fichier `.json` à côté de lui. Un composant `<T>` s'occupe de résoudre les clés :
+Quand plusieurs composants partagent la même structure visuelle, on crée un composant générique avec des **slots** via le pattern compound component :
 
 ```tsx
-// Button/Button.json
-{ "fr": { "submit": "Envoyer" }, "en": { "submit": "Submit" } }
+// components/Form/Form.tsx
+const Form = ({ onSubmit, children }: FormProps) => <form onSubmit={onSubmit}>{children}</form>
+Form.Header = ({ children }: { children: React.ReactNode }) => <div className="...">{children}</div>
+Form.Body   = ({ children }: { children: React.ReactNode }) => <div className="...">{children}</div>
+Form.Footer = ({ children }: { children: React.ReactNode }) => <div className="...">{children}</div>
+Form.Error  = ({ message }: { message?: string }) => message ? <p className="...">{message}</p> : null
 
-// Utilisation
-<T>submit</T>
+// Utilisation dans LoginForm
+<Form onSubmit={handleSubmit}>
+  <Form.Header>Connexion</Form.Header>
+  <Form.Body>{/* champs */}</Form.Body>
+  <Form.Footer><Button type="submit">Se connecter</Button></Form.Footer>
+</Form>
 ```
 
-Le composant `<T>` lit la langue active depuis le store Zustand et retourne la chaîne correspondante. Si une clé est manquante, il retourne la clé brute (jamais une erreur silencieuse).
+Utiliser ce pattern dès qu'il y a **répétition de structure** entre composants (formulaires, cards, modals…). Ça garantit une UI cohérente sans dupliquer le layout.
 
-Langue par défaut : **français**. L'anglais est prévu dès le début mais pas obligatoire en V1 — les clés doivent exister, les valeurs `en` peuvent être identiques au `fr` temporairement.
+### Traduction (i18n)
+
+Chaque composant embarque ses propres traductions dans un fichier `.json` à côté de lui. Les clés sont simples, sans préfixe (le JSON est local au composant).
+
+```json
+// LoginForm/LoginForm.json
+{ "fr": { "title": "Connexion", "email": "Email" }, "en": { "title": "Sign in", "email": "Email" } }
+```
+
+Le composant `<T>` prend le json en prop `i18n`. `useT(json)` retourne une fonction `t(key)` pour les attributs string :
+
+```tsx
+import T, { useT } from '../../../../components/T'
+import json from './LoginForm.json'
+
+const t = useT(json)
+
+// JSX
+<T i18n={json}>title</T>
+
+// Attribut string (placeholder, aria-label…)
+t('email_placeholder')
+```
+
+Langue active depuis le store Zustand (`useLangStore`). Clé manquante → retourne la clé brute.
+
+Langue par défaut : **français**. Les clés `en` doivent exister dès le début.
 
 ---
 

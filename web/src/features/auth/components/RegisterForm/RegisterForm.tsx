@@ -4,13 +4,15 @@ import { Link } from 'react-router'
 import Form from '../../../../components/Form'
 import { Button } from '../../../../components/Button'
 import T, { useT } from '../../../../components/T'
-import { registerSchema, type RegisterSchema } from '../../schemas/auth.schemas'
+import { type RegisterSchema } from '../../schemas/auth.schemas'
+import { useAuthSchemas } from '../../schemas/useAuthSchemas'
 import { useRegister } from '../../hooks/useRegister'
 
 const inputClass = 'h-9 rounded-md border border-input bg-transparent px-3 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
 
 const RegisterForm = () => {
   const t = useT(import.meta.url)
+  const { registerSchema } = useAuthSchemas()
   const { mutate: register, isPending, error } = useRegister()
 
   const { register: field, handleSubmit, formState: { errors } } = useForm<RegisterSchema>({

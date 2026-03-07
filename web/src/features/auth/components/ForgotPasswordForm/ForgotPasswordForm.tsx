@@ -4,11 +4,13 @@ import { Link } from 'react-router'
 import Form from '../../../../components/Form'
 import { Button } from '../../../../components/Button'
 import T, { useT } from '../../../../components/T'
-import { forgotPasswordSchema, type ForgotPasswordSchema } from '../../schemas/auth.schemas'
+import { type ForgotPasswordSchema } from '../../schemas/auth.schemas'
+import { useAuthSchemas } from '../../schemas/useAuthSchemas'
 import { useForgotPassword } from '../../hooks/useForgotPassword'
 
 const ForgotPasswordForm = () => {
   const t = useT(import.meta.url)
+  const { forgotPasswordSchema } = useAuthSchemas()
   const { mutate: sendLink, isPending, error, isSuccess } = useForgotPassword()
 
   const { register, handleSubmit, formState: { errors } } = useForm<ForgotPasswordSchema>({

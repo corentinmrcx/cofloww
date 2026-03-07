@@ -1,0 +1,20 @@
+{
+  "fr": {
+    "email_invalid":                  "Email invalide",
+    "password_required":              "Le mot de passe est requis",
+    "password_min":                   "Minimum 8 caractères",
+    "firstname_required":             "Le prénom est requis",
+    "lastname_required":              "Le nom est requis",
+    "password_confirmation_required": "La confirmation est requise",
+    "password_mismatch":              "Les mots de passe ne correspondent pas"
+  },
+  "en": {
+    "email_invalid":                  "Invalid email",
+    "password_required":              "Password is required",
+    "password_min":                   "At least 8 characters",
+    "firstname_required":             "First name is required",
+    "lastname_required":              "Last name is required",
+    "password_confirmation_required": "Confirmation is required",
+    "password_mismatch":              "Passwords do not match"
+  }
+}

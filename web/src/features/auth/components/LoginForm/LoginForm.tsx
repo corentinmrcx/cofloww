@@ -4,11 +4,13 @@ import { Link } from 'react-router'
 import Form from '../../../../components/Form'
 import { Button } from '../../../../components/Button'
 import T, { useT } from '../../../../components/T'
-import { loginSchema, type LoginSchema } from '../../schemas/auth.schemas'
+import { type LoginSchema } from '../../schemas/auth.schemas'
+import { useAuthSchemas } from '../../schemas/useAuthSchemas'
 import { useLogin } from '../../hooks/useLogin'
 
 const LoginForm = () => {
   const t = useT(import.meta.url)
+  const { loginSchema } = useAuthSchemas()
   const { mutate: login, isPending, error } = useLogin()
 
   const { register, handleSubmit, formState: { errors } } = useForm<LoginSchema>({

@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npm audit:*)",
-      "Bash(docker compose:*)"
+      "Bash(docker compose:*)",
+      "mcp__ide__getDiagnostics"
     ]
   }
 }

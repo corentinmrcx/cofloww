@@ -1,10 +1,14 @@
 import { NavLink } from 'react-router'
+import { LogOut } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { navItems } from './navItems'
 import ThemeToggle from '../ThemeToggle'
 import { LangSelector } from '../LangSelector'
+import { IconButton } from '../Button'
+import { useLogout } from '../../features/auth/hooks/useLogout'
 
 const Sidebar = () => {
+  const { mutate: logout } = useLogout()
   return (
     <aside className="hidden md:flex flex-col fixed inset-y-0 left-0 w-64 border-r border-border bg-sidebar">
       <div className="h-14 flex items-center px-6 border-b border-border shrink-0">
@@ -35,6 +39,9 @@ const Sidebar = () => {
       <div className="p-4 border-t border-border flex items-center justify-between">
         <ThemeToggle />
         <LangSelector />
+        <IconButton label="Se déconnecter" onClick={() => logout()} className="hover:text-destructive">
+          <LogOut size={18} />
+        </IconButton>
       </div>
     </aside>
   )

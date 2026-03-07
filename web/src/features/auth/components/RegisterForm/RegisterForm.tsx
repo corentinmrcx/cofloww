@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router'
 import Form from '../../../../components/Form'
+import { Button } from '../../../../components/Button'
 import T, { useT } from '../../../../components/T'
 import { registerSchema, type RegisterSchema } from '../../schemas/auth.schemas'
 import { useRegister } from '../../hooks/useRegister'
@@ -61,9 +62,9 @@ const RegisterForm = () => {
       <Form.Error message={error ? t('error') : null} />
 
       <Form.Footer>
-        <button type="submit" disabled={isPending} className="w-full h-9 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50">
+        <Button type="submit" disabled={isPending} fullWidth>
           <T url={import.meta.url}>{isPending ? 'submitting' : 'submit'}</T>
-        </button>
+        </Button>
         <p className="text-xs text-muted-foreground">
           <T url={import.meta.url}>already_account</T>{' '}
           <Link to="/login" className="text-foreground hover:underline">

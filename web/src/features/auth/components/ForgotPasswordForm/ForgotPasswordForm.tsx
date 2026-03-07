@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router'
 import Form from '../../../../components/Form'
+import { Button } from '../../../../components/Button'
 import T, { useT } from '../../../../components/T'
 import { forgotPasswordSchema, type ForgotPasswordSchema } from '../../schemas/auth.schemas'
 import { useForgotPassword } from '../../hooks/useForgotPassword'
@@ -48,13 +49,9 @@ const ForgotPasswordForm = () => {
       <Form.Error message={error ? t('error') : null} />
 
       <Form.Footer>
-        <button
-          type="submit"
-          disabled={isPending || isSuccess}
-          className="w-full h-9 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
-        >
+        <Button type="submit" disabled={isPending || isSuccess} fullWidth>
           <T url={import.meta.url}>{isPending ? 'submitting' : 'submit'}</T>
-        </button>
+        </Button>
         <Link to="/login" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
           <T url={import.meta.url}>back_to_login</T>
         </Link>

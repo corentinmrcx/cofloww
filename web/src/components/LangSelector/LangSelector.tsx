@@ -1,4 +1,5 @@
 import { useLangStore } from '../../stores/langStore'
+import { Button } from '../Button'
 import type { Lang } from '../../types'
 
 const langs: { value: Lang; label: string }[] = [
@@ -12,17 +13,14 @@ const LangSelector = () => {
   return (
     <div className="flex items-center gap-1">
       {langs.map(({ value, label }) => (
-        <button
+        <Button
           key={value}
+          variant={lang === value ? 'primary' : 'ghost'}
+          size="sm"
           onClick={() => setLang(value)}
-          className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
-            lang === value
-              ? 'bg-primary text-primary-foreground'
-              : 'text-muted-foreground hover:text-foreground'
-          }`}
         >
           {label}
-        </button>
+        </Button>
       ))}
     </div>
   )

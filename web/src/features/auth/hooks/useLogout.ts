@@ -9,7 +9,7 @@ export const useLogout = () => {
   return useMutation({
     mutationFn: () => api.post('/logout'),
     onSuccess: () => {
-      queryClient.clear()
+      queryClient.invalidateQueries({ queryKey: ['auth'] })
       navigate('/login')
     },
   })

@@ -47,7 +47,7 @@ class WalletController extends Controller
 
     public function reorder(ReorderWalletsRequest $request): Response
     {
-        $this->service->reorder($request->validated('wallets'));
+        $this->service->reorder($request->user()->id, $request->validated('wallets'));
 
         return response()->noContent();
     }

@@ -45,11 +45,12 @@ class WalletService
         $wallet->update(['is_archived' => true]);
     }
 
-    public function reorder(array $items): void
+    public function reorder(int $userId, array $items): void
     {
-        DB::transaction(function () use ($items) {
+        DB::transaction(function () use ($userId, $items) {
             foreach ($items as $item) {
                 Wallet::withoutGlobalScopes()
+                    ->where('user_id', $userId)
                     ->where('id', $item['id'])
                     ->update(['sort_order' => $item['sort_order']]);
             }

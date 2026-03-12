@@ -36,8 +36,8 @@ class Wallet extends Model
             'is_default'      => 'boolean',
             'is_archived'     => 'boolean',
             'sort_order'      => 'integer',
-            'initial_balance' => 'decimal:2',
-            'balance_cache'   => 'decimal:2',
+            'initial_balance' => 'integer',
+            'balance_cache'   => 'integer',
         ];
     }
 

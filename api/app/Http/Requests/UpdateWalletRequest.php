@@ -22,7 +22,7 @@ class UpdateWalletRequest extends FormRequest
             'icon'            => ['nullable', 'string', 'max:50'],
             'institution'     => ['nullable', 'string', 'max:100'],
             'is_default'      => ['boolean'],
-            'initial_balance' => ['numeric'],
+            'initial_balance' => ['integer'],
             'sort_order'      => ['integer', 'min:0'],
         ];
     }

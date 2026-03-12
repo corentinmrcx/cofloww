@@ -1,0 +1,42 @@
+{
+  "fr": {
+    "title":                    "Ajouter un compte",
+    "name":                     "Nom",
+    "name_placeholder":         "Ex : Compte principal",
+    "name_required":            "Le nom est requis.",
+    "type":                     "Type",
+    "type_checking":            "Compte courant",
+    "type_savings":             "Épargne",
+    "type_cash":                "Espèces",
+    "type_investment":          "Investissement",
+    "type_crypto":              "Crypto",
+    "icon":                     "Icône",
+    "color":                    "Couleur",
+    "institution":              "Institution",
+    "institution_placeholder":  "Ex : BNP Paribas",
+    "initial_balance":          "Solde initial",
+    "cancel":                   "Annuler",
+    "save":                     "Ajouter",
+    "saving":                   "Ajout…"
+  },
+  "en": {
+    "title":                    "Add account",
+    "name":                     "Name",
+    "name_placeholder":         "e.g. Main account",
+    "name_required":            "Name is required.",
+    "type":                     "Type",
+    "type_checking":            "Checking",
+    "type_savings":             "Savings",
+    "type_cash":                "Cash",
+    "type_investment":          "Investment",
+    "type_crypto":              "Crypto",
+    "icon":                     "Icon",
+    "color":                    "Color",
+    "institution":              "Institution",
+    "institution_placeholder":  "e.g. Chase Bank",
+    "initial_balance":          "Initial balance",
+    "cancel":                   "Cancel",
+    "save":                     "Add",
+    "saving":                   "Adding…"
+  }
+}

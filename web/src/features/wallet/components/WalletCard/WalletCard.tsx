@@ -1,0 +1,62 @@
+import { GripVertical } from 'lucide-react'
+import type { DraggableAttributes, DraggableSyntheticListeners } from '@dnd-kit/core'
+import { useT } from '../../../../components/T'
+import { cn } from '../../../../lib/utils'
+import { ICONS } from '../../../../components/IconPicker'
+import { TYPE_DEFAULT_ICONS } from '../../lib/wallet-icons'
+import type { Wallet } from '../../types/wallet.types'
+
+const formatBalance = (cents: number) =>
+  new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(cents / 100)
+
+interface WalletCardProps {
+  wallet: Wallet
+  dragListeners?: DraggableSyntheticListeners
+  dragAttributes?: DraggableAttributes
+  isDragging?: boolean
+}
+
+const WalletCard = ({ wallet, dragListeners, dragAttributes, isDragging = false }: WalletCardProps) => {
+  const t = useT(import.meta.url)
+  const Icon = (wallet.icon && ICONS[wallet.icon]) || TYPE_DEFAULT_ICONS[wallet.type]
+
+  return (
+    <div
+      className={cn(
+        'flex items-center gap-3 bg-card border border-border rounded-xl px-4 py-3 transition-shadow',
+        isDragging && 'shadow-lg opacity-75',
+      )}
+    >
+      <button
+        className="text-muted-foreground cursor-grab active:cursor-grabbing touch-none shrink-0"
+        {...dragListeners}
+        {...dragAttributes}
+        tabIndex={0}
+        aria-label="Réordonner"
+      >
+        <GripVertical size={16} />
+      </button>
+
+      <div
+        className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+        style={{ backgroundColor: wallet.color + '28' }}
+      >
+        <Icon size={16} style={{ color: wallet.color }} />
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium truncate">{wallet.name}</p>
+        {wallet.institution && (
+          <p className="text-xs text-muted-foreground truncate">{wallet.institution}</p>
+        )}
+      </div>
+
+      <div className="text-right shrink-0">
+        <p className="text-sm font-semibold tabular-nums">{formatBalance(wallet.balance)}</p>
+        <p className="text-xs text-muted-foreground">{t(wallet.type)}</p>
+      </div>
+    </div>
+  )
+}
+
+export { WalletCard }

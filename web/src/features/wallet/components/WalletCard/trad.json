@@ -1,0 +1,16 @@
+{
+  "fr": {
+    "checking":   "Compte courant",
+    "savings":    "Épargne",
+    "cash":       "Espèces",
+    "investment": "Investissement",
+    "crypto":     "Crypto"
+  },
+  "en": {
+    "checking":   "Checking",
+    "savings":    "Savings",
+    "cash":       "Cash",
+    "investment": "Investment",
+    "crypto":     "Crypto"
+  }
+}

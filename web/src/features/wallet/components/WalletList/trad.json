@@ -1,0 +1,10 @@
+{
+  "fr": {
+    "add":   "Ajouter un compte",
+    "empty": "Aucun compte pour l'instant."
+  },
+  "en": {
+    "add":   "Add account",
+    "empty": "No accounts yet."
+  }
+}

@@ -1,0 +1,1 @@
+export { WalletAddModal } from './WalletAddModal'

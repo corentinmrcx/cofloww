@@ -5,6 +5,7 @@ import PrivateRoute from './components/PrivateRoute'
 import GuestRoute from './components/GuestRoute'
 import DashboardPage from './views/DashboardPage'
 import SettingsPage from './views/SettingsPage'
+import WalletPage from './views/WalletPage'
 import LoginPage from './views/LoginPage'
 import RegisterPage from './views/RegisterPage'
 import ForgotPasswordPage from './views/ForgotPasswordPage'
@@ -30,8 +31,9 @@ const router = createBrowserRouter([
         path: '/',
         element: <AppLayout />,
         children: [
-          { index: true,      element: <DashboardPage /> },
-          { path: 'settings', element: <SettingsPage />  },
+          { index: true,        element: <DashboardPage /> },
+          { path: 'settings',   element: <SettingsPage />  },
+          { path: 'wallets',    element: <WalletPage />    },
           { path: '*',        element: <Navigate to="/" replace /> },
         ],
       },

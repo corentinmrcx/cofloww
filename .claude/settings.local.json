@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npm audit:*)",
       "Bash(docker compose:*)",
-      "mcp__ide__getDiagnostics"
+      "mcp__ide__getDiagnostics",
+      "Bash(find /home/corentin_mrcx/dev/CoFloww/web/src -type f \\\\\\( -name \"*.ts\" -o -name \"*.tsx\" \\\\\\) 2>/dev/null | head -50)"
     ]
   }
 }

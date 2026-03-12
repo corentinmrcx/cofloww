@@ -4,13 +4,17 @@
     "savings":    "Épargne",
     "cash":       "Espèces",
     "investment": "Investissement",
-    "crypto":     "Crypto"
+    "crypto":     "Crypto",
+    "edit":       "Modifier",
+    "delete":     "Supprimer"
   },
   "en": {
     "checking":   "Checking",
     "savings":    "Savings",
     "cash":       "Cash",
     "investment": "Investment",
-    "crypto":     "Crypto"
+    "crypto":     "Crypto",
+    "edit":       "Edit",
+    "delete":     "Delete"
   }
 }

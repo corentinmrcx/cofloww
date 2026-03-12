@@ -5,8 +5,10 @@ import { X } from 'lucide-react'
 import { useT } from '../../../../components/T'
 import { Button } from '../../../../components/Button'
 import { MoneyInput } from '../../../../components/Input'
-import { useCreateWallet } from '../../hooks/useCreateWallet'
 import { IconPicker } from '../../../../components/IconPicker'
+import { useCreateWallet } from '../../hooks/useCreateWallet'
+import { useUpdateWallet } from '../../hooks/useUpdateWallet'
+import type { Wallet } from '../../types/wallet.types'
 
 const schema = z.object({
   name:            z.string().min(1),
@@ -21,20 +23,40 @@ type FormValues = z.infer<typeof schema>
 
 const INPUT_CLASS = 'h-9 w-full rounded-md border border-input bg-background text-foreground px-3 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
 
-interface WalletAddModalProps {
+interface WalletModalProps {
+  wallet?: Wallet
   onClose: () => void
 }
 
-const WalletAddModal = ({ onClose }: WalletAddModalProps) => {
+const WalletModal = ({ wallet, onClose }: WalletModalProps) => {
   const t = useT(import.meta.url)
-  const { mutate: createWallet, isPending } = useCreateWallet()
+  const isEdit = wallet !== undefined
+
+  const { mutate: createWallet, isPending: isCreating } = useCreateWallet()
+  const { mutate: updateWallet, isPending: isUpdating } = useUpdateWallet(wallet?.id ?? '')
+  const isPending = isCreating || isUpdating
 
   const { register, handleSubmit, control, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { type: 'checking', color: '#6366f1', initial_balance: 0 },
+    defaultValues: isEdit
+      ? {
+          name:            wallet.name,
+          type:            wallet.type,
+          color:           wallet.color ?? '#6366f1',
+          icon:            wallet.icon || undefined,
+          institution:     wallet.institution ?? undefined,
+          initial_balance: wallet.initial_balance,
+        }
+      : { type: 'checking', color: '#6366f1', initial_balance: 0 },
   })
 
-  const onSubmit = (data: FormValues) => createWallet(data, { onSuccess: onClose })
+  const onSubmit = (data: FormValues) => {
+    if (isEdit) {
+      updateWallet(data, { onSuccess: onClose })
+    } else {
+      createWallet(data, { onSuccess: onClose })
+    }
+  }
 
   return (
     <div
@@ -46,7 +68,9 @@ const WalletAddModal = ({ onClose }: WalletAddModalProps) => {
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-base font-semibold">{t('title')}</h2>
+          <h2 className="text-base font-semibold">
+            {t(isEdit ? 'title_edit' : 'title_add')}
+          </h2>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
             <X size={18} />
           </button>
@@ -121,7 +145,9 @@ const WalletAddModal = ({ onClose }: WalletAddModalProps) => {
               {t('cancel')}
             </Button>
             <Button type="submit" className="flex-1" disabled={isPending}>
-              {isPending ? t('saving') : t('save')}
+              {isPending
+                ? t(isEdit ? 'saving_edit' : 'saving_add')
+                : t(isEdit ? 'save_edit'   : 'save_add')}
             </Button>
           </div>
         </form>
@@ -130,4 +156,4 @@ const WalletAddModal = ({ onClose }: WalletAddModalProps) => {
   )
 }
 
-export { WalletAddModal }
+export { WalletModal }

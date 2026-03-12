@@ -26,6 +26,8 @@ export interface CreateWalletPayload {
   initial_balance?: number
 }
 
+export type UpdateWalletPayload = Partial<CreateWalletPayload>
+
 export interface ReorderPayload {
   id: string
   sort_order: number

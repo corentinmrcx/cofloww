@@ -18,7 +18,9 @@ class WalletController extends Controller
 
     public function index(): ResourceCollection
     {
-        return WalletResource::collection(Wallet::orderBy('sort_order')->get());
+        return WalletResource::collection(
+            Wallet::where('is_archived', false)->orderBy('sort_order')->get()
+        );
     }
 
     public function show(Wallet $wallet): WalletResource

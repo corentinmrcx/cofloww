@@ -20,7 +20,7 @@ import { WalletCard } from '../WalletCard'
 import { useReorderWallets } from '../../hooks/useReorderWallets'
 import type { Wallet } from '../../types/wallet.types'
 
-const SortableWalletCard = ({ wallet }: { wallet: Wallet }) => {
+const SortableWalletCard = ({ wallet, onEdit, onDelete }: { wallet: Wallet; onEdit: () => void; onDelete: () => void }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: wallet.id,
   })
@@ -35,6 +35,8 @@ const SortableWalletCard = ({ wallet }: { wallet: Wallet }) => {
         dragListeners={listeners}
         dragAttributes={attributes}
         isDragging={isDragging}
+        onEdit={onEdit}
+        onDelete={onDelete}
       />
     </div>
   )
@@ -43,9 +45,11 @@ const SortableWalletCard = ({ wallet }: { wallet: Wallet }) => {
 interface WalletListProps {
   wallets: Wallet[]
   onAddClick: () => void
+  onEditClick: (wallet: Wallet) => void
+  onDeleteClick: (wallet: Wallet) => void
 }
 
-const WalletList = ({ wallets, onAddClick }: WalletListProps) => {
+const WalletList = ({ wallets, onAddClick, onEditClick, onDeleteClick }: WalletListProps) => {
   const t = useT(import.meta.url)
   const [items, setItems] = useState(wallets)
   const { mutate: reorder } = useReorderWallets()
@@ -68,7 +72,12 @@ const WalletList = ({ wallets, onAddClick }: WalletListProps) => {
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={items.map(w => w.id)} strategy={verticalListSortingStrategy}>
           {items.map(wallet => (
-            <SortableWalletCard key={wallet.id} wallet={wallet} />
+            <SortableWalletCard
+              key={wallet.id}
+              wallet={wallet}
+              onEdit={() => onEditClick(wallet)}
+              onDelete={() => onDeleteClick(wallet)}
+            />
           ))}
         </SortableContext>
       </DndContext>

@@ -1,6 +1,7 @@
-import { GripVertical } from 'lucide-react'
+import { GripVertical, Pencil, Trash2 } from 'lucide-react'
 import type { DraggableAttributes, DraggableSyntheticListeners } from '@dnd-kit/core'
 import { useT } from '../../../../components/T'
+import { ActionMenu } from '../../../../components/ActionMenu'
 import { cn } from '../../../../lib/utils'
 import { ICONS } from '../../../../components/IconPicker'
 import { TYPE_DEFAULT_ICONS } from '../../lib/wallet-icons'
@@ -14,9 +15,18 @@ interface WalletCardProps {
   dragListeners?: DraggableSyntheticListeners
   dragAttributes?: DraggableAttributes
   isDragging?: boolean
+  onEdit?: () => void
+  onDelete?: () => void
 }
 
-const WalletCard = ({ wallet, dragListeners, dragAttributes, isDragging = false }: WalletCardProps) => {
+const WalletCard = ({
+  wallet,
+  dragListeners,
+  dragAttributes,
+  isDragging = false,
+  onEdit,
+  onDelete,
+}: WalletCardProps) => {
   const t = useT(import.meta.url)
   const Icon = (wallet.icon && ICONS[wallet.icon]) || TYPE_DEFAULT_ICONS[wallet.type]
 
@@ -54,6 +64,15 @@ const WalletCard = ({ wallet, dragListeners, dragAttributes, isDragging = false 
       <div className="text-right shrink-0">
         <p className="text-sm font-semibold tabular-nums">{formatBalance(wallet.balance)}</p>
         <p className="text-xs text-muted-foreground">{t(wallet.type)}</p>
+      </div>
+
+      <div className="shrink-0">
+        <ActionMenu
+          items={[
+            { label: t('edit'),   icon: Pencil, onClick: onEdit   ?? (() => {}) },
+            { label: t('delete'), icon: Trash2, onClick: onDelete ?? (() => {}), destructive: true },
+          ]}
+        />
       </div>
     </div>
   )

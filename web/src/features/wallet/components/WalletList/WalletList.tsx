@@ -15,12 +15,14 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { Plus } from 'lucide-react'
+import { useNavigate } from 'react-router'
 import { useT } from '../../../../components/T'
 import { WalletCard } from '../WalletCard'
 import { useReorderWallets } from '../../hooks/useReorderWallets'
 import type { Wallet } from '../../types/wallet.types'
 
 const SortableWalletCard = ({ wallet, onEdit, onDelete }: { wallet: Wallet; onEdit: () => void; onDelete: () => void }) => {
+  const navigate = useNavigate()
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: wallet.id,
   })
@@ -37,6 +39,7 @@ const SortableWalletCard = ({ wallet, onEdit, onDelete }: { wallet: Wallet; onEd
         isDragging={isDragging}
         onEdit={onEdit}
         onDelete={onDelete}
+        onClick={() => navigate(`/wallets/${wallet.id}`)}
       />
     </div>
   )

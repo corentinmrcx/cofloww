@@ -6,6 +6,7 @@ import GuestRoute from './components/GuestRoute'
 import DashboardPage from './views/DashboardPage'
 import SettingsPage from './views/SettingsPage'
 import WalletPage from './views/WalletPage'
+import WalletDetailPage from './views/WalletDetailPage'
 import LoginPage from './views/LoginPage'
 import RegisterPage from './views/RegisterPage'
 import ForgotPasswordPage from './views/ForgotPasswordPage'
@@ -33,7 +34,8 @@ const router = createBrowserRouter([
         children: [
           { index: true,        element: <DashboardPage /> },
           { path: 'settings',   element: <SettingsPage />  },
-          { path: 'wallets',    element: <WalletPage />    },
+          { path: 'wallets',       element: <WalletPage />       },
+          { path: 'wallets/:id',   element: <WalletDetailPage /> },
           { path: '*',        element: <Navigate to="/" replace /> },
         ],
       },

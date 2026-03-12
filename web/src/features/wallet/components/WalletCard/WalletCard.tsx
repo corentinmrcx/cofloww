@@ -17,6 +17,7 @@ interface WalletCardProps {
   isDragging?: boolean
   onEdit?: () => void
   onDelete?: () => void
+  onClick?: () => void
 }
 
 const WalletCard = ({
@@ -26,18 +27,22 @@ const WalletCard = ({
   isDragging = false,
   onEdit,
   onDelete,
+  onClick,
 }: WalletCardProps) => {
   const t = useT(import.meta.url)
   const Icon = (wallet.icon && ICONS[wallet.icon]) || TYPE_DEFAULT_ICONS[wallet.type]
 
   return (
     <div
+      onClick={onClick}
       className={cn(
         'flex items-center gap-3 bg-card border border-border rounded-xl px-4 py-3 transition-shadow',
+        onClick && 'cursor-pointer hover:bg-muted/50',
         isDragging && 'shadow-lg opacity-75',
       )}
     >
       <button
+        onClick={e => e.stopPropagation()}
         className="text-muted-foreground cursor-grab active:cursor-grabbing touch-none shrink-0"
         {...dragListeners}
         {...dragAttributes}

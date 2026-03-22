@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TransactionImportController;
 use App\Http\Controllers\WalletController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -17,4 +19,10 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
 
     Route::apiResource('categories', CategoryController::class)->except('show');
     Route::apiResource('tags', TagController::class)->only('index', 'store', 'destroy');
+
+    Route::get('transactions/export', [TransactionController::class, 'export']);
+    Route::post('transactions/import', [TransactionImportController::class, 'preview']);
+    Route::post('transactions/import/confirm', [TransactionImportController::class, 'confirm']);
+    Route::post('transactions/bulk-delete', [TransactionController::class, 'bulkDestroy']);
+    Route::apiResource('transactions', TransactionController::class);
 });

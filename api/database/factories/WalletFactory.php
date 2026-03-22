@@ -27,7 +27,7 @@ class WalletFactory extends Factory
             'is_default'      => false,
             'is_archived'     => false,
             'sort_order'      => 0,
-            'initial_balance' => fake()->randomFloat(2, 0, 10000),
+            'initial_balance' => fake()->numberBetween(0, 1000000), // en centimes
             'balance_cache'   => 0,
         ];
     }

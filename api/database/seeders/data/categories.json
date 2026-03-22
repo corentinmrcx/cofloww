@@ -1,0 +1,68 @@
+[
+    {
+        "name": "Alimentation",
+        "type": "expense",
+        "color": "#F97316",
+        "icon": "shopping-cart"
+    },
+    {
+        "name": "Transport",
+        "type": "expense",
+        "color": "#3B82F6",
+        "icon": "car"
+    },
+    {
+        "name": "Logement",
+        "type": "expense",
+        "color": "#8B5CF6",
+        "icon": "home"
+    },
+    {
+        "name": "Loisirs",
+        "type": "expense",
+        "color": "#EC4899",
+        "icon": "gamepad-2"
+    },
+    {
+        "name": "Santé",
+        "type": "expense",
+        "color": "#EF4444",
+        "icon": "heart-pulse"
+    },
+    {
+        "name": "Abonnements",
+        "type": "expense",
+        "color": "#6366F1",
+        "icon": "repeat"
+    },
+    {
+        "name": "Salaire",
+        "type": "income",
+        "color": "#22C55E",
+        "icon": "banknote"
+    },
+    {
+        "name": "Investissement",
+        "type": "income",
+        "color": "#14B8A6",
+        "icon": "trending-up"
+    },
+    {
+        "name": "Virement",
+        "type": "transfer",
+        "color": "#64748B",
+        "icon": "arrow-left-right"
+    },
+    {
+        "name": "Autres",
+        "type": "expense",
+        "color": "#94A3B8",
+        "icon": "circle-ellipsis"
+    },
+    {
+        "name": "Autres",
+        "type": "income",
+        "color": "#94A3B8",
+        "icon": "circle-ellipsis"
+    }
+]

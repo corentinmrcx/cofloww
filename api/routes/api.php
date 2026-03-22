@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\WalletController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -12,4 +14,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::post('wallets/reorder', [WalletController::class, 'reorder']);
     Route::apiResource('wallets', WalletController::class);
+
+    Route::apiResource('categories', CategoryController::class)->except('show');
+    Route::apiResource('tags', TagController::class)->only('index', 'store', 'destroy');
 });

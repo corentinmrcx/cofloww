@@ -242,4 +242,4 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
   )
 }
 
-export default CategorySelector
+export { CategorySelector }

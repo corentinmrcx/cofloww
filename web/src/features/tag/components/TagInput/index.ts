@@ -1,1 +1,1 @@
-export { default } from './TagInput'
+export { TagInput } from './TagInput'

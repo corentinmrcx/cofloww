@@ -1,0 +1,40 @@
+{
+  "fr": {
+    "date": "Date",
+    "label": "Libellé",
+    "category": "Catégorie",
+    "wallet": "Portefeuille",
+    "amount": "Montant",
+    "status": "Statut",
+    "no_category": "—",
+    "status_pending": "En attente",
+    "status_cleared": "Effectué",
+    "status_reconciled": "Rapproché",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "loading": "Chargement…",
+    "empty": "Aucune transaction",
+    "page_info": "Page {current} sur {total}",
+    "prev": "Précédent",
+    "next": "Suivant"
+  },
+  "en": {
+    "date": "Date",
+    "label": "Label",
+    "category": "Category",
+    "wallet": "Wallet",
+    "amount": "Amount",
+    "status": "Status",
+    "no_category": "—",
+    "status_pending": "Pending",
+    "status_cleared": "Cleared",
+    "status_reconciled": "Reconciled",
+    "edit": "Edit",
+    "delete": "Delete",
+    "loading": "Loading…",
+    "empty": "No transactions",
+    "page_info": "Page {current} of {total}",
+    "prev": "Previous",
+    "next": "Next"
+  }
+}

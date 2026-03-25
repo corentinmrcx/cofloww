@@ -36,9 +36,9 @@ const WalletCard = ({
     <div
       onClick={onClick}
       className={cn(
-        'flex items-center gap-3 bg-card border border-border rounded-xl px-4 py-3 transition-shadow',
-        onClick && 'cursor-pointer hover:bg-muted/50',
-        isDragging && 'shadow-lg opacity-75',
+        'flex items-center gap-3 px-4 py-3 transition-colors',
+        onClick && 'cursor-pointer hover:bg-muted/30',
+        isDragging && 'shadow-lg opacity-75 bg-card',
       )}
     >
       <button

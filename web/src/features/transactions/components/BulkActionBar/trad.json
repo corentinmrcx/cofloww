@@ -1,0 +1,26 @@
+{
+  "fr": {
+    "selected": "{n} sélectionnée(s)",
+    "select_all": "Tout",
+    "delete": "Supprimer",
+    "delete_confirm": "Supprimer {n} transaction(s) ?",
+    "category": "Catégorie",
+    "tag": "Tag",
+    "no_category": "Aucune catégorie",
+    "apply": "Appliquer",
+    "cancel": "Annuler",
+    "clear": "Désélectionner"
+  },
+  "en": {
+    "selected": "{n} selected",
+    "select_all": "All",
+    "delete": "Delete",
+    "delete_confirm": "Delete {n} transaction(s)?",
+    "category": "Category",
+    "tag": "Tag",
+    "no_category": "No category",
+    "apply": "Apply",
+    "cancel": "Cancel",
+    "clear": "Deselect"
+  }
+}

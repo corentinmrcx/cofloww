@@ -14,9 +14,9 @@ import {
   arrayMove,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Plus } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { useT } from '../../../../components/T'
+import { List } from '../../../../components/List'
 import { WalletCard } from '../WalletCard'
 import { useReorderWallets } from '../../hooks/useReorderWallets'
 import type { Wallet } from '../../types/wallet.types'
@@ -28,10 +28,7 @@ const SortableWalletCard = ({ wallet, onEdit, onDelete }: { wallet: Wallet; onEd
   })
 
   return (
-    <div
-      ref={setNodeRef}
-      style={{ transform: CSS.Transform.toString(transform), transition }}
-    >
+    <div ref={setNodeRef} style={{ transform: CSS.Transform.toString(transform), transition }}>
       <WalletCard
         wallet={wallet}
         dragListeners={listeners}
@@ -47,12 +44,11 @@ const SortableWalletCard = ({ wallet, onEdit, onDelete }: { wallet: Wallet; onEd
 
 interface WalletListProps {
   wallets: Wallet[]
-  onAddClick: () => void
   onEditClick: (wallet: Wallet) => void
   onDeleteClick: (wallet: Wallet) => void
 }
 
-const WalletList = ({ wallets, onAddClick, onEditClick, onDeleteClick }: WalletListProps) => {
+const WalletList = ({ wallets, onEditClick, onDeleteClick }: WalletListProps) => {
   const t = useT(import.meta.url)
   const [items, setItems] = useState(wallets)
   const { mutate: reorder } = useReorderWallets()
@@ -70,8 +66,16 @@ const WalletList = ({ wallets, onAddClick, onEditClick, onDeleteClick }: WalletL
     reorder(next.map((w, i) => ({ id: w.id, sort_order: i })))
   }
 
+  if (items.length === 0) {
+    return (
+      <div className="rounded-xl border border-border py-16 text-center text-sm text-muted-foreground">
+        {t('empty')}
+      </div>
+    )
+  }
+
   return (
-    <div className="flex flex-col gap-2">
+    <List>
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={items.map(w => w.id)} strategy={verticalListSortingStrategy}>
           {items.map(wallet => (
@@ -84,19 +88,7 @@ const WalletList = ({ wallets, onAddClick, onEditClick, onDeleteClick }: WalletL
           ))}
         </SortableContext>
       </DndContext>
-
-      {items.length === 0 && (
-        <p className="text-sm text-muted-foreground text-center py-8">{t('empty')}</p>
-      )}
-
-      <button
-        onClick={onAddClick}
-        className="flex items-center justify-center gap-2 w-full rounded-xl border border-dashed border-border py-3 text-sm text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors mt-1"
-      >
-        <Plus size={15} />
-        {t('add')}
-      </button>
-    </div>
+    </List>
   )
 }
 

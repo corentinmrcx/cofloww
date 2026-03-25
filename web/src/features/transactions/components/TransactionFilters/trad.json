@@ -1,0 +1,36 @@
+{
+  "fr": {
+    "filters": "Filtres",
+    "all_wallets": "Tous les portefeuilles",
+    "all_categories": "Toutes les catégories",
+    "all_tags": "Tous les tags",
+    "all_types": "Tous les types",
+    "type_income": "Revenu",
+    "type_expense": "Dépense",
+    "type_transfer": "Virement",
+    "wallet": "Portefeuille",
+    "type": "Type",
+    "category": "Catégorie",
+    "tag": "Tag",
+    "date_from": "Du",
+    "date_to": "Au",
+    "reset": "Réinitialiser"
+  },
+  "en": {
+    "filters": "Filters",
+    "all_wallets": "All wallets",
+    "all_categories": "All categories",
+    "all_tags": "All tags",
+    "all_types": "All types",
+    "type_income": "Income",
+    "type_expense": "Expense",
+    "type_transfer": "Transfer",
+    "wallet": "Wallet",
+    "type": "Type",
+    "category": "Category",
+    "tag": "Tag",
+    "date_from": "From",
+    "date_to": "To",
+    "reset": "Reset"
+  }
+}

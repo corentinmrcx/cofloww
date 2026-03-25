@@ -7,6 +7,7 @@ import DashboardPage from './views/DashboardPage'
 import SettingsPage from './views/SettingsPage'
 import WalletPage from './views/WalletPage'
 import WalletDetailPage from './views/WalletDetailPage'
+import { TransactionsPage } from './views/TransactionsPage'
 import LoginPage from './views/LoginPage'
 import RegisterPage from './views/RegisterPage'
 import ForgotPasswordPage from './views/ForgotPasswordPage'
@@ -35,7 +36,8 @@ const router = createBrowserRouter([
           { index: true,        element: <DashboardPage /> },
           { path: 'settings',   element: <SettingsPage />  },
           { path: 'wallets',       element: <WalletPage />       },
-          { path: 'wallets/:id',   element: <WalletDetailPage /> },
+          { path: 'wallets/:id',      element: <WalletDetailPage /> },
+          { path: 'transactions',     element: <TransactionsPage /> },
           { path: '*',        element: <Navigate to="/" replace /> },
         ],
       },

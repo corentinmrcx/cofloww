@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Plus } from 'lucide-react'
 import { WalletList } from '../features/wallet/components/WalletList'
 import { WalletModal } from '../features/wallet/components/WalletModal'
 import { useWallets } from '../features/wallet/hooks/useWallets'
@@ -10,18 +11,30 @@ const WalletPage = () => {
   const { mutate: deleteWallet } = useDeleteWallet()
   const [modalWallet, setModalWallet] = useState<Wallet | 'new' | null>(null)
 
-  if (isPending) {
-    return <div className="text-sm text-muted-foreground">Chargement…</div>
-  }
-
   return (
-    <div className="max-w-lg mx-auto py-6 px-4">
-      <WalletList
-        wallets={wallets}
-        onAddClick={() => setModalWallet('new')}
-        onEditClick={setModalWallet}
-        onDeleteClick={wallet => deleteWallet(wallet.id)}
-      />
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-semibold">Portefeuilles</h1>
+        <button
+          onClick={() => setModalWallet('new')}
+          className="flex items-center justify-center w-9 h-9 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shrink-0"
+          aria-label="Nouveau portefeuille"
+        >
+          <Plus size={18} />
+        </button>
+      </div>
+
+      {isPending ? (
+        <div className="rounded-xl border border-border py-16 text-center text-sm text-muted-foreground">
+          Chargement…
+        </div>
+      ) : (
+        <WalletList
+          wallets={wallets}
+          onEditClick={setModalWallet}
+          onDeleteClick={wallet => deleteWallet(wallet.id)}
+        />
+      )}
 
       {modalWallet !== null && (
         <WalletModal

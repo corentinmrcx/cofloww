@@ -175,4 +175,4 @@ const TagInput = ({ value, onChange }: TagInputProps) => {
   )
 }
 
-export default TagInput
+export { TagInput }

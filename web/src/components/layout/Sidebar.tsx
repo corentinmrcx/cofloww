@@ -2,6 +2,7 @@ import { NavLink } from 'react-router'
 import { cn } from '../../lib/utils'
 import { navItems } from './navItems'
 import ThemeToggle from '../ThemeToggle'
+import { NotificationBell } from '../../features/notifications/components/NotificationBell'
 import { useT } from '../T'
 
 const Sidebar = () => {
@@ -33,8 +34,9 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      <div className="p-4 border-t border-border">
+      <div className="p-4 border-t border-border flex items-center justify-between">
         <ThemeToggle />
+        <NotificationBell placement="top-left" />
       </div>
     </aside>
   )

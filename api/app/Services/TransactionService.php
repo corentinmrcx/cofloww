@@ -25,7 +25,7 @@ class TransactionService
             ->when($filters['search'] ?? null, fn ($q, $v) => $q->whereRaw('LOWER(label) LIKE LOWER(?)', ["%{$v}%"]))
             ->orderBy('date', 'desc')
             ->orderBy('created_at', 'desc')
-            ->paginate(25);
+            ->paginate($filters['per_page'] ?? 25);
     }
 
     public function forExport(array $filters): Builder

@@ -51,6 +51,7 @@ export interface TransactionFilters {
   date_to?: string
   search?: string
   page?: number
+  per_page?: number
 }
 
 export interface PaginatedTransactions {

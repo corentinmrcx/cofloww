@@ -109,7 +109,7 @@ const TransactionTable = ({ result, isPending, page, onPageChange }: Transaction
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 pb-4">
       <List>
         {isPending && (
           <div className="py-16 text-center text-sm text-muted-foreground">
@@ -133,7 +133,7 @@ const TransactionTable = ({ result, isPending, page, onPageChange }: Transaction
       </List>
 
       {meta && meta.last_page > 1 && (
-        <div className="flex items-center justify-between text-sm text-muted-foreground px-1">
+        <div className="flex items-center justify-between text-sm text-muted-foreground px-4">
           <span>
             {t('page_info')
               .replace('{current}', String(meta.current_page))

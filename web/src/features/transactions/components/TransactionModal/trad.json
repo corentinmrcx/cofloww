@@ -5,7 +5,7 @@
     "type": "Type",
     "type_income": "Revenu",
     "type_expense": "Dépense",
-    "type_transfer": "Virement",
+    "type_transfer": "Transfert",
     "label": "Libellé",
     "label_placeholder": "Ex : Courses Monoprix",
     "amount": "Montant",

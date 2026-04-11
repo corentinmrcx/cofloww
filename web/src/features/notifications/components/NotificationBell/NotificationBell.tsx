@@ -48,7 +48,17 @@ const NotifRow = ({ notif, onRead }: NotifRowProps) => (
   </button>
 )
 
-const NotificationBell = () => {
+const PLACEMENT: Record<string, string> = {
+  'bottom-right': 'top-11 right-0',
+  'top-left':     'bottom-11 left-0',
+  'top-right':    'bottom-11 right-0',
+}
+
+interface NotificationBellProps {
+  placement?: 'bottom-right' | 'top-left' | 'top-right'
+}
+
+const NotificationBell = ({ placement = 'bottom-right' }: NotificationBellProps) => {
   const [open, setOpen]       = useState(false)
   const ref                   = useRef<HTMLDivElement>(null)
   const { data }              = useNotifications()
@@ -76,7 +86,7 @@ const NotificationBell = () => {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-11 w-80 max-h-[420px] overflow-y-auto rounded-xl border border-border bg-popover shadow-lg z-50 flex flex-col">
+        <div className={`absolute ${PLACEMENT[placement]} w-80 max-h-[420px] overflow-y-auto rounded-xl border border-border bg-popover shadow-lg z-50 flex flex-col`}>
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
             <p className="text-sm font-semibold">Notifications</p>

@@ -54,11 +54,11 @@ const InvestmentPage = () => {
     }
   }, [wallets, sourceWalletId])
 
-  // Mois cible — défaut : mois prochain
-  const [selectedMonthIdx, setSelectedMonthIdx] = useState(1) // index dans MONTH_OPTIONS
+  // Mois cible — défaut : mois en cours
+  const [selectedMonthIdx, setSelectedMonthIdx] = useState(0)
 
   const { control } = useForm<FormValues>({
-    defaultValues: { seuil: 0, pas_arrondi: 1000 },
+    defaultValues: { seuil: 0, pas_arrondi: 500 },
   })
   const formValues = useWatch({ control })
 

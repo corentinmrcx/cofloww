@@ -9,6 +9,10 @@ export const useUpdateTransaction = (id: string) => {
   return useMutation({
     mutationFn: (payload: Partial<CreateTransactionPayload>) =>
       api.put<{ data: Transaction }>(`/api/v1/transactions/${id}`, payload).then(r => r.data.data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['transactions'] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['transactions'] })
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+      queryClient.invalidateQueries({ queryKey: ['wallets'] })
+    },
   })
 }

@@ -51,7 +51,7 @@ const DashboardPage = () => {
               <MonthSummaryWidget current={data.current_month} prev={data.prev_month} />
             </div>
             <div className="lg:col-span-1">
-              <MiniBarChart data={data.monthly_trend} />
+              <InvestWidget data={data.investable} />
             </div>
 
             {/* Ligne 2 : Comptes (étroit) + Budgets (large) */}
@@ -62,12 +62,12 @@ const DashboardPage = () => {
               <BudgetsWidget budgets={data.top_budgets} />
             </div>
 
-            {/* Ligne 3 : Investissements (étroit) + Derniers mouvements (large) */}
-            <div className="lg:col-span-1">
-              <InvestWidget data={data.investable} />
-            </div>
+            {/* Ligne 3 : Derniers mouvements (large) + Tendance (étroit) */}
             <div className="lg:col-span-2">
               <RecentTransactionsWidget transactions={data.recent_transactions} />
+            </div>
+            <div className="lg:col-span-1">
+              <MiniBarChart data={data.monthly_trend} />
             </div>
           </>
         )}

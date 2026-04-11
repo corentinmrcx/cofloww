@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -52,7 +53,7 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
 
   const today = new Date().toISOString().split('T')[0]
 
-  const { register, handleSubmit, control, watch, formState: { errors } } = useForm<FormValues>({
+  const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: isEdit
       ? {
@@ -76,8 +77,23 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
         },
   })
 
-  const selectedType = watch('type')
+  const selectedType     = watch('type')
   const selectedWalletId = watch('wallet_id')
+  const selectedToWallet = watch('to_wallet_id')
+  const currentLabel     = watch('label')
+  const lastAutoLabel    = useRef<string>('')
+
+  useEffect(() => {
+    if (selectedType !== 'transfer' || isEdit) return
+    const from = walletList.find(w => w.id === selectedWalletId)?.name
+    const to   = walletList.find(w => w.id === selectedToWallet)?.name
+    if (!from || !to) return
+    const autoLabel = `Transfert de ${from} vers ${to}`
+    if (!currentLabel || currentLabel === lastAutoLabel.current) {
+      setValue('label', autoLabel)
+      lastAutoLabel.current = autoLabel
+    }
+  }, [selectedType, selectedWalletId, selectedToWallet])
 
   const onSubmit = (data: FormValues) => {
     if (isEdit) {

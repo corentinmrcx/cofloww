@@ -22,6 +22,10 @@ export const useCreateTransaction = () => {
   return useMutation({
     mutationFn: (payload: CreateTransactionPayload) =>
       api.post<{ data: Transaction }>('/api/v1/transactions', payload).then(r => r.data.data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['transactions'] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['transactions'] })
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+      queryClient.invalidateQueries({ queryKey: ['wallets'] })
+    },
   })
 }

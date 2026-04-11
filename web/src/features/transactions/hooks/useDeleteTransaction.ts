@@ -6,6 +6,10 @@ export const useDeleteTransaction = () => {
 
   return useMutation({
     mutationFn: (id: string) => api.delete(`/api/v1/transactions/${id}`),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['transactions'] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['transactions'] })
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+      queryClient.invalidateQueries({ queryKey: ['wallets'] })
+    },
   })
 }

@@ -178,12 +178,12 @@ class DashboardService
             return ['amount' => 0, 'source_wallet' => null, 'allocations' => []];
         }
 
-        $nextMonth = Carbon::now()->addMonth();
-        $depenses  = (int) Budget::withoutGlobalScopes()
+        $now      = Carbon::now();
+        $depenses = (int) Budget::withoutGlobalScopes()
             ->where('user_id', $userId)
             ->where('period', 'monthly')
-            ->where('month', $nextMonth->month)
-            ->where('year', $nextMonth->year)
+            ->where('month', $now->month)
+            ->where('year', $now->year)
             ->sum('amount');
 
         $solde      = $source->initial_balance + $source->balance_cache;

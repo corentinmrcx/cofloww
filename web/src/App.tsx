@@ -11,6 +11,7 @@ import { TransactionsPage } from './views/TransactionsPage'
 import RecurringRulesPage from './views/RecurringRulesPage'
 import BudgetPage from './views/BudgetPage'
 import InvestmentPage from './views/InvestmentPage'
+import StatsPage from './views/StatsPage'
 import LoginPage from './views/LoginPage'
 import RegisterPage from './views/RegisterPage'
 import ForgotPasswordPage from './views/ForgotPasswordPage'
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
           { path: 'recurring-rules',  element: <RecurringRulesPage /> },
           { path: 'budget',           element: <BudgetPage /> },
           { path: 'investments',      element: <InvestmentPage /> },
+          { path: 'stats',            element: <StatsPage /> },
           { path: '*',        element: <Navigate to="/" replace /> },
         ],
       },

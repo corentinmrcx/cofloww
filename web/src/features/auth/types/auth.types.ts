@@ -1,3 +1,9 @@
+export type UserSettings = {
+  language?:    string
+  date_format?: string
+  theme?:       string
+}
+
 export type User = {
   id: number
   firstname: string
@@ -6,6 +12,8 @@ export type User = {
   email_verified_at: string | null
   currency: string
   timezone: string
+  avatar_url: string | null
+  settings: UserSettings
   created_at: string
 }
 

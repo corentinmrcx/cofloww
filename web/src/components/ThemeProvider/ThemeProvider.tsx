@@ -21,9 +21,10 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   }, [theme])
 
   const toggleTheme = () => setTheme(t => (t === 'dark' ? 'light' : 'dark'))
+  const setThemeExplicit = (t: Theme) => setTheme(t)
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme: setThemeExplicit }}>
       {children}
     </ThemeContext.Provider>
   )

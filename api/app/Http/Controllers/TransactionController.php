@@ -7,6 +7,7 @@ use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
+use App\Services\NotificationService;
 use App\Services\TransactionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,7 +17,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TransactionController extends Controller
 {
-    public function __construct(private TransactionService $service) {}
+    public function __construct(
+        private TransactionService $service,
+        private NotificationService $notifications,
+    ) {}
 
     public function index(Request $request): ResourceCollection
     {
@@ -28,6 +32,8 @@ class TransactionController extends Controller
     public function store(StoreTransactionRequest $request): JsonResponse
     {
         $transaction = $this->service->store($request->validated(), $request->user()->id);
+
+        $this->notifications->checkBudgetAlerts($request->user()->id);
 
         return (new TransactionResource($transaction))->response()->setStatusCode(201);
     }

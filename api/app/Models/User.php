@@ -25,6 +25,8 @@ class User extends Authenticatable
         'password',
         'currency',
         'timezone',
+        'avatar',
+        'settings',
     ];
 
     /**
@@ -46,7 +48,8 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
+            'settings'          => 'array',
         ];
     }
 }

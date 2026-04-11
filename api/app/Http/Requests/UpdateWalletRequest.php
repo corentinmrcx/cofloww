@@ -21,9 +21,10 @@ class UpdateWalletRequest extends FormRequest
             'color'           => ['nullable', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'icon'            => ['nullable', 'string', 'max:50'],
             'institution'     => ['nullable', 'string', 'max:100'],
-            'is_default'      => ['boolean'],
-            'initial_balance' => ['integer'],
-            'sort_order'      => ['integer', 'min:0'],
+            'is_default'            => ['boolean'],
+            'initial_balance'       => ['integer'],
+            'sort_order'            => ['integer', 'min:0'],
+            'investment_target_pct' => ['nullable', 'numeric', 'min:0', 'max:100'],
         ];
     }
 }

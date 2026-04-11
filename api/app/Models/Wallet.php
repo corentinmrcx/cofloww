@@ -27,17 +27,19 @@ class Wallet extends Model
         'sort_order',
         'initial_balance',
         'balance_cache',
+        'investment_target_pct',
     ];
 
     protected function casts(): array
     {
         return [
-            'type'            => WalletType::class,
-            'is_default'      => 'boolean',
-            'is_archived'     => 'boolean',
-            'sort_order'      => 'integer',
-            'initial_balance' => 'integer',
-            'balance_cache'   => 'integer',
+            'type'                  => WalletType::class,
+            'is_default'            => 'boolean',
+            'is_archived'           => 'boolean',
+            'sort_order'            => 'integer',
+            'initial_balance'       => 'integer',
+            'balance_cache'         => 'integer',
+            'investment_target_pct' => 'float',
         ];
     }
 

@@ -19,9 +19,10 @@ class WalletResource extends JsonResource
             'institution'     => $this->institution,
             'is_default'      => $this->is_default,
             'is_archived'     => $this->is_archived,
-            'sort_order'      => $this->sort_order,
-            'initial_balance' => $this->initial_balance,
-            'balance'         => $this->balance,
+            'sort_order'            => $this->sort_order,
+            'investment_target_pct' => $this->investment_target_pct,
+            'initial_balance'       => $this->initial_balance,
+            'balance'               => $this->balance,
             'created_at'      => $this->created_at,
             'updated_at'      => $this->updated_at,
         ];

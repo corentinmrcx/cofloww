@@ -1,0 +1,1 @@
+export { WalletInvestmentRow } from './WalletInvestmentRow'

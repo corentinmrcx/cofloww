@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RecurringRuleController;
 use App\Http\Controllers\TagController;
@@ -22,6 +23,7 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('tags', TagController::class)->only('index', 'store', 'destroy');
 
     Route::apiResource('recurring-rules', RecurringRuleController::class)->except('show');
+    Route::apiResource('budgets', BudgetController::class)->except('show');
 
     Route::get('transactions/export', [TransactionController::class, 'export']);
     Route::post('transactions/import', [TransactionImportController::class, 'preview']);

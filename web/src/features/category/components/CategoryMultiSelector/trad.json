@@ -1,0 +1,14 @@
+{
+  "fr": {
+    "placeholder": "Sélectionner des catégories…",
+    "search_placeholder": "Rechercher…",
+    "empty": "Aucune catégorie",
+    "selected_count": "catégorie(s) sélectionnée(s)"
+  },
+  "en": {
+    "placeholder": "Select categories…",
+    "search_placeholder": "Search…",
+    "empty": "No categories",
+    "selected_count": "category(ies) selected"
+  }
+}

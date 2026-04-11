@@ -1,0 +1,18 @@
+{
+  "fr": {
+    "spent": "dépensé",
+    "remaining": "restant",
+    "of": "sur",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "alert_label": "Seuil d'alerte atteint"
+  },
+  "en": {
+    "spent": "spent",
+    "remaining": "remaining",
+    "of": "of",
+    "edit": "Edit",
+    "delete": "Delete",
+    "alert_label": "Alert threshold reached"
+  }
+}

@@ -9,6 +9,7 @@ import WalletPage from './views/WalletPage'
 import WalletDetailPage from './views/WalletDetailPage'
 import { TransactionsPage } from './views/TransactionsPage'
 import RecurringRulesPage from './views/RecurringRulesPage'
+import BudgetPage from './views/BudgetPage'
 import LoginPage from './views/LoginPage'
 import RegisterPage from './views/RegisterPage'
 import ForgotPasswordPage from './views/ForgotPasswordPage'
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
           { path: 'wallets/:id',      element: <WalletDetailPage /> },
           { path: 'transactions',      element: <TransactionsPage /> },
           { path: 'recurring-rules',  element: <RecurringRulesPage /> },
+          { path: 'budget',           element: <BudgetPage /> },
           { path: '*',        element: <Navigate to="/" replace /> },
         ],
       },

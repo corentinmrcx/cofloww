@@ -1,0 +1,32 @@
+{
+  "fr": {
+    "title_add": "Nouveau budget",
+    "title_edit": "Modifier le budget",
+    "categories": "Catégories",
+    "categories_required": "Sélectionner au moins une catégorie",
+    "amount": "Montant alloué",
+    "amount_required": "Le montant est requis",
+    "alert_threshold": "Seuil d'alerte (%)",
+    "apply_all_months": "Appliquer à tous les mois suivants",
+    "cancel": "Annuler",
+    "save_add": "Créer",
+    "save_edit": "Enregistrer",
+    "saving_add": "Création…",
+    "saving_edit": "Enregistrement…"
+  },
+  "en": {
+    "title_add": "New budget",
+    "title_edit": "Edit budget",
+    "categories": "Categories",
+    "categories_required": "Select at least one category",
+    "amount": "Allocated amount",
+    "amount_required": "Amount is required",
+    "alert_threshold": "Alert threshold (%)",
+    "apply_all_months": "Apply to all following months",
+    "cancel": "Cancel",
+    "save_add": "Create",
+    "save_edit": "Save",
+    "saving_add": "Creating…",
+    "saving_edit": "Saving…"
+  }
+}

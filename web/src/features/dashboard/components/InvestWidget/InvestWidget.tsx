@@ -30,7 +30,7 @@ const InvestWidget = ({ data }: InvestWidgetProps) => {
         </button>
       </div>
 
-      <div className="px-4 pb-4 flex items-center gap-4">
+      <div className="flex-1 flex items-center px-4 pb-4 gap-4">
         {/* Mini donut */}
         <div className="shrink-0">
           <ResponsiveContainer width={72} height={72}>

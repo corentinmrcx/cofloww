@@ -32,23 +32,25 @@ const MiniBarChart = ({ data }: MiniBarChartProps) => {
 
   return (
     <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-2 h-full">
-      <p className="text-sm font-semibold">Tendance 6 mois</p>
+      <p className="text-sm font-semibold shrink-0">Tendance 6 mois</p>
 
-      <ResponsiveContainer width="100%" height={72}>
-        <BarChart data={chartData} barCategoryGap="20%" barGap={1} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(var(--muted))', radius: 2 }} />
-          <Bar dataKey="income"   fill="#10b981" radius={[2, 2, 0, 0]} />
-          <Bar dataKey="expenses" fill="#ef4444" radius={[2, 2, 0, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
+      <div className="flex-1 flex flex-col justify-center gap-2">
+        <ResponsiveContainer width="100%" height={72}>
+          <BarChart data={chartData} barCategoryGap="20%" barGap={1} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(var(--muted))', radius: 2 }} />
+            <Bar dataKey="income"   fill="#10b981" radius={[2, 2, 0, 0]} />
+            <Bar dataKey="expenses" fill="#ef4444" radius={[2, 2, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
 
-      <div className="flex gap-3 justify-end">
-        <span className="flex items-center gap-1 text-xs text-muted-foreground">
-          <span className="w-2 h-2 rounded-sm bg-emerald-500 inline-block" /> Revenus
-        </span>
-        <span className="flex items-center gap-1 text-xs text-muted-foreground">
-          <span className="w-2 h-2 rounded-sm bg-red-500 inline-block" /> Dépenses
-        </span>
+        <div className="flex gap-3 justify-end">
+          <span className="flex items-center gap-1 text-xs text-muted-foreground">
+            <span className="w-2 h-2 rounded-sm bg-emerald-500 inline-block" /> Revenus
+          </span>
+          <span className="flex items-center gap-1 text-xs text-muted-foreground">
+            <span className="w-2 h-2 rounded-sm bg-red-500 inline-block" /> Dépenses
+          </span>
+        </div>
       </div>
     </div>
   )

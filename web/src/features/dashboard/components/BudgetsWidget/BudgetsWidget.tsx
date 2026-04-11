@@ -77,7 +77,7 @@ const BudgetsWidget = ({ budgets }: BudgetsWidgetProps) => {
         </button>
       </div>
 
-      <div className="px-4 divide-y divide-border">
+      <div className="flex-1 flex flex-col justify-center px-4 divide-y divide-border">
         {budgets.length === 0 ? (
           <p className="py-6 text-sm text-muted-foreground text-center">
             Aucun budget ce mois

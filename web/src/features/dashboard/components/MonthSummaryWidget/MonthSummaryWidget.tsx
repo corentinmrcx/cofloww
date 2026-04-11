@@ -48,11 +48,12 @@ const MonthSummaryWidget = ({ current, prev }: MonthSummaryWidgetProps) => {
 
   return (
     <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-3 h-full">
-      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide shrink-0">
         {monthLabel}
       </p>
 
-      <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+      <div className="flex-1 flex items-center">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-3 w-full">
         <Metric
           label="Revenus"
           value={fmt(current.income)}
@@ -87,6 +88,7 @@ const MonthSummaryWidget = ({ current, prev }: MonthSummaryWidgetProps) => {
           </p>
           <Trend prev={prev.savings_rate} current={current.savings_rate} positiveIsGood />
         </div>
+      </div>
       </div>
     </div>
   )

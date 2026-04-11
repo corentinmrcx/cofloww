@@ -49,7 +49,7 @@ const WalletsWidget = ({ wallets }: WalletsWidgetProps) => {
         </button>
       </div>
 
-      <div className="divide-y divide-border">
+      <div className="flex-1 flex flex-col justify-center divide-y divide-border">
         {wallets.length === 0 ? (
           <p className="px-4 py-6 text-sm text-muted-foreground text-center">Aucun compte</p>
         ) : (

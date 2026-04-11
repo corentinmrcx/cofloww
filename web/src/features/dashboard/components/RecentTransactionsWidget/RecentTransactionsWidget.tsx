@@ -4,7 +4,7 @@ import { ICONS } from '../../../../components/IconPicker'
 import type { DashboardTransaction } from '../../types/dashboard.types'
 
 const fmt = (cents: number) =>
-  (Math.abs(cents) / 100).toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' €'
+  new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(Math.abs(cents) / 100)
 
 const formatDate = (iso: string) => {
   const d = new Date(iso)
@@ -30,7 +30,7 @@ const RecentTransactionsWidget = ({ transactions }: RecentTransactionsWidgetProp
         </button>
       </div>
 
-      <div className="divide-y divide-border">
+      <div className="flex-1 flex flex-col justify-center divide-y divide-border">
         {transactions.length === 0 ? (
           <p className="px-4 py-6 text-sm text-muted-foreground text-center">
             Aucune transaction

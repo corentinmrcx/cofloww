@@ -1,4 +1,6 @@
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
+import { useT } from '../../../../components/T'
+import { useLangStore } from '../../../../stores/langStore'
 import type { MonthSummary } from '../../types/dashboard.types'
 
 const fmt = (cents: number) =>
@@ -44,7 +46,11 @@ interface MonthSummaryWidgetProps {
 }
 
 const MonthSummaryWidget = ({ current, prev }: MonthSummaryWidgetProps) => {
-  const monthLabel = new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })
+  const t = useT(import.meta.url)
+  const { lang } = useLangStore()
+  const locale = lang === 'en' ? 'en-US' : 'fr-FR'
+  const monthLabel = new Date().toLocaleDateString(locale, { month: 'long', year: 'numeric' })
+    .replace(/^\w/, c => c.toUpperCase())
 
   return (
     <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-3 h-full">
@@ -55,28 +61,28 @@ const MonthSummaryWidget = ({ current, prev }: MonthSummaryWidgetProps) => {
       <div className="flex-1 flex items-center">
       <div className="grid grid-cols-2 gap-x-4 gap-y-3 w-full">
         <Metric
-          label="Revenus"
+          label={t('income')}
           value={fmt(current.income)}
           prevValue={prev.income}
           currentValue={current.income}
           positiveIsGood
         />
         <Metric
-          label="Dépenses"
+          label={t('expenses')}
           value={fmt(current.expenses)}
           prevValue={prev.expenses}
           currentValue={current.expenses}
           positiveIsGood={false}
         />
         <Metric
-          label="Épargne"
+          label={t('savings')}
           value={fmt(current.net)}
           prevValue={prev.net}
           currentValue={current.net}
           positiveIsGood
         />
         <div className="flex flex-col gap-0.5">
-          <p className="text-xs text-muted-foreground">Taux d'épargne</p>
+          <p className="text-xs text-muted-foreground">{t('savings_rate')}</p>
           <p className={`text-base font-bold tabular-nums ${
             current.savings_rate >= 20
               ? 'text-emerald-600 dark:text-emerald-400'

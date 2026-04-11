@@ -4,17 +4,17 @@ import { BudgetCard } from '../features/budget/components/BudgetCard'
 import { BudgetModal } from '../features/budget/components/BudgetModal'
 import { useBudgets } from '../features/budget/hooks/useBudgets'
 import { useDeleteBudget } from '../features/budget/hooks/useDeleteBudget'
+import { useT } from '../components/T'
+import { useLangStore } from '../stores/langStore'
 import type { Budget } from '../features/budget/types/budget.types'
-
-const MONTH_NAMES = [
-  'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-  'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
-]
 
 const BudgetPage = () => {
   const now = new Date()
   const [month, setMonth] = useState(now.getMonth() + 1)
   const [year, setYear]   = useState(now.getFullYear())
+  const t = useT(import.meta.url)
+  const { lang } = useLangStore()
+  const locale = lang === 'en' ? 'en-US' : 'fr-FR'
   const [modalBudget, setModalBudget] = useState<Budget | 'new' | null>(null)
 
   const { data: budgets = [], isPending } = useBudgets(month, year)
@@ -39,11 +39,11 @@ const BudgetPage = () => {
     <div className="flex flex-col gap-4">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Budget</h1>
+        <h1 className="text-xl font-semibold">{t('budget_title')}</h1>
         <button
           onClick={() => setModalBudget('new')}
           className="flex items-center justify-center w-9 h-9 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shrink-0"
-          aria-label="Nouveau budget"
+          aria-label={t('budget_new')}
         >
           <Plus size={18} />
         </button>
@@ -58,10 +58,12 @@ const BudgetPage = () => {
           <ChevronLeft size={18} />
         </button>
         <div className="text-center">
-          <p className="font-semibold">{MONTH_NAMES[month - 1]} {year}</p>
+          <p className="font-semibold">
+            {new Date(year, month - 1).toLocaleDateString(locale, { month: 'long' }).replace(/^\w/, c => c.toUpperCase())} {year}
+          </p>
           {budgets.length > 0 && (
             <p className="text-xs text-muted-foreground mt-0.5">
-              {formatAmount(totalSpent)} € / {formatAmount(totalAllocated)} € alloués
+              {formatAmount(totalSpent)} € / {formatAmount(totalAllocated)} € {t('budget_allocated')}
             </p>
           )}
         </div>
@@ -76,11 +78,11 @@ const BudgetPage = () => {
       {/* Contenu */}
       {isPending ? (
         <div className="rounded-xl border border-border py-16 text-center text-sm text-muted-foreground">
-          Chargement…
+          {t('loading')}
         </div>
       ) : budgets.length === 0 ? (
         <div className="rounded-xl border border-border py-16 text-center text-sm text-muted-foreground">
-          Aucun budget pour ce mois
+          {t('budget_empty')}
         </div>
       ) : (
         <div className="flex flex-col gap-3">

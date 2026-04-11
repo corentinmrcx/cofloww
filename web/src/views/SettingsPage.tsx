@@ -2,21 +2,23 @@ import { useState } from 'react'
 import { ProfileForm }     from '../features/settings/components/ProfileForm'
 import { PreferencesForm } from '../features/settings/components/PreferencesForm'
 import { DataPanel }       from '../features/settings/components/DataPanel'
+import { useT } from '../components/T'
 
 type Tab = 'profil' | 'preferences' | 'donnees'
 
-const TABS: { id: Tab; label: string }[] = [
-  { id: 'profil',       label: 'Profil' },
-  { id: 'preferences',  label: 'Préférences' },
-  { id: 'donnees',      label: 'Données' },
-]
-
 const SettingsPage = () => {
   const [tab, setTab] = useState<Tab>('profil')
+  const t = useT(import.meta.url)
+
+  const TABS: { id: Tab; label: string }[] = [
+    { id: 'profil',       label: t('settings_tab_profile') },
+    { id: 'preferences',  label: t('settings_tab_prefs') },
+    { id: 'donnees',      label: t('settings_tab_data') },
+  ]
 
   return (
     <div className="flex flex-col gap-4 max-w-2xl mx-auto">
-      <h1 className="text-xl font-semibold">Paramètres</h1>
+      <h1 className="text-xl font-semibold">{t('settings_title')}</h1>
 
       {/* Tabs */}
       <div className="flex gap-1 bg-muted p-1 rounded-lg">

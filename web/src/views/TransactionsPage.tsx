@@ -6,6 +6,7 @@ import { useTransactionFilters } from '../features/transactions/hooks/useTransac
 import { TransactionTable } from '../features/transactions/components/TransactionTable'
 import { TransactionFilters } from '../features/transactions/components/TransactionFilters'
 import { TransactionModal } from '../features/transactions/components/TransactionModal'
+import { useT } from '../components/T'
 
 const TransactionsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -22,6 +23,7 @@ const TransactionsPage = () => {
 
   const { filters, setFilter, resetFilters, hasActiveFilters, activeCount } = useTransactionFilters()
   const { data, isPending } = useTransactions({ ...filters, page })
+  const t = useT(import.meta.url)
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -36,7 +38,7 @@ const TransactionsPage = () => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Transactions</h1>
+        <h1 className="text-xl font-semibold">{t('tx_title')}</h1>
         <div className="flex items-center gap-2">
           <TransactionFilters
             filters={filters}
@@ -48,7 +50,7 @@ const TransactionsPage = () => {
           <button
             onClick={() => setShowModal(true)}
             className="flex items-center justify-center w-9 h-9 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shrink-0"
-            aria-label="Nouvelle transaction"
+            aria-label={t('tx_new')}
           >
             <Plus size={18} />
           </button>

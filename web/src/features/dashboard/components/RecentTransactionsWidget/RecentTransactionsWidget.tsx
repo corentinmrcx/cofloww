@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router'
 import { ChevronRight } from 'lucide-react'
 import { ICONS } from '../../../../components/IconPicker'
+import { useT } from '../../../../components/T'
 import type { DashboardTransaction } from '../../types/dashboard.types'
 
 const fmt = (cents: number) =>
@@ -17,23 +18,24 @@ interface RecentTransactionsWidgetProps {
 
 const RecentTransactionsWidget = ({ transactions }: RecentTransactionsWidgetProps) => {
   const navigate = useNavigate()
+  const t = useT(import.meta.url)
 
   return (
     <div className="bg-card border border-border rounded-xl flex flex-col h-full">
       <div className="flex items-center justify-between px-4 pt-4 pb-2">
-        <p className="text-sm font-semibold">Derniers mouvements</p>
+        <p className="text-sm font-semibold">{t('title')}</p>
         <button
           onClick={() => navigate('/transactions')}
           className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-0.5 transition-colors"
         >
-          Voir tout <ChevronRight size={13} />
+          {t('see_all')} <ChevronRight size={13} />
         </button>
       </div>
 
       <div className="flex-1 flex flex-col justify-center divide-y divide-border">
         {transactions.length === 0 ? (
           <p className="px-4 py-6 text-sm text-muted-foreground text-center">
-            Aucune transaction
+            {t('empty')}
           </p>
         ) : (
           transactions.map(tx => {

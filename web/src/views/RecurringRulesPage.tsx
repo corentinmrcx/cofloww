@@ -5,6 +5,7 @@ import { RecurringRuleModal } from '../features/recurring/components/RecurringRu
 import { useRecurringRules } from '../features/recurring/hooks/useRecurringRules'
 import { useToggleRecurringRule } from '../features/recurring/hooks/useToggleRecurringRule'
 import { useDeleteRecurringRule } from '../features/recurring/hooks/useDeleteRecurringRule'
+import { useT } from '../components/T'
 import type { RecurringRule } from '../features/recurring/types/recurring.types'
 
 const MONTHLY_MULTIPLIERS: Record<string, number> = {
@@ -23,6 +24,7 @@ const RecurringRulesPage = () => {
   const { mutate: deleteRule } = useDeleteRecurringRule()
   const [modalRule, setModalRule] = useState<RecurringRule | 'new' | null>(null)
 
+  const t = useT(import.meta.url)
   const activeRules = rules.filter(r => r.is_active)
 
   const monthlyForecast = activeRules.reduce((sum, r) => {
@@ -38,11 +40,11 @@ const RecurringRulesPage = () => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Récurrences</h1>
+        <h1 className="text-xl font-semibold">{t('recurring_title')}</h1>
         <button
           onClick={() => setModalRule('new')}
           className="flex items-center justify-center w-9 h-9 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shrink-0"
-          aria-label="Nouvelle règle"
+          aria-label={t('recurring_new')}
         >
           <Plus size={18} />
         </button>
@@ -51,20 +53,20 @@ const RecurringRulesPage = () => {
       <div className="rounded-xl border border-border p-4 flex items-center justify-between">
         <div>
           <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
-            Total mensuel prévisionnel
+            {t('recurring_forecast')}
           </p>
           <p className={`text-2xl font-bold tabular-nums mt-0.5 ${forecastColor}`}>
             {monthlyForecast >= 0 ? '+' : ''}{formatAmount(monthlyForecast)} €
           </p>
         </div>
         <p className="text-xs text-muted-foreground">
-          {activeRules.length} règle{activeRules.length !== 1 ? 's' : ''} active{activeRules.length !== 1 ? 's' : ''}
+          {activeRules.length} {activeRules.length !== 1 ? t('rules_other') : t('rules_one')}
         </p>
       </div>
 
       {isPending ? (
         <div className="rounded-xl border border-border py-16 text-center text-sm text-muted-foreground">
-          Chargement…
+          {t('loading')}
         </div>
       ) : (
         <RecurringRuleList

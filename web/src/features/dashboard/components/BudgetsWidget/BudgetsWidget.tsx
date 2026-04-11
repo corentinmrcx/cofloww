@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router'
 import { ChevronRight } from 'lucide-react'
 import { ICONS } from '../../../../components/IconPicker'
+import { useT } from '../../../../components/T'
 import type { BudgetSummary } from '../../types/dashboard.types'
 
 const fmt = (cents: number) =>
@@ -8,9 +9,10 @@ const fmt = (cents: number) =>
 
 interface BudgetRowProps {
   budget: BudgetSummary
+  t: (key: string) => string
 }
 
-const BudgetRow = ({ budget }: BudgetRowProps) => {
+const BudgetRow = ({ budget, t }: BudgetRowProps) => {
   const Icon          = budget.icon ? ICONS[budget.icon] : null
   const displayPct    = Math.min(budget.pct, 100)
   const isOver        = budget.over_budget
@@ -52,7 +54,7 @@ const BudgetRow = ({ budget }: BudgetRowProps) => {
       </div>
 
       <p className={`text-xs text-right tabular-nums ${isOver ? 'text-red-500 font-medium' : 'text-muted-foreground'}`}>
-        {isOver ? `Dépassé de ${fmt(budget.spent - budget.budget_amount)}` : `${budget.pct.toFixed(0)}%`}
+        {isOver ? `${t('over')}${fmt(budget.spent - budget.budget_amount)}` : `${budget.pct.toFixed(0)}%`}
       </p>
     </div>
   )
@@ -64,26 +66,27 @@ interface BudgetsWidgetProps {
 
 const BudgetsWidget = ({ budgets }: BudgetsWidgetProps) => {
   const navigate = useNavigate()
+  const t = useT(import.meta.url)
 
   return (
     <div className="bg-card border border-border rounded-xl flex flex-col h-full">
       <div className="flex items-center justify-between px-4 pt-4 pb-1">
-        <p className="text-sm font-semibold">Budgets du mois</p>
+        <p className="text-sm font-semibold">{t('title')}</p>
         <button
           onClick={() => navigate('/budget')}
           className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-0.5 transition-colors"
         >
-          Voir tout <ChevronRight size={13} />
+          {t('see_all')} <ChevronRight size={13} />
         </button>
       </div>
 
       <div className="flex-1 flex flex-col justify-center px-4 divide-y divide-border">
         {budgets.length === 0 ? (
           <p className="py-6 text-sm text-muted-foreground text-center">
-            Aucun budget ce mois
+            {t('empty')}
           </p>
         ) : (
-          budgets.map(b => <BudgetRow key={b.id} budget={b} />)
+          budgets.map(b => <BudgetRow key={b.id} budget={b} t={t} />)
         )}
       </div>
     </div>

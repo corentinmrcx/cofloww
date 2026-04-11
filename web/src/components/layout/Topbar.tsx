@@ -1,19 +1,22 @@
 import { useLocation } from 'react-router'
 import ThemeToggle from '../ThemeToggle'
 import { NotificationBell } from '../../features/notifications/components/NotificationBell'
-
-const pathTitles: Record<string, string> = {
-  '/':            'Dashboard',
-  '/settings':    'Paramètres',
-  '/wallets':     'Comptes',
-  '/transactions':'Transactions',
-  '/budget':      'Budget',
-  '/investments': 'Investissements',
-  '/stats':       'Statistiques',
-}
+import { useT } from '../T'
 
 const Topbar = () => {
   const { pathname } = useLocation()
+  const t = useT(import.meta.url)
+
+  const pathTitles: Record<string, string> = {
+    '/':             t('dashboard'),
+    '/settings':     t('settings'),
+    '/wallets':      t('wallets'),
+    '/transactions': t('transactions'),
+    '/budget':       t('budget'),
+    '/investments':  t('investments'),
+    '/stats':        t('stats'),
+  }
+
   const title = pathTitles[pathname] ?? 'CoFloww'
 
   return (

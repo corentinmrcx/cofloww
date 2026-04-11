@@ -1,35 +1,27 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useForm, useWatch, Controller } from 'react-hook-form'
 import { useDebounce } from '../hooks/useDebounce'
 import { useWallets } from '../features/wallet/hooks/useWallets'
 import { useComputeInvestment } from '../features/investment/hooks/useComputeInvestment'
 import { WalletInvestmentRow } from '../features/investment/components/WalletInvestmentRow'
 import { List } from '../components/List'
+import { useT } from '../components/T'
+import { useLangStore } from '../stores/langStore'
 
 const fmt = (cents: number) =>
   (cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
 
-const MONTH_FR = [
-  '', 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-  'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
-]
-
-// Génère les 6 prochains mois à partir de maintenant
-const buildMonthOptions = () => {
+const buildMonthOptions = (locale: string) => {
   const options: { label: string; month: number; year: number }[] = []
   const base = new Date()
   for (let i = 0; i < 6; i++) {
     const d = new Date(base.getFullYear(), base.getMonth() + i, 1)
-    options.push({
-      label: `${MONTH_FR[d.getMonth() + 1]} ${d.getFullYear()}`,
-      month: d.getMonth() + 1,
-      year:  d.getFullYear(),
-    })
+    const label = d.toLocaleDateString(locale, { month: 'long', year: 'numeric' })
+      .replace(/^\w/, c => c.toUpperCase())
+    options.push({ label, month: d.getMonth() + 1, year: d.getFullYear() })
   }
   return options
 }
-
-const MONTH_OPTIONS = buildMonthOptions()
 
 const INPUT_CLASS = 'h-9 w-full rounded-md border border-input bg-background text-foreground px-3 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
 
@@ -47,6 +39,10 @@ const PAS_OPTIONS = [
 
 const InvestmentPage = () => {
   const { data: wallets = [] } = useWallets()
+  const t = useT(import.meta.url)
+  const { lang } = useLangStore()
+  const locale = lang === 'en' ? 'en-US' : 'fr-FR'
+  const monthOptions = useMemo(() => buildMonthOptions(locale), [locale])
 
   // Compte source — défaut : compte is_default ou premier de la liste
   const [sourceWalletId, setSourceWalletId] = useState<string>('')
@@ -66,15 +62,15 @@ const InvestmentPage = () => {
   })
   const formValues = useWatch({ control })
 
-  const selectedMonth = MONTH_OPTIONS[selectedMonthIdx]
+  const selectedMonth = monthOptions[selectedMonthIdx]
 
   const debouncedParams = useDebounce(
     {
       wallet_id:   sourceWalletId,
       seuil:       formValues.seuil       ?? 0,
       pas_arrondi: formValues.pas_arrondi ?? 1000,
-      month:       selectedMonth?.month,
-      year:        selectedMonth?.year,
+      month:       selectedMonth?.month ?? 0,
+      year:        selectedMonth?.year  ?? 0,
     },
     300,
   )
@@ -95,7 +91,7 @@ const InvestmentPage = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl font-semibold">Investissements</h1>
+      <h1 className="text-xl font-semibold">{t('invest_title')}</h1>
 
       {/* Paramètres */}
       <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-3">
@@ -103,7 +99,7 @@ const InvestmentPage = () => {
         {/* Ligne 1 : compte source + mois */}
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-muted-foreground">Compte source</label>
+            <label className="text-xs font-medium text-muted-foreground">{t('invest_source')}</label>
             <select
               value={sourceWalletId}
               onChange={e => setSourceWalletId(e.target.value)}
@@ -118,13 +114,13 @@ const InvestmentPage = () => {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-muted-foreground">Mois de référence</label>
+            <label className="text-xs font-medium text-muted-foreground">{t('invest_month')}</label>
             <select
               value={selectedMonthIdx}
               onChange={e => setSelectedMonthIdx(Number(e.target.value))}
               className={INPUT_CLASS}
             >
-              {MONTH_OPTIONS.map((o, i) => (
+              {monthOptions.map((o, i) => (
                 <option key={i} value={i}>{o.label}</option>
               ))}
             </select>
@@ -134,7 +130,7 @@ const InvestmentPage = () => {
         {/* Ligne 2 : seuil + arrondi */}
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-muted-foreground">Épargne de sécurité</label>
+            <label className="text-xs font-medium text-muted-foreground">{t('invest_safety')}</label>
             <Controller
               name="seuil"
               control={control}
@@ -159,7 +155,7 @@ const InvestmentPage = () => {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-muted-foreground">Arrondi par virement</label>
+            <label className="text-xs font-medium text-muted-foreground">{t('invest_rounding')}</label>
             <Controller
               name="pas_arrondi"
               control={control}
@@ -187,13 +183,13 @@ const InvestmentPage = () => {
           </p>
 
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Solde — {sourceWallet.name}</span>
+            <span className="text-sm text-muted-foreground">{t('invest_balance')} — {sourceWallet.name}</span>
             <span className="text-sm tabular-nums font-medium">{fmt(sourceWallet.balance)} €</span>
           </div>
 
           {compute.depenses > 0 && (
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Dépenses budgétées</span>
+              <span className="text-sm text-muted-foreground">{t('invest_expenses')}</span>
               <span className="text-sm tabular-nums text-destructive">− {fmt(compute.depenses)} €</span>
             </div>
           )}
@@ -209,8 +205,8 @@ const InvestmentPage = () => {
 
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold">À investir</p>
-              <p className="text-xs text-muted-foreground">À répartir sur tes comptes épargne</p>
+              <p className="text-sm font-semibold">{t('invest_to_invest')}</p>
+              <p className="text-xs text-muted-foreground">{t('invest_distribute')}</p>
             </div>
             <span className="text-2xl font-bold tabular-nums text-emerald-600 dark:text-emerald-400">
               {fmt(compute.investable)} €
@@ -219,7 +215,7 @@ const InvestmentPage = () => {
 
           {compute.reste > 0 && (
             <p className="text-xs text-muted-foreground text-right">
-              {fmt(compute.reste)} € de reste après arrondi
+              {fmt(compute.reste)} € {t('invest_remainder')}
             </p>
           )}
         </div>
@@ -229,10 +225,8 @@ const InvestmentPage = () => {
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-semibold">Répartition</p>
-            <p className="text-xs text-muted-foreground">
-              Saisis un % pour chaque compte à alimenter
-            </p>
+            <p className="text-sm font-semibold">{t('invest_allocation')}</p>
+            <p className="text-xs text-muted-foreground">{t('invest_pct_hint')}</p>
           </div>
           {totalPct > 0 && (
             <span className={`text-sm font-semibold tabular-nums ${pctOver ? 'text-destructive' : 'text-muted-foreground'}`}>
@@ -244,7 +238,7 @@ const InvestmentPage = () => {
 
         {savingsWallets.length === 0 ? (
           <div className="rounded-xl border border-border py-12 text-center text-sm text-muted-foreground">
-            Aucun compte épargne — crée un portefeuille de type Épargne, Investissement ou Crypto
+            {t('invest_no_savings')}
           </div>
         ) : (
           <List>

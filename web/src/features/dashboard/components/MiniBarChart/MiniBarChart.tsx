@@ -1,4 +1,5 @@
 import { BarChart, Bar, ResponsiveContainer, Tooltip } from 'recharts'
+import { useT } from '../../../../components/T'
 import type { TrendPoint } from '../../types/dashboard.types'
 
 const MONTH_SHORT = ['', 'J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D']
@@ -24,6 +25,7 @@ interface MiniBarChartProps {
 }
 
 const MiniBarChart = ({ data }: MiniBarChartProps) => {
+  const t = useT(import.meta.url)
   const chartData = data.map(d => ({
     name:     `${MONTH_SHORT[d.month]} ${d.year}`,
     income:   d.income,
@@ -32,7 +34,7 @@ const MiniBarChart = ({ data }: MiniBarChartProps) => {
 
   return (
     <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-2 h-full">
-      <p className="text-sm font-semibold shrink-0">Tendance 6 mois</p>
+      <p className="text-sm font-semibold shrink-0">{t('title')}</p>
 
       <div className="flex-1 flex flex-col justify-center gap-2">
         <ResponsiveContainer width="100%" height={72}>
@@ -45,10 +47,10 @@ const MiniBarChart = ({ data }: MiniBarChartProps) => {
 
         <div className="flex gap-3 justify-end">
           <span className="flex items-center gap-1 text-xs text-muted-foreground">
-            <span className="w-2 h-2 rounded-sm bg-emerald-500 inline-block" /> Revenus
+            <span className="w-2 h-2 rounded-sm bg-emerald-500 inline-block" /> {t('income')}
           </span>
           <span className="flex items-center gap-1 text-xs text-muted-foreground">
-            <span className="w-2 h-2 rounded-sm bg-red-500 inline-block" /> Dépenses
+            <span className="w-2 h-2 rounded-sm bg-red-500 inline-block" /> {t('expenses')}
           </span>
         </div>
       </div>

@@ -1,0 +1,14 @@
+{
+  "fr": {
+    "income":       "Revenus",
+    "expenses":     "Dépenses",
+    "savings":      "Épargne",
+    "savings_rate": "Taux d'épargne"
+  },
+  "en": {
+    "income":       "Income",
+    "expenses":     "Expenses",
+    "savings":      "Savings",
+    "savings_rate": "Savings rate"
+  }
+}

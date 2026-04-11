@@ -1,0 +1,12 @@
+{
+  "fr": {
+    "title":   "Comptes",
+    "see_all": "Voir tout",
+    "empty":   "Aucun compte"
+  },
+  "en": {
+    "title":   "Wallets",
+    "see_all": "See all",
+    "empty":   "No accounts"
+  }
+}

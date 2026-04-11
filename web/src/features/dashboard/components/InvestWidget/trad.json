@@ -1,0 +1,14 @@
+{
+  "fr": {
+    "title":     "Investissements",
+    "configure": "Configurer",
+    "to_invest": "À investir ce mois",
+    "from":      "depuis "
+  },
+  "en": {
+    "title":     "Investments",
+    "configure": "Configure",
+    "to_invest": "To invest this month",
+    "from":      "from "
+  }
+}

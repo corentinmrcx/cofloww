@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router'
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
 import { ChevronRight } from 'lucide-react'
+import { useT } from '../../../../components/T'
 import type { InvestableSummary } from '../../types/dashboard.types'
 
 const fmt = (cents: number) =>
@@ -12,6 +13,7 @@ interface InvestWidgetProps {
 
 const InvestWidget = ({ data }: InvestWidgetProps) => {
   const navigate = useNavigate()
+  const t = useT(import.meta.url)
 
   const hasAllocations = data.allocations.length > 0
   const donutData      = hasAllocations
@@ -21,12 +23,12 @@ const InvestWidget = ({ data }: InvestWidgetProps) => {
   return (
     <div className="bg-card border border-border rounded-xl flex flex-col h-full">
       <div className="flex items-center justify-between px-4 pt-4 pb-3">
-        <p className="text-sm font-semibold">Investissements</p>
+        <p className="text-sm font-semibold">{t('title')}</p>
         <button
           onClick={() => navigate('/investments')}
           className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-0.5 transition-colors"
         >
-          Configurer <ChevronRight size={13} />
+          {t('configure')} <ChevronRight size={13} />
         </button>
       </div>
 
@@ -55,13 +57,13 @@ const InvestWidget = ({ data }: InvestWidgetProps) => {
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="text-xs text-muted-foreground mb-0.5">À investir ce mois</p>
+          <p className="text-xs text-muted-foreground mb-0.5">{t('to_invest')}</p>
           <p className="text-xl font-bold tabular-nums text-emerald-600 dark:text-emerald-400">
             {fmt(data.amount)}
           </p>
           {data.source_wallet && (
             <p className="text-xs text-muted-foreground mt-0.5">
-              depuis {data.source_wallet.name}
+              {t('from')}{data.source_wallet.name}
             </p>
           )}
         </div>

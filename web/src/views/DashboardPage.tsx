@@ -8,6 +8,7 @@ import { InvestWidget }             from '../features/dashboard/components/Inves
 import { RecentTransactionsWidget } from '../features/dashboard/components/RecentTransactionsWidget'
 import { MiniBarChart }             from '../features/dashboard/components/MiniBarChart'
 import { TransactionModal }         from '../features/transactions/components/TransactionModal'
+import { useT } from '../components/T'
 
 const SkeletonCard = ({ className = '' }: { className?: string }) => (
   <div className={`bg-card border border-border rounded-xl animate-pulse ${className}`} />
@@ -16,6 +17,7 @@ const SkeletonCard = ({ className = '' }: { className?: string }) => (
 const DashboardPage = () => {
   const { data, isLoading } = useDashboard()
   const [showModal, setShowModal] = useState(false)
+  const t = useT(import.meta.url)
 
   return (
     <>
@@ -29,7 +31,7 @@ const DashboardPage = () => {
             className="w-full flex items-center justify-center gap-2 h-12 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 active:scale-[0.98] transition-all shadow-sm"
           >
             <Plus size={18} strokeWidth={2.5} />
-            Nouvelle transaction
+            {t('dashboard_new_tx')}
           </button>
         </div>
 

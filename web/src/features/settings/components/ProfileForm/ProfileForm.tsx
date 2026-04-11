@@ -6,19 +6,20 @@ import { Camera, LogOut } from 'lucide-react'
 import { useAuth } from '../../../auth/hooks/useAuth'
 import { useUpdateProfile, useUpdatePassword, useUploadAvatar } from '../../hooks/useSettings'
 import { useLogout } from '../../../auth/hooks/useLogout'
+import { useT } from '../../../../components/T'
 
 const profileSchema = z.object({
-  firstname: z.string().min(1, 'Requis'),
-  lastname:  z.string().min(1, 'Requis'),
-  email:     z.string().email('Email invalide'),
+  firstname: z.string().min(1, 'err_required'),
+  lastname:  z.string().min(1, 'err_required'),
+  email:     z.string().email('err_email'),
 })
 
 const passwordSchema = z.object({
-  current_password:      z.string().min(1, 'Requis'),
-  password:              z.string().min(8, '8 caractères minimum'),
+  current_password:      z.string().min(1, 'err_required'),
+  password:              z.string().min(8, 'err_min_password'),
   password_confirmation: z.string(),
 }).refine(d => d.password === d.password_confirmation, {
-  message: 'Les mots de passe ne correspondent pas',
+  message: 'err_password_match',
   path:    ['password_confirmation'],
 })
 
@@ -38,6 +39,7 @@ const ProfileForm = () => {
   const { mutate: updatePassword, isPending: savingPwd, isSuccess: savedPwd, isError: pwdError } = useUpdatePassword()
   const { mutate: uploadAvatar, isPending: uploadingAvatar } = useUploadAvatar()
   const { mutate: logout } = useLogout()
+  const t = useT(import.meta.url)
 
   const profileForm = useForm<ProfileValues>({
     resolver: zodResolver(profileSchema),
@@ -77,7 +79,7 @@ const ProfileForm = () => {
 
       {/* Avatar */}
       <div className="flex flex-col gap-3">
-        <p className="text-sm font-semibold">Photo de profil</p>
+        <p className="text-sm font-semibold">{t('photo_title')}</p>
         <div className="flex items-center gap-4">
           <div
             className="relative w-16 h-16 rounded-full bg-muted flex items-center justify-center overflow-hidden cursor-pointer group"
@@ -101,9 +103,9 @@ const ProfileForm = () => {
               disabled={uploadingAvatar}
               className="text-sm text-primary hover:underline disabled:opacity-50"
             >
-              {uploadingAvatar ? 'Upload…' : 'Changer la photo'}
+              {uploadingAvatar ? t('photo_uploading') : t('photo_change')}
             </button>
-            <p className="text-xs text-muted-foreground mt-0.5">JPG, PNG ou WebP · max 2 Mo</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{t('photo_hint')}</p>
           </div>
           <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
         </div>
@@ -114,38 +116,38 @@ const ProfileForm = () => {
         onSubmit={profileForm.handleSubmit(d => updateProfile(d))}
         className="flex flex-col gap-4"
       >
-        <p className="text-sm font-semibold">Informations personnelles</p>
+        <p className="text-sm font-semibold">{t('info_title')}</p>
 
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-muted-foreground">Prénom</label>
+            <label className="text-xs font-medium text-muted-foreground">{t('firstname')}</label>
             <input {...profileForm.register('firstname')} className={INPUT} />
             {profileForm.formState.errors.firstname && (
-              <p className={ERR}>{profileForm.formState.errors.firstname.message}</p>
+              <p className={ERR}>{t(profileForm.formState.errors.firstname.message ?? 'err_required')}</p>
             )}
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-muted-foreground">Nom</label>
+            <label className="text-xs font-medium text-muted-foreground">{t('lastname')}</label>
             <input {...profileForm.register('lastname')} className={INPUT} />
             {profileForm.formState.errors.lastname && (
-              <p className={ERR}>{profileForm.formState.errors.lastname.message}</p>
+              <p className={ERR}>{t(profileForm.formState.errors.lastname.message ?? 'err_required')}</p>
             )}
           </div>
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-medium text-muted-foreground">Email</label>
+          <label className="text-xs font-medium text-muted-foreground">{t('email')}</label>
           <input {...profileForm.register('email')} type="email" className={INPUT} />
           {profileForm.formState.errors.email && (
-            <p className={ERR}>{profileForm.formState.errors.email.message}</p>
+            <p className={ERR}>{t(profileForm.formState.errors.email.message ?? 'err_email')}</p>
           )}
         </div>
 
         <div className="flex items-center gap-3">
           <button type="submit" disabled={savingProfile} className={BTN}>
-            {savingProfile ? 'Enregistrement…' : 'Enregistrer'}
+            {savingProfile ? t('saving') : t('save')}
           </button>
-          {savedProfile && <p className="text-xs text-emerald-600 dark:text-emerald-400">Sauvegardé ✓</p>}
+          {savedProfile && <p className="text-xs text-emerald-600 dark:text-emerald-400">{t('saved')}</p>}
         </div>
       </form>
 
@@ -154,39 +156,39 @@ const ProfileForm = () => {
         onSubmit={passwordForm.handleSubmit(d => updatePassword(d, { onSuccess: () => passwordForm.reset() }))}
         className="flex flex-col gap-4"
       >
-        <p className="text-sm font-semibold">Mot de passe</p>
+        <p className="text-sm font-semibold">{t('password_title')}</p>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-medium text-muted-foreground">Mot de passe actuel</label>
+          <label className="text-xs font-medium text-muted-foreground">{t('current_password')}</label>
           <input {...passwordForm.register('current_password')} type="password" className={INPUT} />
           {passwordForm.formState.errors.current_password && (
-            <p className={ERR}>{passwordForm.formState.errors.current_password.message}</p>
+            <p className={ERR}>{t(passwordForm.formState.errors.current_password.message ?? 'err_required')}</p>
           )}
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-muted-foreground">Nouveau mot de passe</label>
+            <label className="text-xs font-medium text-muted-foreground">{t('new_password')}</label>
             <input {...passwordForm.register('password')} type="password" className={INPUT} />
             {passwordForm.formState.errors.password && (
-              <p className={ERR}>{passwordForm.formState.errors.password.message}</p>
+              <p className={ERR}>{t(passwordForm.formState.errors.password.message ?? 'err_required')}</p>
             )}
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-muted-foreground">Confirmation</label>
+            <label className="text-xs font-medium text-muted-foreground">{t('confirm_password')}</label>
             <input {...passwordForm.register('password_confirmation')} type="password" className={INPUT} />
             {passwordForm.formState.errors.password_confirmation && (
-              <p className={ERR}>{passwordForm.formState.errors.password_confirmation.message}</p>
+              <p className={ERR}>{t(passwordForm.formState.errors.password_confirmation.message ?? 'err_required')}</p>
             )}
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           <button type="submit" disabled={savingPwd} className={BTN}>
-            {savingPwd ? 'Mise à jour…' : 'Changer le mot de passe'}
+            {savingPwd ? t('updating_password') : t('update_password')}
           </button>
-          {savedPwd  && <p className="text-xs text-emerald-600 dark:text-emerald-400">Mot de passe mis à jour ✓</p>}
-          {pwdError  && <p className="text-xs text-destructive">Mot de passe actuel incorrect</p>}
+          {savedPwd  && <p className="text-xs text-emerald-600 dark:text-emerald-400">{t('password_updated')}</p>}
+          {pwdError  && <p className="text-xs text-destructive">{t('password_error')}</p>}
         </div>
       </form>
 
@@ -198,7 +200,7 @@ const ProfileForm = () => {
           className="flex items-center gap-2 h-9 px-4 rounded-md border border-border text-sm font-medium hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
         >
           <LogOut size={15} />
-          Se déconnecter
+          {t('logout')}
         </button>
       </div>
     </div>

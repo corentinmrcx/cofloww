@@ -1,0 +1,32 @@
+{
+  "fr": {
+    "language":     "Langue",
+    "lang_fr":      "Français",
+    "lang_en":      "English",
+    "date_format":  "Format de date",
+    "theme":        "Thème",
+    "theme_system": "Système",
+    "theme_light":  "Clair",
+    "theme_dark":   "Sombre",
+    "currency":     "Devise",
+    "timezone":     "Fuseau horaire",
+    "save":         "Enregistrer les préférences",
+    "saving":       "Enregistrement…",
+    "saved":        "Sauvegardé ✓"
+  },
+  "en": {
+    "language":     "Language",
+    "lang_fr":      "French",
+    "lang_en":      "English",
+    "date_format":  "Date format",
+    "theme":        "Theme",
+    "theme_system": "System",
+    "theme_light":  "Light",
+    "theme_dark":   "Dark",
+    "currency":     "Currency",
+    "timezone":     "Timezone",
+    "save":         "Save preferences",
+    "saving":       "Saving…",
+    "saved":        "Saved ✓"
+  }
+}

@@ -5,7 +5,7 @@ import type { User } from '../types/auth.types'
 export const useAuth = () => {
   const { data: user, isPending } = useQuery<User>({
     queryKey: ['auth', 'user'],
-    queryFn: () => api.get<User>('/api/user').then(r => r.data),
+    queryFn: () => api.get<{ data: User }>('/api/user').then(r => r.data.data),
     retry: false,
   })
 

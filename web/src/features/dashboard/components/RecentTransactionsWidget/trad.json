@@ -1,0 +1,12 @@
+{
+  "fr": {
+    "title":   "Derniers mouvements",
+    "see_all": "Voir tout",
+    "empty":   "Aucune transaction"
+  },
+  "en": {
+    "title":   "Recent transactions",
+    "see_all": "See all",
+    "empty":   "No transactions"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "fr": {
+    "dashboard":    "Dashboard",
+    "settings":     "Paramètres",
+    "wallets":      "Comptes",
+    "transactions": "Transactions",
+    "budget":       "Budget",
+    "investments":  "Investissements",
+    "stats":        "Statistiques"
+  },
+  "en": {
+    "dashboard":    "Dashboard",
+    "settings":     "Settings",
+    "wallets":      "Wallets",
+    "transactions": "Transactions",
+    "budget":       "Budget",
+    "investments":  "Investments",
+    "stats":        "Statistics"
+  }
+}

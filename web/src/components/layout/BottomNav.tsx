@@ -1,8 +1,10 @@
 import { NavLink } from 'react-router'
 import { cn } from '../../lib/utils'
 import { navItems } from './navItems'
+import { useT } from '../T'
 
 const BottomNav = () => {
+  const t = useT(import.meta.url)
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-10 md:hidden border-t border-border bg-background">
       <div className="grid grid-cols-2">
@@ -21,7 +23,7 @@ const BottomNav = () => {
             }
           >
             <Icon size={20} />
-            {label}
+            {t(label.toLowerCase())}
           </NavLink>
         ))}
       </div>

@@ -1,0 +1,36 @@
+{
+  "fr": {
+    "loading":             "En cours…",
+    "export_title":        "Exporter mes données",
+    "export_desc":         "Télécharger toutes vos données en JSON (wallets, transactions, budgets…)",
+    "export_btn":          "Exporter",
+    "danger_title":        "Zone de danger",
+    "delete_warning":      "La suppression de votre compte est irréversible. Toutes vos données seront effacées définitivement.",
+    "delete_btn":          "Supprimer mon compte",
+    "delete_confirm":      "Êtes-vous sûr ? Cette action est définitive et ne peut pas être annulée.",
+    "delete_yes":          "Oui, supprimer",
+    "cancel":              "Annuler",
+    "delete_pwd_hint":     "Saisissez votre mot de passe pour confirmer la suppression définitive.",
+    "pwd_placeholder":     "Votre mot de passe",
+    "pwd_error":           "Mot de passe incorrect",
+    "deleting":            "Suppression…",
+    "delete_final":        "Confirmer la suppression"
+  },
+  "en": {
+    "loading":             "In progress…",
+    "export_title":        "Export my data",
+    "export_desc":         "Download all your data as JSON (wallets, transactions, budgets…)",
+    "export_btn":          "Export",
+    "danger_title":        "Danger zone",
+    "delete_warning":      "Account deletion is irreversible. All your data will be permanently erased.",
+    "delete_btn":          "Delete my account",
+    "delete_confirm":      "Are you sure? This action is permanent and cannot be undone.",
+    "delete_yes":          "Yes, delete",
+    "cancel":              "Cancel",
+    "delete_pwd_hint":     "Enter your password to confirm permanent deletion.",
+    "pwd_placeholder":     "Your password",
+    "pwd_error":           "Incorrect password",
+    "deleting":            "Deleting…",
+    "delete_final":        "Confirm deletion"
+  }
+}

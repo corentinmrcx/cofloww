@@ -1,0 +1,12 @@
+{
+  "fr": {
+    "title":    "Tendance 6 mois",
+    "income":   "Revenus",
+    "expenses": "Dépenses"
+  },
+  "en": {
+    "title":    "6-month trend",
+    "income":   "Income",
+    "expenses": "Expenses"
+  }
+}

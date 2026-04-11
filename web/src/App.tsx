@@ -8,6 +8,7 @@ import SettingsPage from './views/SettingsPage'
 import WalletPage from './views/WalletPage'
 import WalletDetailPage from './views/WalletDetailPage'
 import { TransactionsPage } from './views/TransactionsPage'
+import RecurringRulesPage from './views/RecurringRulesPage'
 import LoginPage from './views/LoginPage'
 import RegisterPage from './views/RegisterPage'
 import ForgotPasswordPage from './views/ForgotPasswordPage'
@@ -37,7 +38,8 @@ const router = createBrowserRouter([
           { path: 'settings',   element: <SettingsPage />  },
           { path: 'wallets',       element: <WalletPage />       },
           { path: 'wallets/:id',      element: <WalletDetailPage /> },
-          { path: 'transactions',     element: <TransactionsPage /> },
+          { path: 'transactions',      element: <TransactionsPage /> },
+          { path: 'recurring-rules',  element: <RecurringRulesPage /> },
           { path: '*',        element: <Navigate to="/" replace /> },
         ],
       },

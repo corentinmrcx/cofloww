@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StatsController;
@@ -18,6 +19,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index']);
+
     Route::post('wallets/reorder', [WalletController::class, 'reorder']);
     Route::apiResource('wallets', WalletController::class);
 

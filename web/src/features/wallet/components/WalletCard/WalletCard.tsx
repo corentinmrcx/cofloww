@@ -3,12 +3,10 @@ import type { DraggableAttributes, DraggableSyntheticListeners } from '@dnd-kit/
 import { useT } from '../../../../components/T'
 import { ActionMenu } from '../../../../components/ActionMenu'
 import { cn } from '../../../../lib/utils'
+import { useFormatters } from '../../../../lib/format'
 import { ICONS } from '../../../../components/IconPicker'
 import { TYPE_DEFAULT_ICONS } from '../../lib/wallet-icons'
 import type { Wallet } from '../../types/wallet.types'
-
-const formatBalance = (cents: number) =>
-  new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(cents / 100)
 
 interface WalletCardProps {
   wallet: Wallet
@@ -30,6 +28,7 @@ const WalletCard = ({
   onClick,
 }: WalletCardProps) => {
   const t = useT(import.meta.url)
+  const { formatAmount: formatBalance } = useFormatters()
   const Icon = (wallet.icon && ICONS[wallet.icon]) || TYPE_DEFAULT_ICONS[wallet.type]
 
   return (

@@ -2,15 +2,8 @@ import { useNavigate } from 'react-router'
 import { ChevronRight } from 'lucide-react'
 import { ICONS } from '../../../../components/IconPicker'
 import { useT } from '../../../../components/T'
+import { useFormatters } from '../../../../lib/format'
 import type { DashboardTransaction } from '../../types/dashboard.types'
-
-const fmt = (cents: number) =>
-  new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(Math.abs(cents) / 100)
-
-const formatDate = (iso: string) => {
-  const d = new Date(iso)
-  return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
-}
 
 interface RecentTransactionsWidgetProps {
   transactions: DashboardTransaction[]
@@ -19,6 +12,7 @@ interface RecentTransactionsWidgetProps {
 const RecentTransactionsWidget = ({ transactions }: RecentTransactionsWidgetProps) => {
   const navigate = useNavigate()
   const t = useT(import.meta.url)
+  const { formatAmount: fmt, formatDate } = useFormatters()
 
   return (
     <div className="bg-card border border-border rounded-xl flex flex-col h-full">

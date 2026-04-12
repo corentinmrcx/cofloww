@@ -1,10 +1,8 @@
 import { useNavigate } from 'react-router'
 import { ChevronRight } from 'lucide-react'
 import { useT } from '../../../../components/T'
+import { useFormatters } from '../../../../lib/format'
 import type { InvestableSummary } from '../../types/dashboard.types'
-
-const fmt = (cents: number) =>
-  (cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' €'
 
 interface InvestWidgetProps {
   data: InvestableSummary
@@ -13,6 +11,7 @@ interface InvestWidgetProps {
 const InvestWidget = ({ data }: InvestWidgetProps) => {
   const navigate = useNavigate()
   const t = useT(import.meta.url)
+  const { formatAmountShort: fmt } = useFormatters()
 
   return (
     <div className="bg-card border border-border rounded-xl flex flex-col h-full">

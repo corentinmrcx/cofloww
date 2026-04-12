@@ -2,10 +2,8 @@ import { useNavigate } from 'react-router'
 import { ChevronRight } from 'lucide-react'
 import { ICONS } from '../../../../components/IconPicker'
 import { useT } from '../../../../components/T'
+import { useFormatters } from '../../../../lib/format'
 import type { BudgetSummary } from '../../types/dashboard.types'
-
-const fmt = (cents: number) =>
-  (cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' €'
 
 interface BudgetRowProps {
   budget: BudgetSummary
@@ -13,6 +11,7 @@ interface BudgetRowProps {
 }
 
 const BudgetRow = ({ budget, t }: BudgetRowProps) => {
+  const { formatAmountShort: fmt } = useFormatters()
   const Icon          = budget.icon ? ICONS[budget.icon] : null
   const displayPct    = Math.min(budget.pct, 100)
   const isOver        = budget.over_budget

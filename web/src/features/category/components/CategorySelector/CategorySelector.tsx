@@ -6,10 +6,6 @@ import { useCategories } from '../../hooks/useCategories'
 import { useCreateCategory } from '../../hooks/useCreateCategory'
 import type { Category, CategoryType, CreateCategoryPayload } from '../../types/category.types'
 
-const PRESET_COLORS = [
-  '#F97316', '#3B82F6', '#8B5CF6', '#EC4899', '#EF4444',
-  '#22C55E', '#14B8A6', '#64748B', '#F59E0B', '#06B6D4',
-]
 
 interface CategorySelectorProps {
   value: string | null
@@ -28,7 +24,7 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
   const [view, setView] = useState<'list' | 'create'>('list')
   const [createName, setCreateName] = useState('')
   const [createType, setCreateType] = useState<CategoryType>(type ?? 'expense')
-  const [createColor, setCreateColor] = useState(PRESET_COLORS[0])
+  const [createColor, setCreateColor] = useState('#F97316')
 
   const ref = useRef<HTMLDivElement>(null)
   const searchRef = useRef<HTMLInputElement>(null)
@@ -67,7 +63,7 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
   const openCreate = () => {
     setCreateName(search)
     setCreateType(type ?? 'expense')
-    setCreateColor(PRESET_COLORS[0])
+    setCreateColor('#F97316')
     setView('create')
   }
 
@@ -202,19 +198,14 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
                 </select>
               )}
 
-              <div className="flex flex-wrap gap-2">
-                {PRESET_COLORS.map(color => (
-                  <button
-                    key={color}
-                    type="button"
-                    onClick={() => setCreateColor(color)}
-                    className={cn(
-                      'h-6 w-6 rounded-full transition-transform',
-                      createColor === color && 'scale-110 ring-2 ring-ring ring-offset-2',
-                    )}
-                    style={{ backgroundColor: color }}
-                  />
-                ))}
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">{t('color_label')}</span>
+                <input
+                  type="color"
+                  value={createColor}
+                  onChange={e => setCreateColor(e.target.value)}
+                  className="h-8 w-16 rounded-md border border-input cursor-pointer bg-transparent px-1 py-1"
+                />
               </div>
 
               <div className="flex gap-2">

@@ -6,6 +6,7 @@ import { useBudgets } from '../features/budget/hooks/useBudgets'
 import { useDeleteBudget } from '../features/budget/hooks/useDeleteBudget'
 import { useT } from '../components/T'
 import { useLangStore } from '../stores/langStore'
+import { useFormatters } from '../lib/format'
 import type { Budget } from '../features/budget/types/budget.types'
 
 const BudgetPage = () => {
@@ -16,6 +17,7 @@ const BudgetPage = () => {
   const { lang } = useLangStore()
   const locale = lang === 'en' ? 'en-US' : 'fr-FR'
   const [modalBudget, setModalBudget] = useState<Budget | 'new' | null>(null)
+  const { formatAmountShort: formatAmount } = useFormatters()
 
   const { data: budgets = [], isPending } = useBudgets(month, year)
   const { mutate: deleteBudget } = useDeleteBudget()
@@ -32,8 +34,6 @@ const BudgetPage = () => {
 
   const totalAllocated = budgets.reduce((s, b) => s + b.amount, 0)
   const totalSpent     = budgets.reduce((s, b) => s + b.spent, 0)
-  const formatAmount   = (cents: number) =>
-    (cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
   return (
     <div className="flex flex-col gap-4">
@@ -63,7 +63,7 @@ const BudgetPage = () => {
           </p>
           {budgets.length > 0 && (
             <p className="text-xs text-muted-foreground mt-0.5">
-              {formatAmount(totalSpent)} € / {formatAmount(totalAllocated)} € {t('budget_allocated')}
+              {formatAmount(totalSpent)} / {formatAmount(totalAllocated)} {t('budget_allocated')}
             </p>
           )}
         </div>

@@ -9,15 +9,14 @@ import { TransactionTable } from '../features/transactions/components/Transactio
 import { ActionMenu } from '../components/ActionMenu'
 import { ICONS } from '../components/IconPicker'
 import { TYPE_DEFAULT_ICONS } from '../features/wallet/lib/wallet-icons'
-
-const formatBalance = (cents: number) =>
-  new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(cents / 100)
+import { useFormatters } from '../lib/format'
 
 const WalletDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { data: wallet, isPending: walletPending } = useWallet(id ?? '')
   const { mutate: deleteWallet } = useDeleteWallet()
+  const { formatAmount: formatBalance } = useFormatters()
   const [showEdit, setShowEdit] = useState(false)
   const [page, setPage] = useState(1)
 

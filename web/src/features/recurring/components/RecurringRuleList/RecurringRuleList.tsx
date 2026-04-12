@@ -2,6 +2,7 @@ import { Pencil, Trash2, PauseCircle, PlayCircle } from 'lucide-react'
 import { useT } from '../../../../components/T'
 import { List } from '../../../../components/List'
 import { ActionMenu } from '../../../../components/ActionMenu'
+import { useFormatters } from '../../../../lib/format'
 import type { RecurringRule } from '../../types/recurring.types'
 
 const FREQUENCY_KEYS = {
@@ -20,11 +21,9 @@ interface RecurringRuleRowProps {
 
 const RecurringRuleRow = ({ rule, onEdit, onToggle, onDelete }: RecurringRuleRowProps) => {
   const t = useT(import.meta.url)
+  const { formatAmountShort } = useFormatters()
 
-  const amountDisplay = (rule.amount / 100).toLocaleString('fr-FR', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
+  const amountDisplay = formatAmountShort(rule.amount)
 
   return (
     <div className="flex items-center gap-3 px-4 py-3">
@@ -62,7 +61,7 @@ const RecurringRuleRow = ({ rule, onEdit, onToggle, onDelete }: RecurringRuleRow
           rule.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-destructive'
         }`}
       >
-        {rule.type === 'income' ? '+' : '-'}{amountDisplay} €
+        {rule.type === 'income' ? '+' : '-'}{amountDisplay}
       </span>
 
       <ActionMenu

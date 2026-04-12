@@ -31,6 +31,7 @@ class StoreBudgetRequest extends FormRequest
             'year'                => ['required', 'integer', 'min:2000', 'max:2100'],
             'alert_threshold_pct' => ['sometimes', 'integer', 'min:0', 'max:100'],
             'is_active'           => ['sometimes', 'boolean'],
+            'apply_all_months'    => ['sometimes', 'boolean'],
         ];
     }
 

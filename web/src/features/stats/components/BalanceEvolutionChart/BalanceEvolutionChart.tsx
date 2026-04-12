@@ -5,28 +5,27 @@ import {
 } from 'recharts'
 import { useIncomeVsExpenses } from '../../hooks/useIncomeVsExpenses'
 import { useOverview } from '../../hooks/useOverview'
+import { useFormatters } from '../../../../lib/format'
 
 const MONTH_SHORT = ['', 'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc']
-
-const fmt = (cents: number) =>
-  (cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' €'
-
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (!active || !payload?.length) return null
-  const value = payload[0]?.value ?? 0
-  return (
-    <div className="bg-popover border border-border rounded-lg px-3 py-2 text-sm shadow-md">
-      <p className="font-semibold mb-1 text-foreground">{label}</p>
-      <p className={`font-medium tabular-nums ${value >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
-        {fmt(value)}
-      </p>
-    </div>
-  )
-}
 
 const BalanceEvolutionChart = () => {
   const { data: monthly = [], isLoading: loadingMonthly } = useIncomeVsExpenses('12m')
   const { data: overview, isLoading: loadingOverview }   = useOverview()
+  const { formatAmountShort: fmt, numLocale } = useFormatters()
+
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (!active || !payload?.length) return null
+    const value = payload[0]?.value ?? 0
+    return (
+      <div className="bg-popover border border-border rounded-lg px-3 py-2 text-sm shadow-md">
+        <p className="font-semibold mb-1 text-foreground">{label}</p>
+        <p className={`font-medium tabular-nums ${value >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
+          {fmt(value)}
+        </p>
+      </div>
+    )
+  }
 
   // Reconstitue le solde de fin de chaque mois en partant du net_worth actuel
   // et en remontant dans le temps via les nets mensuels
@@ -84,7 +83,7 @@ const BalanceEvolutionChart = () => {
               tickLine={false}
             />
             <YAxis
-              tickFormatter={v => `${(v / 100).toLocaleString('fr-FR', { maximumFractionDigits: 0 })}€`}
+              tickFormatter={v => `${(v / 100).toLocaleString(numLocale, { maximumFractionDigits: 0 })}`}
               tick={{ fontSize: 11, fill: 'currentColor', className: 'text-muted-foreground' }}
               axisLine={false}
               tickLine={false}

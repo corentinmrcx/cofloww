@@ -2,13 +2,11 @@ import { useMemo } from 'react'
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { useOverview } from '../../hooks/useOverview'
 import { useIncomeVsExpenses } from '../../hooks/useIncomeVsExpenses'
+import { useFormatters } from '../../../../lib/format'
 import type { MonthlyDataPoint } from '../../types/stats.types'
 
 const MONTH_FR = ['', 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
   'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
-
-const fmt = (cents: number) =>
-  (cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' €'
 
 const fmtPct = (n: number) =>
   `${n >= 0 ? '+' : ''}${n.toFixed(1)}%`
@@ -64,8 +62,9 @@ const savingsRateFrom = (rows: MonthlyDataPoint[]) => {
 }
 
 const KpiCards = () => {
-  const { data: overview }     = useOverview()
+  const { data: overview }       = useOverview()
   const { data: monthly12 = [] } = useIncomeVsExpenses('12m')
+  const { formatAmountShort: fmt } = useFormatters()
 
   const { savingsRateTrend, expensesTrend, worstMonth } = useMemo(() => {
     if (monthly12.length < 12) return { savingsRateTrend: 0, expensesTrend: 0, worstMonth: null }

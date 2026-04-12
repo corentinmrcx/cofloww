@@ -2,11 +2,9 @@ import { useState, useEffect, useRef } from 'react'
 import { useDebounce } from '../../../../hooks/useDebounce'
 import { useSetInvestmentPct } from '../../hooks/useSetInvestmentPct'
 import { cn } from '../../../../lib/utils'
+import { useFormatters } from '../../../../lib/format'
 import { ICONS } from '../../../../components/IconPicker'
 import type { Wallet } from '../../../wallet/types/wallet.types'
-
-const fmtEuros = (cents: number) =>
-  (cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' €'
 
 interface WalletInvestmentRowProps {
   wallet: Wallet
@@ -16,6 +14,7 @@ interface WalletInvestmentRowProps {
 }
 
 const WalletInvestmentRow = ({ wallet, allocation, investable, pasArrondi = 100 }: WalletInvestmentRowProps) => {
+  const { formatAmountShort: fmtEuros } = useFormatters()
   const [pctInput, setPctInput] = useState(
     wallet.investment_target_pct != null && wallet.investment_target_pct > 0
       ? String(wallet.investment_target_pct)

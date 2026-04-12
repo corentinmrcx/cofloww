@@ -1,10 +1,8 @@
 import { Pencil, Trash2, AlertTriangle } from 'lucide-react'
 import { useT } from '../../../../components/T'
 import { ActionMenu } from '../../../../components/ActionMenu'
+import { useFormatters } from '../../../../lib/format'
 import type { Budget } from '../../types/budget.types'
-
-const formatAmount = (cents: number) =>
-  (cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
 const barColor = (pct: number) => {
   if (pct >= 90) return 'bg-destructive'
@@ -26,6 +24,7 @@ interface BudgetCardProps {
 
 const BudgetCard = ({ budget, onEdit, onDelete }: BudgetCardProps) => {
   const t = useT(import.meta.url)
+  const { formatAmountShort: formatAmount } = useFormatters()
   const pct = Math.min(budget.pct_used, 100)
 
   return (
@@ -74,11 +73,11 @@ const BudgetCard = ({ budget, onEdit, onDelete }: BudgetCardProps) => {
       {/* Montants */}
       <div className="flex items-center justify-between text-xs text-muted-foreground">
         <span>
-          <span className="font-medium text-foreground">{formatAmount(budget.spent)} €</span>
-          {' '}{t('spent')} {t('of')} {formatAmount(budget.amount)} €
+          <span className="font-medium text-foreground">{formatAmount(budget.spent)}</span>
+          {' '}{t('spent')} {t('of')} {formatAmount(budget.amount)}
         </span>
         <span>
-          <span className="font-medium text-foreground">{formatAmount(budget.remaining)} €</span>
+          <span className="font-medium text-foreground">{formatAmount(budget.remaining)}</span>
           {' '}{t('remaining')}
         </span>
       </div>

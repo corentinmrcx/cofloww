@@ -1,13 +1,13 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router'
 import { Download, Trash2, AlertTriangle } from 'lucide-react'
 import { useExportData, useDeleteAccount } from '../../hooks/useSettings'
-import { useLogout } from '../../../auth/hooks/useLogout'
 import { useT } from '../../../../components/T'
 
 const DataPanel = () => {
   const { mutate: exportData,    isPending: exporting } = useExportData()
   const { mutate: deleteAccount, isPending: deleting }  = useDeleteAccount()
-  const { mutate: logout }                              = useLogout()
+  const navigate = useNavigate()
   const t = useT(import.meta.url)
 
   const [confirmStep, setConfirmStep] = useState<0 | 1 | 2>(0)
@@ -17,7 +17,7 @@ const DataPanel = () => {
   const handleDeleteConfirm = () => {
     setDeleteError('')
     deleteAccount(password, {
-      onSuccess: () => { logout() },
+      onSuccess: () => { navigate('/login') },
       onError:   () => setDeleteError(t('pwd_error')),
     })
   }

@@ -7,9 +7,12 @@ import { WalletInvestmentRow } from '../features/investment/components/WalletInv
 import { List } from '../components/List'
 import { useT } from '../components/T'
 import { useLangStore } from '../stores/langStore'
+import { useFormatters } from '../lib/format'
+import { usePreferencesStore } from '../stores/preferencesStore'
 
-const fmt = (cents: number) =>
-  (cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  EUR: '€', USD: '$', GBP: '£', CHF: 'Fr', CAD: 'CA$',
+}
 
 const buildMonthOptions = (locale: string) => {
   const options: { label: string; month: number; year: number }[] = []
@@ -30,17 +33,21 @@ interface FormValues {
   pas_arrondi: number
 }
 
-const PAS_OPTIONS = [
-  { value: 100,  label: '1 €'  },
-  { value: 500,  label: '5 €'  },
-  { value: 1000, label: '10 €' },
-  { value: 5000, label: '50 €' },
+const buildPasOptions = (symbol: string) => [
+  { value: 100,  label: `1 ${symbol}`  },
+  { value: 500,  label: `5 ${symbol}`  },
+  { value: 1000, label: `10 ${symbol}` },
+  { value: 5000, label: `50 ${symbol}` },
 ]
 
 const InvestmentPage = () => {
   const { data: wallets = [] } = useWallets()
   const t = useT(import.meta.url)
   const { lang } = useLangStore()
+  const { formatAmountShort: fmt } = useFormatters()
+  const { currency } = usePreferencesStore()
+  const currencySymbol = CURRENCY_SYMBOLS[currency] ?? currency
+  const PAS_OPTIONS = useMemo(() => buildPasOptions(currencySymbol), [currencySymbol])
   const locale = lang === 'en' ? 'en-US' : 'fr-FR'
   const monthOptions = useMemo(() => buildMonthOptions(locale), [locale])
 
@@ -107,7 +114,7 @@ const InvestmentPage = () => {
             >
               {wallets.map(w => (
                 <option key={w.id} value={w.id}>
-                  {w.name} — {fmt(w.balance)} €
+                  {w.name} — {fmt(w.balance)}
                 </option>
               ))}
             </select>
@@ -148,7 +155,7 @@ const InvestmentPage = () => {
                     placeholder="0"
                     className={`${INPUT_CLASS} pr-8`}
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">€</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">{currencySymbol}</span>
                 </div>
               )}
             />
@@ -184,20 +191,20 @@ const InvestmentPage = () => {
 
           <div className="flex items-center justify-between">
             <span className="text-sm text-muted-foreground">{t('invest_balance')} — {sourceWallet.name}</span>
-            <span className="text-sm tabular-nums font-medium">{fmt(sourceWallet.balance)} €</span>
+            <span className="text-sm tabular-nums font-medium">{fmt(sourceWallet.balance)}</span>
           </div>
 
           {compute.depenses > 0 && (
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">{t('invest_expenses')}</span>
-              <span className="text-sm tabular-nums text-destructive">− {fmt(compute.depenses)} €</span>
+              <span className="text-sm tabular-nums text-destructive">− {fmt(compute.depenses)}</span>
             </div>
           )}
 
           {compute.seuil > 0 && (
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Épargne de sécurité</span>
-              <span className="text-sm tabular-nums text-destructive">− {fmt(compute.seuil)} €</span>
+              <span className="text-sm tabular-nums text-destructive">− {fmt(compute.seuil)}</span>
             </div>
           )}
 
@@ -209,13 +216,13 @@ const InvestmentPage = () => {
               <p className="text-xs text-muted-foreground">{t('invest_distribute')}</p>
             </div>
             <span className="text-2xl font-bold tabular-nums text-emerald-600 dark:text-emerald-400">
-              {fmt(compute.investable)} €
+              {fmt(compute.investable)}
             </span>
           </div>
 
           {compute.reste > 0 && (
             <p className="text-xs text-muted-foreground text-right">
-              {fmt(compute.reste)} € {t('invest_remainder')}
+              {fmt(compute.reste)} {t('invest_remainder')}
             </p>
           )}
         </div>

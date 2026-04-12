@@ -1,11 +1,9 @@
 import { useState, useMemo } from 'react'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
 import { useExpensesByCategory } from '../../hooks/useExpensesByCategory'
+import { useFormatters } from '../../../../lib/format'
 
-const fmt = (cents: number) =>
-  (cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' €'
-
-const MONTH_OPTIONS = (() => {
+const buildMonthOptions = (numLocale: string) => {
   const opts: { label: string; from: string; to: string }[] = []
   for (let i = 0; i < 6; i++) {
     const d    = new Date()
@@ -15,28 +13,30 @@ const MONTH_OPTIONS = (() => {
     const last = new Date(d.getFullYear(), d.getMonth() + 1, 0)
     const to   = last.toISOString().slice(0, 10)
     opts.push({
-      label: d.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }),
+      label: d.toLocaleDateString(numLocale, { month: 'long', year: 'numeric' }),
       from,
       to,
     })
   }
   return opts
-})()
-
-const CustomTooltip = ({ active, payload }: any) => {
-  if (!active || !payload?.length) return null
-  const { name, value } = payload[0]
-  return (
-    <div className="bg-popover border border-border rounded-lg px-3 py-2 text-sm shadow-md">
-      <p className="font-medium text-foreground">{name}</p>
-      <p className="text-muted-foreground">{fmt(value)}</p>
-    </div>
-  )
 }
 
 const CategoryDonut = () => {
   const [monthIdx, setMonthIdx] = useState(0)
+  const { formatAmountShort: fmt, numLocale } = useFormatters()
+  const MONTH_OPTIONS = useMemo(() => buildMonthOptions(numLocale), [numLocale])
   const selected = MONTH_OPTIONS[monthIdx]
+
+  const CustomTooltip = ({ active, payload }: any) => {
+    if (!active || !payload?.length) return null
+    const { name, value } = payload[0]
+    return (
+      <div className="bg-popover border border-border rounded-lg px-3 py-2 text-sm shadow-md">
+        <p className="font-medium text-foreground">{name}</p>
+        <p className="text-muted-foreground">{fmt(value)}</p>
+      </div>
+    )
+  }
 
   const { data = [], isLoading } = useExpensesByCategory(selected.from, selected.to)
 

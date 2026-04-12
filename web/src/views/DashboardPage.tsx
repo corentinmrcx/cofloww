@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Plus } from 'lucide-react'
+import { Link, useNavigate } from 'react-router'
+import { Plus, BarChart2 } from 'lucide-react'
 import { useDashboard } from '../features/dashboard/hooks/useDashboard'
 import { MonthSummaryWidget }       from '../features/dashboard/components/MonthSummaryWidget'
 import { WalletsWidget }            from '../features/dashboard/components/WalletsWidget'
@@ -13,6 +14,26 @@ import { useT } from '../components/T'
 const SkeletonCard = ({ className = '' }: { className?: string }) => (
   <div className={`bg-card border border-border rounded-xl animate-pulse ${className}`} />
 )
+
+// Wrapper qui rend toute la card cliquable.
+// Si le clic vient d'un élément interactif (a, button, input…) → on laisse faire.
+// Sinon → navigation vers `to`.
+const CardLink = ({ to, children, className = '' }: { to: string; children: React.ReactNode; className?: string }) => {
+  const navigate = useNavigate()
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement
+    if (target.closest('a, button, input, select, textarea, [role="button"]')) return
+    navigate(to)
+  }
+  return (
+    <div
+      className={`cursor-pointer rounded-xl hover:shadow-md transition-shadow ${className}`}
+      onClick={handleClick}
+    >
+      {children}
+    </div>
+  )
+}
 
 const DashboardPage = () => {
   const { data, isLoading } = useDashboard()
@@ -46,28 +67,47 @@ const DashboardPage = () => {
           </>
         ) : (
           <>
-            {/* Ligne 1 : Résumé du mois (large) + Mini barchart (étroit) */}
-            <div className="lg:col-span-2">
+            {/* Ligne 1 : Résumé du mois (large) + Investissements (étroit) */}
+            <CardLink to="/transactions" className="lg:col-span-2">
               <MonthSummaryWidget current={data.current_month} prev={data.prev_month} />
-            </div>
-            <div className="lg:col-span-1">
+            </CardLink>
+            <CardLink to="/investments" className="lg:col-span-1">
               <InvestWidget data={data.investable} />
-            </div>
+            </CardLink>
 
             {/* Ligne 2 : Comptes (étroit) + Budgets (large) */}
-            <div className="lg:col-span-1">
+            <CardLink to="/wallets" className="lg:col-span-1">
               <WalletsWidget wallets={data.wallets} />
-            </div>
-            <div className="lg:col-span-2">
+            </CardLink>
+            <CardLink to="/budget" className="lg:col-span-2">
               <BudgetsWidget budgets={data.top_budgets} />
-            </div>
+            </CardLink>
 
             {/* Ligne 3 : Derniers mouvements (large) + Tendance (étroit) */}
-            <div className="lg:col-span-2">
+            <CardLink to="/transactions" className="lg:col-span-2">
               <RecentTransactionsWidget transactions={data.recent_transactions} />
-            </div>
-            <div className="lg:col-span-1">
+            </CardLink>
+            <CardLink to="/stats" className="lg:col-span-1">
               <MiniBarChart data={data.monthly_trend} />
+            </CardLink>
+
+            {/* Teaser stats */}
+            <div className="lg:col-span-3">
+              <Link
+                to="/stats"
+                className="flex items-center gap-4 bg-card border border-border rounded-xl p-4 hover:shadow-md transition-shadow"
+              >
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                  <BarChart2 size={20} className="text-primary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold">{t('dashboard_stats_title')}</p>
+                  <p className="text-xs text-muted-foreground">{t('dashboard_stats_desc')}</p>
+                </div>
+                <span className="text-sm text-primary font-medium shrink-0">
+                  {t('dashboard_stats_cta')}
+                </span>
+              </Link>
             </div>
           </>
         )}

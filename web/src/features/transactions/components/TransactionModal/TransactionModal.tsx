@@ -24,7 +24,6 @@ const schema = z.object({
   category_id:  z.string().uuid().nullable().optional(),
   tag_ids:      z.array(z.string().uuid()).optional(),
   notes:        z.string().nullable().optional(),
-  status:       z.enum(['pending', 'cleared', 'reconciled']).optional(),
 }).superRefine((data, ctx) => {
   if (data.type === 'transfer' && !data.to_wallet_id) {
     ctx.addIssue({ code: 'custom', path: ['to_wallet_id'], message: 'required' })
@@ -66,14 +65,12 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
           category_id:  transaction.category_id ?? null,
           tag_ids:      transaction.tags.map(t => t.id),
           notes:        transaction.notes ?? '',
-          status:       transaction.status,
         }
       : {
           type:      'expense',
           amount:    0,
           date:      today,
           tag_ids:   [],
-          status:    'cleared',
         },
   })
 
@@ -236,16 +233,6 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
               placeholder={t('notes_placeholder')}
               className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring resize-none"
             />
-          </div>
-
-          {/* Statut */}
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">{t('status')}</label>
-            <select {...register('status')} className={INPUT_CLASS}>
-              <option value="pending">{t('status_pending')}</option>
-              <option value="cleared">{t('status_cleared')}</option>
-              <option value="reconciled">{t('status_reconciled')}</option>
-            </select>
           </div>
 
           <div className="flex gap-3 mt-2">

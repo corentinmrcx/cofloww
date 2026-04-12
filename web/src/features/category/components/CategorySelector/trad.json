@@ -10,6 +10,7 @@
     "type_expense": "Dépense",
     "type_income": "Revenu",
     "type_transfer": "Transfert",
+    "color_label": "Couleur",
     "cancel": "Annuler",
     "create": "Créer",
     "creating": "Création..."
@@ -25,6 +26,7 @@
     "type_expense": "Expense",
     "type_income": "Income",
     "type_transfer": "Transfer",
+    "color_label": "Color",
     "cancel": "Cancel",
     "create": "Create",
     "creating": "Creating..."

@@ -4,6 +4,7 @@ import { useAuth } from '../../../auth/hooks/useAuth'
 import { useUpdatePreferences } from '../../hooks/useSettings'
 import { useTheme } from '../../../../hooks/useTheme'
 import { useLangStore } from '../../../../stores/langStore'
+import { usePreferencesStore } from '../../../../stores/preferencesStore'
 import { useT } from '../../../../components/T'
 
 const SELECT = 'h-9 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
@@ -18,9 +19,10 @@ interface FormValues {
 }
 
 const PreferencesForm = () => {
-  const { user }    = useAuth()
-  const { setTheme } = useTheme()
-  const { setLang }  = useLangStore()
+  const { user }           = useAuth()
+  const { setTheme }       = useTheme()
+  const { setLang }        = useLangStore()
+  const { setPreferences } = usePreferencesStore()
   const { mutate, isPending, isSuccess } = useUpdatePreferences()
   const t = useT(import.meta.url)
 
@@ -51,6 +53,11 @@ const PreferencesForm = () => {
       onSuccess: () => {
         setLang(data.language as 'fr' | 'en')
         if (data.theme !== 'system') setTheme(data.theme as 'light' | 'dark')
+        setPreferences({
+          currency:   data.currency,
+          dateFormat: data.date_format,
+          timezone:   data.timezone,
+        })
       },
     })
   }

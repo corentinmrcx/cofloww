@@ -5,8 +5,7 @@ import { ICONS } from '../../../../components/IconPicker'
 import { useT } from '../../../../components/T'
 import type { DashboardWallet } from '../../types/dashboard.types'
 
-const fmt = (cents: number) =>
-  (cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' €'
+import { useFormatters } from '../../../../lib/format'
 
 interface SparklineProps {
   data: number[]
@@ -38,6 +37,7 @@ interface WalletsWidgetProps {
 const WalletsWidget = ({ wallets }: WalletsWidgetProps) => {
   const navigate = useNavigate()
   const t = useT(import.meta.url)
+  const { formatAmountShort: fmt } = useFormatters()
 
   return (
     <div className="bg-card border border-border rounded-xl flex flex-col h-full">

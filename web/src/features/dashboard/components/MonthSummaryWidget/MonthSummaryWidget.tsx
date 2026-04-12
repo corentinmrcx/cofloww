@@ -1,19 +1,8 @@
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { useT } from '../../../../components/T'
 import { useLangStore } from '../../../../stores/langStore'
+import { useFormatters } from '../../../../lib/format'
 import type { MonthSummary } from '../../types/dashboard.types'
-
-const fmt = (cents: number) =>
-  (cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' €'
-
-interface MetricProps {
-  label: string
-  value: string
-  prevValue?: number
-  currentValue?: number
-  positiveIsGood?: boolean
-  isRate?: boolean
-}
 
 const Trend = ({ prev, current, positiveIsGood = true }: { prev: number; current: number; positiveIsGood?: boolean }) => {
   if (prev === 0) return null
@@ -30,16 +19,6 @@ const Trend = ({ prev, current, positiveIsGood = true }: { prev: number; current
   )
 }
 
-const Metric = ({ label, value, prevValue, currentValue, positiveIsGood = true }: MetricProps) => (
-  <div className="flex flex-col gap-0.5">
-    <p className="text-xs text-muted-foreground">{label}</p>
-    <p className="text-base font-bold tabular-nums">{value}</p>
-    {prevValue !== undefined && currentValue !== undefined && (
-      <Trend prev={prevValue} current={currentValue} positiveIsGood={positiveIsGood} />
-    )}
-  </div>
-)
-
 interface MonthSummaryWidgetProps {
   current: MonthSummary
   prev: MonthSummary
@@ -48,6 +27,7 @@ interface MonthSummaryWidgetProps {
 const MonthSummaryWidget = ({ current, prev }: MonthSummaryWidgetProps) => {
   const t = useT(import.meta.url)
   const { lang } = useLangStore()
+  const { formatAmountShort: fmt } = useFormatters()
   const locale = lang === 'en' ? 'en-US' : 'fr-FR'
   const monthLabel = new Date().toLocaleDateString(locale, { month: 'long', year: 'numeric' })
     .replace(/^\w/, c => c.toUpperCase())
@@ -59,42 +39,27 @@ const MonthSummaryWidget = ({ current, prev }: MonthSummaryWidgetProps) => {
       </p>
 
       <div className="flex-1 flex items-center">
-      <div className="grid grid-cols-2 gap-x-4 gap-y-3 w-full">
-        <Metric
-          label={t('income')}
-          value={fmt(current.income)}
-          prevValue={prev.income}
-          currentValue={current.income}
-          positiveIsGood
-        />
-        <Metric
-          label={t('expenses')}
-          value={fmt(current.expenses)}
-          prevValue={prev.expenses}
-          currentValue={current.expenses}
-          positiveIsGood={false}
-        />
-        <Metric
-          label={t('savings')}
-          value={fmt(current.net)}
-          prevValue={prev.net}
-          currentValue={current.net}
-          positiveIsGood
-        />
-        <div className="flex flex-col gap-0.5">
-          <p className="text-xs text-muted-foreground">{t('savings_rate')}</p>
-          <p className={`text-base font-bold tabular-nums ${
-            current.savings_rate >= 20
-              ? 'text-emerald-600 dark:text-emerald-400'
-              : current.savings_rate >= 0
-                ? 'text-foreground'
-                : 'text-red-500'
-          }`}>
-            {current.savings_rate.toFixed(1)}%
-          </p>
-          <Trend prev={prev.savings_rate} current={current.savings_rate} positiveIsGood />
+        <div className="grid grid-cols-2 divide-x divide-border w-full">
+
+          {/* Revenus */}
+          <div className="flex flex-col items-center gap-2 px-4">
+            <p className="text-sm font-medium text-muted-foreground">{t('income')}</p>
+            <p className="text-4xl font-bold tabular-nums text-emerald-600 dark:text-emerald-400">
+              {fmt(current.income)}
+            </p>
+            <Trend prev={prev.income} current={current.income} positiveIsGood />
+          </div>
+
+          {/* Dépenses */}
+          <div className="flex flex-col items-center gap-2 px-4">
+            <p className="text-sm font-medium text-muted-foreground">{t('expenses')}</p>
+            <p className="text-4xl font-bold tabular-nums text-red-500">
+              {fmt(current.expenses)}
+            </p>
+            <Trend prev={prev.expenses} current={current.expenses} positiveIsGood={false} />
+          </div>
+
         </div>
-      </div>
       </div>
     </div>
   )

@@ -43,7 +43,7 @@ const BudgetModal = ({ budget, month, year, onClose }: BudgetModalProps) => {
           category_ids:        budget.categories.map(c => c.id),
           amount:              budget.amount,
           alert_threshold_pct: budget.alert_threshold_pct,
-          apply_all_months:    budget.period === 'yearly',
+          apply_all_months:    false,
         }
       : {
           category_ids:        [],
@@ -58,9 +58,10 @@ const BudgetModal = ({ budget, month, year, onClose }: BudgetModalProps) => {
       category_ids:        data.category_ids,
       amount:              data.amount,
       alert_threshold_pct: data.alert_threshold_pct,
-      period:              data.apply_all_months ? ('yearly' as const) : ('monthly' as const),
-      month:               data.apply_all_months ? null : month,
+      period:              'monthly' as const,
+      month,
       year,
+      apply_all_months:    data.apply_all_months,
     }
 
     if (isEdit) {

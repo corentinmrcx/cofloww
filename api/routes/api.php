@@ -28,6 +28,7 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::patch('profile',              [ProfileController::class, 'update']);
     Route::patch('profile/password',     [ProfileController::class, 'updatePassword']);
     Route::post('profile/avatar',        [ProfileController::class, 'uploadAvatar']);
+    Route::get('profile/avatar',         [ProfileController::class, 'serveAvatar']);
     Route::patch('profile/preferences',  [ProfileController::class, 'updatePreferences']);
     Route::get('account/export',         [AccountController::class, 'export']);
     Route::delete('account',             [AccountController::class, 'destroy']);

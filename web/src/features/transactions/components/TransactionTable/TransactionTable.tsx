@@ -1,21 +1,17 @@
 import { useState } from 'react'
 import { Pencil, Trash2 } from 'lucide-react'
 import { cn } from '../../../../lib/utils'
+import { useFormatters } from '../../../../lib/format'
 import { useT } from '../../../../components/T/T'
 import { Button } from '../../../../components/Button/Button'
 import { ActionMenu } from '../../../../components/ActionMenu'
 import { List } from '../../../../components/List'
 import { TransactionModal } from '../TransactionModal'
+import { TransactionDetail } from '../TransactionDetail'
 import { useDeleteTransaction } from '../../hooks/useDeleteTransaction'
 import type { Transaction, PaginatedTransactions } from '../../types/transaction.types'
 
 const MODULE_URL = import.meta.url
-
-const formatAmount = (cents: number) =>
-  new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(cents / 100)
-
-const formatDate = (iso: string) =>
-  new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'short' }).format(new Date(iso))
 
 interface TransactionTableProps {
   result: PaginatedTransactions | undefined
@@ -27,16 +23,21 @@ interface TransactionTableProps {
 interface TransactionItemProps {
   tx: Transaction
   t: (k: string) => string
+  onOpen: () => void
   onEdit: () => void
   onDelete: () => void
 }
 
-const TransactionItem = ({ tx, t, onEdit, onDelete }: TransactionItemProps) => {
+const TransactionItem = ({ tx, t, onOpen, onEdit, onDelete }: TransactionItemProps) => {
+  const { formatAmount, formatDate } = useFormatters()
   const isIncome = tx.type === 'income'
   const isPending = tx.status === 'pending'
 
   return (
-    <div className="flex items-center gap-3 px-4 py-3 hover:bg-muted/30 transition-colors">
+    <div
+      className="flex items-center gap-3 px-4 py-3 hover:bg-muted/30 transition-colors cursor-pointer"
+      onClick={onOpen}
+    >
       {/* Accent bar */}
       <div className={cn(
         'w-1 self-stretch rounded-full shrink-0',
@@ -83,7 +84,7 @@ const TransactionItem = ({ tx, t, onEdit, onDelete }: TransactionItemProps) => {
       </div>
 
       {/* Actions */}
-      <div className="shrink-0">
+      <div className="shrink-0" onClick={e => e.stopPropagation()}>
         <ActionMenu
           items={[
             { label: t('edit'),   icon: Pencil, onClick: onEdit },
@@ -97,6 +98,7 @@ const TransactionItem = ({ tx, t, onEdit, onDelete }: TransactionItemProps) => {
 
 const TransactionTable = ({ result, isPending, page, onPageChange }: TransactionTableProps) => {
   const t = useT(MODULE_URL)
+  const [detailTx, setDetailTx] = useState<Transaction | null>(null)
   const [editingTx, setEditingTx] = useState<Transaction | null>(null)
   const { mutate: deleteTransaction } = useDeleteTransaction()
 
@@ -126,6 +128,7 @@ const TransactionTable = ({ result, isPending, page, onPageChange }: Transaction
             key={tx.id}
             tx={tx}
             t={t}
+            onOpen={() => setDetailTx(tx)}
             onEdit={() => setEditingTx(tx)}
             onDelete={() => handleDelete(tx)}
           />
@@ -148,6 +151,14 @@ const TransactionTable = ({ result, isPending, page, onPageChange }: Transaction
             </Button>
           </div>
         </div>
+      )}
+
+      {detailTx && (
+        <TransactionDetail
+          transaction={detailTx}
+          onClose={() => setDetailTx(null)}
+          onEdit={() => { setEditingTx(detailTx); setDetailTx(null) }}
+        />
       )}
 
       {editingTx && (

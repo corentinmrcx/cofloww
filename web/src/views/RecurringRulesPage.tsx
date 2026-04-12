@@ -6,6 +6,7 @@ import { useRecurringRules } from '../features/recurring/hooks/useRecurringRules
 import { useToggleRecurringRule } from '../features/recurring/hooks/useToggleRecurringRule'
 import { useDeleteRecurringRule } from '../features/recurring/hooks/useDeleteRecurringRule'
 import { useT } from '../components/T'
+import { useFormatters } from '../lib/format'
 import type { RecurringRule } from '../features/recurring/types/recurring.types'
 
 const MONTHLY_MULTIPLIERS: Record<string, number> = {
@@ -15,9 +16,6 @@ const MONTHLY_MULTIPLIERS: Record<string, number> = {
   yearly:  1 / 12,
 }
 
-const formatAmount = (cents: number) =>
-  (cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-
 const RecurringRulesPage = () => {
   const { data: rules = [], isPending } = useRecurringRules()
   const { mutate: toggleRule } = useToggleRecurringRule()
@@ -25,6 +23,7 @@ const RecurringRulesPage = () => {
   const [modalRule, setModalRule] = useState<RecurringRule | 'new' | null>(null)
 
   const t = useT(import.meta.url)
+  const { formatAmountShort: formatAmount } = useFormatters()
   const activeRules = rules.filter(r => r.is_active)
 
   const monthlyForecast = activeRules.reduce((sum, r) => {
@@ -56,7 +55,7 @@ const RecurringRulesPage = () => {
             {t('recurring_forecast')}
           </p>
           <p className={`text-2xl font-bold tabular-nums mt-0.5 ${forecastColor}`}>
-            {monthlyForecast >= 0 ? '+' : ''}{formatAmount(monthlyForecast)} €
+            {monthlyForecast >= 0 ? '+' : ''}{formatAmount(monthlyForecast)}
           </p>
         </div>
         <p className="text-xs text-muted-foreground">

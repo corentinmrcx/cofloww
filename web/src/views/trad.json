@@ -32,7 +32,10 @@
     "settings_tab_profile":  "Profil",
     "settings_tab_prefs":    "Préférences",
     "settings_tab_data":     "Données",
-    "dashboard_new_tx":      "Nouvelle transaction"
+    "dashboard_new_tx":      "Nouvelle transaction",
+    "dashboard_stats_title": "Explorer les statistiques",
+    "dashboard_stats_desc":  "Dépenses par catégorie, évolution du solde, revenus vs dépenses…",
+    "dashboard_stats_cta":   "Voir les statistiques →"
   },
   "en": {
     "loading":               "Loading…",
@@ -67,6 +70,9 @@
     "settings_tab_profile":  "Profile",
     "settings_tab_prefs":    "Preferences",
     "settings_tab_data":     "Data",
-    "dashboard_new_tx":      "New transaction"
+    "dashboard_new_tx":      "New transaction",
+    "dashboard_stats_title": "Explore statistics",
+    "dashboard_stats_desc":  "Expenses by category, balance evolution, income vs expenses…",
+    "dashboard_stats_cta":   "View statistics →"
   }
 }

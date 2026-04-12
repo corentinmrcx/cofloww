@@ -32,6 +32,7 @@ export interface CreateBudgetPayload {
   year: number
   alert_threshold_pct?: number
   is_active?: boolean
+  apply_all_months?: boolean
 }
 
 export type UpdateBudgetPayload = Partial<CreateBudgetPayload>

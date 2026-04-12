@@ -4,12 +4,10 @@ import {
   ResponsiveContainer, Legend,
 } from 'recharts'
 import { useIncomeVsExpenses } from '../../hooks/useIncomeVsExpenses'
+import { useFormatters } from '../../../../lib/format'
 import type { StatPeriod } from '../../types/stats.types'
 
 const MONTH_SHORT = ['', 'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc']
-
-const fmt = (cents: number) =>
-  (cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' €'
 
 const PERIODS: { value: StatPeriod; label: string }[] = [
   { value: '3m',  label: '3 mois' },
@@ -18,37 +16,38 @@ const PERIODS: { value: StatPeriod; label: string }[] = [
   { value: '24m', label: '2 ans'  },
 ]
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (!active || !payload?.length) return null
-  const income   = payload.find((p: any) => p.dataKey === 'income')?.value  ?? 0
-  const expenses = payload.find((p: any) => p.dataKey === 'expenses')?.value ?? 0
-  return (
-    <div className="bg-popover border border-border rounded-lg px-3 py-2 text-sm shadow-md min-w-36">
-      <p className="font-semibold mb-1.5 text-foreground">{label}</p>
-      <div className="flex flex-col gap-1">
-        <div className="flex justify-between gap-4">
-          <span className="text-muted-foreground">Revenus</span>
-          <span className="font-medium text-emerald-600 dark:text-emerald-400">{fmt(income)}</span>
-        </div>
-        <div className="flex justify-between gap-4">
-          <span className="text-muted-foreground">Dépenses</span>
-          <span className="font-medium text-red-500">{fmt(expenses)}</span>
-        </div>
-        <div className="h-px bg-border my-0.5" />
-        <div className="flex justify-between gap-4">
-          <span className="text-muted-foreground">Net</span>
-          <span className={`font-semibold ${income - expenses >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
-            {fmt(income - expenses)}
-          </span>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 const IncomeExpensesChart = () => {
   const [period, setPeriod] = useState<StatPeriod>('6m')
   const { data = [], isLoading } = useIncomeVsExpenses(period)
+  const { formatAmountShort: fmt, numLocale } = useFormatters()
+
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (!active || !payload?.length) return null
+    const income   = payload.find((p: any) => p.dataKey === 'income')?.value  ?? 0
+    const expenses = payload.find((p: any) => p.dataKey === 'expenses')?.value ?? 0
+    return (
+      <div className="bg-popover border border-border rounded-lg px-3 py-2 text-sm shadow-md min-w-36">
+        <p className="font-semibold mb-1.5 text-foreground">{label}</p>
+        <div className="flex flex-col gap-1">
+          <div className="flex justify-between gap-4">
+            <span className="text-muted-foreground">Revenus</span>
+            <span className="font-medium text-emerald-600 dark:text-emerald-400">{fmt(income)}</span>
+          </div>
+          <div className="flex justify-between gap-4">
+            <span className="text-muted-foreground">Dépenses</span>
+            <span className="font-medium text-red-500">{fmt(expenses)}</span>
+          </div>
+          <div className="h-px bg-border my-0.5" />
+          <div className="flex justify-between gap-4">
+            <span className="text-muted-foreground">Net</span>
+            <span className={`font-semibold ${income - expenses >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
+              {fmt(income - expenses)}
+            </span>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   const chartData = data.map(d => ({
     name:     `${MONTH_SHORT[d.month]} ${d.year}`,
@@ -95,7 +94,7 @@ const IncomeExpensesChart = () => {
               tickLine={false}
             />
             <YAxis
-              tickFormatter={v => `${(v / 100).toLocaleString('fr-FR', { maximumFractionDigits: 0 })}€`}
+              tickFormatter={v => `${(v / 100).toLocaleString(numLocale, { maximumFractionDigits: 0 })}`}
               tick={{ fontSize: 11, fill: 'currentColor', className: 'text-muted-foreground' }}
               axisLine={false}
               tickLine={false}

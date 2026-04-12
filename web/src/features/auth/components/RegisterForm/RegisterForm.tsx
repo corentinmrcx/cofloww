@@ -61,7 +61,14 @@ const RegisterForm = () => {
         </div>
       </Form.Body>
 
-      <Form.Error message={error ? t('error') : null} />
+      <Form.Error message={
+        error
+          // @ts-expect-error - AxiosError
+          ? (error?.response?.status === 422 && error?.response?.data?.errors?.email
+              ? t('error_email_taken')
+              : t('error'))
+          : null
+      } />
 
       <Form.Footer>
         <Button type="submit" disabled={isPending} fullWidth>

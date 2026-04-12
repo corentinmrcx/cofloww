@@ -2,11 +2,13 @@
   "fr": {
     "title":    "Tendance 6 mois",
     "income":   "Revenus",
-    "expenses": "Dépenses"
+    "expenses": "Dépenses",
+    "empty":    "Pas encore de données"
   },
   "en": {
     "title":    "6-month trend",
     "income":   "Income",
-    "expenses": "Expenses"
+    "expenses": "Expenses",
+    "empty":    "No data yet"
   }
 }

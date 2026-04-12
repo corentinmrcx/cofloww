@@ -34,17 +34,44 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        // Supprime l'ancien avatar
+        // Supprime l'ancien avatar (local en priorité, fallback public pour migration)
         if ($user->avatar) {
-            Storage::disk('public')->delete($user->avatar);
+            if (Storage::disk('local')->exists($user->avatar)) {
+                Storage::disk('local')->delete($user->avatar);
+            } elseif (Storage::disk('public')->exists($user->avatar)) {
+                Storage::disk('public')->delete($user->avatar);
+            }
         }
 
-        $path = $request->file('avatar')->store('avatars', 'public');
+        $path = $request->file('avatar')->store('avatars', 'local');
         $user->update(['avatar' => $path]);
 
+        $avatarUrl = url('/api/v1/profile/avatar') . '?v=' . substr(md5($path), 0, 8);
+
         return response()->json([
-            'data' => ['avatar_url' => Storage::disk('public')->url($path)],
+            'data' => ['avatar_url' => $avatarUrl],
         ]);
+    }
+
+    public function serveAvatar(Request $request): mixed
+    {
+        $user = $request->user();
+
+        if (! $user->avatar) {
+            abort(404);
+        }
+
+        // Nouvel emplacement privé
+        if (Storage::disk('local')->exists($user->avatar)) {
+            return Storage::disk('local')->response($user->avatar);
+        }
+
+        // Fallback : anciens avatars sur le disk public (migration en place)
+        if (Storage::disk('public')->exists($user->avatar)) {
+            return Storage::disk('public')->response($user->avatar);
+        }
+
+        abort(404);
     }
 
     public function updatePreferences(UpdatePreferencesRequest $request): JsonResponse

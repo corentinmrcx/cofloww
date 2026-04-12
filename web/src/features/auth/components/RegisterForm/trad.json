@@ -14,7 +14,8 @@
     "submitting":               "Inscription…",
     "already_account":          "Déjà un compte ?",
     "login":                    "Se connecter",
-    "error":                    "Une erreur est survenue."
+    "error":                    "Une erreur est survenue.",
+    "error_email_taken":        "Ces informations sont déjà associées à un compte."
   },
   "en": {
     "title":                    "Create an account",
@@ -31,6 +32,7 @@
     "submitting":               "Signing up…",
     "already_account":          "Already have an account?",
     "login":                    "Sign in",
-    "error":                    "Something went wrong."
+    "error":                    "Something went wrong.",
+    "error_email_taken":        "This information is already associated with an account."
   }
 }

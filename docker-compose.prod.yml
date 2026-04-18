@@ -5,6 +5,14 @@ services:
       context: ./api
       target: prod
     volumes: []
+    env_file:
+      - ./api/.env
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
 
   web:
@@ -13,8 +21,25 @@ services:
       target: prod
     ports:
       - "80:80"
+    depends_on:
+      - api
     restart: unless-stopped
 
   db:
-    ports: []                      # ne pas exposer la BDD en prod
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-cofloww}
+      POSTGRES_USER: ${DB_USERNAME:-cofloww}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-cofloww}
+    ports: []
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-cofloww}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     restart: unless-stopped
+
+volumes:
+  pgdata:

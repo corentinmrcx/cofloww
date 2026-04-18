@@ -3,6 +3,7 @@ import { ChevronRight } from 'lucide-react'
 import { ICONS } from '../../../../components/IconPicker'
 import { useT } from '../../../../components/T'
 import { useFormatters } from '../../../../lib/format'
+import { cn } from '../../../../lib/utils'
 import type { BudgetSummary } from '../../types/dashboard.types'
 
 interface BudgetRowProps {
@@ -15,18 +16,19 @@ const BudgetRow = ({ budget, t }: BudgetRowProps) => {
   const Icon          = budget.icon ? ICONS[budget.icon] : null
   const displayPct    = Math.min(budget.pct, 100)
   const isOver        = budget.over_budget
-  const isWarning     = !isOver && budget.pct >= 80
+  const BUDGET_WARNING_THRESHOLD = 80
+  const isWarning = !isOver && budget.pct >= BUDGET_WARNING_THRESHOLD
 
   return (
     <div className="flex flex-col gap-1.5 py-3">
       <div className="flex items-center gap-2">
         <div
-          className="w-6 h-6 rounded-md flex items-center justify-center shrink-0"
+          className="size-6 rounded-md flex items-center justify-center shrink-0"
           style={{ backgroundColor: budget.color + '28' }}
         >
           {Icon
             ? <Icon size={12} style={{ color: budget.color }} />
-            : <span className="w-2 h-2 rounded-full block" style={{ backgroundColor: budget.color }} />
+            : <span className="size-2 rounded-full block" style={{ backgroundColor: budget.color }} />
           }
         </div>
 
@@ -37,22 +39,27 @@ const BudgetRow = ({ budget, t }: BudgetRowProps) => {
           )}
         </span>
 
-        <span className={`text-xs font-medium tabular-nums ${isOver ? 'text-red-500' : 'text-muted-foreground'}`}>
+        <span className={cn('text-xs font-medium tabular-nums', isOver ? 'text-expense' : 'text-muted-foreground')}>
           {fmt(budget.spent)} / {fmt(budget.budget_amount)}
         </span>
       </div>
 
       <div className="h-1.5 bg-muted rounded-full overflow-hidden">
         <div
+          role="progressbar"
+          aria-valuenow={displayPct}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={budget.label}
           className="h-full rounded-full transition-all"
           style={{
             width: `${displayPct}%`,
-            backgroundColor: isOver ? '#ef4444' : isWarning ? '#f59e0b' : budget.color,
+            backgroundColor: isOver ? 'var(--expense)' : isWarning ? 'var(--warning)' : budget.color,
           }}
         />
       </div>
 
-      <p className={`text-xs text-right tabular-nums ${isOver ? 'text-red-500 font-medium' : 'text-muted-foreground'}`}>
+      <p className={cn('text-xs text-right tabular-nums', isOver ? 'text-expense font-medium' : 'text-muted-foreground')}>
         {isOver ? `${t('over')}${fmt(budget.spent - budget.budget_amount)}` : `${budget.pct.toFixed(0)}%`}
       </p>
     </div>
@@ -73,7 +80,8 @@ const BudgetsWidget = ({ budgets }: BudgetsWidgetProps) => {
         <p className="text-sm font-semibold">{t('title')}</p>
         <button
           onClick={() => navigate('/budget')}
-          className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-0.5 transition-colors"
+          aria-label={t('see_all_label')}
+          className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-0.5 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded"
         >
           {t('see_all')} <ChevronRight size={13} />
         </button>

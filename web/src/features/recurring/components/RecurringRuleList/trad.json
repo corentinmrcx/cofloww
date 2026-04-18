@@ -1,6 +1,7 @@
 {
   "fr": {
-    "empty": "Aucune règle récurrente",
+    "empty":     "Aucune règle récurrente",
+    "empty_cta": "Automatisez vos transactions régulières",
     "frequency_daily": "Quotidien",
     "frequency_weekly": "Hebdomadaire",
     "frequency_monthly": "Mensuel",
@@ -15,7 +16,8 @@
     "delete": "Supprimer"
   },
   "en": {
-    "empty": "No recurring rules",
+    "empty":     "No recurring rules",
+    "empty_cta": "Automate your regular transactions",
     "frequency_daily": "Daily",
     "frequency_weekly": "Weekly",
     "frequency_monthly": "Monthly",

@@ -1,0 +1,14 @@
+{
+  "fr": {
+    "title":    "Évolution du patrimoine",
+    "subtitle": "Solde net total — 12 derniers mois",
+    "loading":  "Chargement…",
+    "today":    "Aujourd'hui"
+  },
+  "en": {
+    "title":    "Net worth evolution",
+    "subtitle": "Total net balance — last 12 months",
+    "loading":  "Loading…",
+    "today":    "Today"
+  }
+}

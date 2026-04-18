@@ -43,10 +43,22 @@
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
+    /* Semantic finance tokens */
+    --color-income: var(--income);
+    --color-expense: var(--expense);
+    --color-transfer: var(--transfer);
+    --color-warning: var(--warning);
+    --color-success: var(--success);
 }
 
 :root {
     --radius: 0.625rem;
+    /* Semantic finance tokens */
+    --income:   oklch(0.609 0.15 145.305);
+    --expense:  oklch(0.577 0.245 27.325);
+    --transfer: oklch(0.6 0.118 232);
+    --warning:  oklch(0.769 0.188 70.08);
+    --success:  oklch(0.609 0.15 145.305);
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
@@ -82,6 +94,12 @@
 
 .dark {
     --background: oklch(0.145 0 0);
+    /* Semantic finance tokens — dark */
+    --income:   oklch(0.765 0.177 145.305);
+    --expense:  oklch(0.704 0.191 22.216);
+    --transfer: oklch(0.65 0.14 232);
+    --warning:  oklch(0.82 0.16 75);
+    --success:  oklch(0.765 0.177 145.305);
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.205 0 0);
     --card-foreground: oklch(0.985 0 0);

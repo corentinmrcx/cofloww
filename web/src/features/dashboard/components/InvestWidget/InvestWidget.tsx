@@ -19,7 +19,8 @@ const InvestWidget = ({ data }: InvestWidgetProps) => {
         <p className="text-sm font-semibold">{t('title')}</p>
         <button
           onClick={() => navigate('/investments')}
-          className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-0.5 transition-colors"
+          aria-label={t('configure_label')}
+          className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-0.5 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded"
         >
           {t('configure')} <ChevronRight size={13} />
         </button>
@@ -28,7 +29,7 @@ const InvestWidget = ({ data }: InvestWidgetProps) => {
       <div className="flex-1 flex items-center justify-center px-4 pb-4">
         <div className="text-center">
           <p className="text-sm text-muted-foreground mb-1">{t('to_invest')}</p>
-          <p className="text-4xl font-bold tabular-nums text-emerald-600 dark:text-emerald-400">
+          <p className="text-4xl font-bold tabular-nums text-income">
             {fmt(data.amount)}
           </p>
           {data.source_wallet && (

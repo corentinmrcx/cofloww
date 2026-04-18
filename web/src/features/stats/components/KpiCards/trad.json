@@ -1,0 +1,24 @@
+{
+  "fr": {
+    "stable":           "stable",
+    "vs_prev":          "vs 6 mois préc.",
+    "no_data":          "Aucune donnée",
+    "savings_rate":     "Taux d'épargne",
+    "savings_avg_sub":  "Moyenne sur 12 mois",
+    "avg_expenses":     "Dépenses moyennes",
+    "avg_expenses_sub": "Par mois sur 12 mois",
+    "best_month":       "Meilleur mois",
+    "worst_month":      "Mois le plus dépensier"
+  },
+  "en": {
+    "stable":           "stable",
+    "vs_prev":          "vs prev. 6 months",
+    "no_data":          "No data",
+    "savings_rate":     "Savings rate",
+    "savings_avg_sub":  "Average over 12 months",
+    "avg_expenses":     "Average expenses",
+    "avg_expenses_sub": "Per month over 12 months",
+    "best_month":       "Best month",
+    "worst_month":      "Highest spending month"
+  }
+}

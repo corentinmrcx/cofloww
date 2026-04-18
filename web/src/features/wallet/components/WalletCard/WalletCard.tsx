@@ -52,7 +52,7 @@ const WalletCard = ({
       </button>
 
       <div
-        className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+        className="size-9 rounded-lg flex items-center justify-center shrink-0"
         style={{ backgroundColor: wallet.color + '28' }}
       >
         <Icon size={16} style={{ color: wallet.color }} />

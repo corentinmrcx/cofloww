@@ -1,0 +1,10 @@
+{
+  "fr": {
+    "balance": "Solde : ",
+    "to_send": "à verser"
+  },
+  "en": {
+    "balance": "Balance: ",
+    "to_send": "to send"
+  }
+}

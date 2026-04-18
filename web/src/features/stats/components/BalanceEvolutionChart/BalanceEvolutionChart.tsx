@@ -6,47 +6,57 @@ import {
 import { useIncomeVsExpenses } from '../../hooks/useIncomeVsExpenses'
 import { useOverview } from '../../hooks/useOverview'
 import { useFormatters } from '../../../../lib/format'
+import { useT } from '../../../../components/T'
+import { cn } from '../../../../lib/utils'
 
-const MONTH_SHORT = ['', 'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc']
+interface TooltipPayloadItem {
+  value: number
+}
+
+interface CustomTooltipProps {
+  active?: boolean
+  payload?: TooltipPayloadItem[]
+  label?: string
+  fmt: (n: number) => string
+}
+
+const CustomTooltip = ({ active, payload, label, fmt }: CustomTooltipProps) => {
+  if (!active || !payload?.length) return null
+  const value = payload[0]?.value ?? 0
+  return (
+    <div className="bg-popover border border-border rounded-lg px-3 py-2 text-sm shadow-md">
+      <p className="font-semibold mb-1 text-foreground">{label}</p>
+      <p className={cn('font-medium tabular-nums', value >= 0 ? 'text-income' : 'text-expense')}>
+        {fmt(value)}
+      </p>
+    </div>
+  )
+}
 
 const BalanceEvolutionChart = () => {
   const { data: monthly = [], isLoading: loadingMonthly } = useIncomeVsExpenses('12m')
   const { data: overview, isLoading: loadingOverview }   = useOverview()
   const { formatAmountShort: fmt, numLocale } = useFormatters()
+  const t = useT(import.meta.url)
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (!active || !payload?.length) return null
-    const value = payload[0]?.value ?? 0
-    return (
-      <div className="bg-popover border border-border rounded-lg px-3 py-2 text-sm shadow-md">
-        <p className="font-semibold mb-1 text-foreground">{label}</p>
-        <p className={`font-medium tabular-nums ${value >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
-          {fmt(value)}
-        </p>
-      </div>
-    )
-  }
-
-  // Reconstitue le solde de fin de chaque mois en partant du net_worth actuel
-  // et en remontant dans le temps via les nets mensuels
   const chartData = useMemo(() => {
     if (!overview || monthly.length === 0) return []
 
     const currentNetWorth = overview.net_worth
-    const reversed        = [...monthly].reverse() // du plus récent au plus ancien
+    const reversed        = [...monthly].reverse()
 
     const balances: number[] = new Array(monthly.length)
-    balances[0] = currentNetWorth // mois courant = solde actuel
+    balances[0] = currentNetWorth
 
     for (let i = 1; i < reversed.length; i++) {
       balances[i] = balances[i - 1] - reversed[i - 1].net
     }
 
     return monthly.map((d, i) => ({
-      name:    `${MONTH_SHORT[d.month]} ${d.year}`,
+      name:    new Date(d.year, d.month - 1).toLocaleDateString(numLocale, { month: 'short', year: '2-digit' }),
       balance: balances[monthly.length - 1 - i],
     }))
-  }, [monthly, overview])
+  }, [monthly, overview, numLocale])
 
   const isLoading = loadingMonthly || loadingOverview
   const currentBalance = overview?.net_worth ?? 0
@@ -55,14 +65,12 @@ const BalanceEvolutionChart = () => {
     <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-semibold">Évolution du patrimoine</p>
-          <p className="text-xs text-muted-foreground">Solde net total — 12 derniers mois</p>
+          <p className="text-sm font-semibold">{t('title')}</p>
+          <p className="text-xs text-muted-foreground">{t('subtitle')}</p>
         </div>
         <div className="text-right">
-          <p className="text-xs text-muted-foreground">Aujourd'hui</p>
-          <p className={`text-lg font-bold tabular-nums ${
-            currentBalance >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'
-          }`}>
+          <p className="text-xs text-muted-foreground">{t('today')}</p>
+          <p className={cn('text-lg font-bold tabular-nums', currentBalance >= 0 ? 'text-income' : 'text-expense')}>
             {fmt(currentBalance)}
           </p>
         </div>
@@ -70,7 +78,7 @@ const BalanceEvolutionChart = () => {
 
       {isLoading ? (
         <div className="h-52 flex items-center justify-center text-sm text-muted-foreground">
-          Chargement…
+          {t('loading')}
         </div>
       ) : (
         <ResponsiveContainer width="100%" height={220}>
@@ -89,14 +97,14 @@ const BalanceEvolutionChart = () => {
               tickLine={false}
               width={60}
             />
-            <Tooltip content={<CustomTooltip />} />
-            <ReferenceLine y={0} stroke="hsl(var(--border))" strokeDasharray="4 2" />
+            <Tooltip content={<CustomTooltip fmt={fmt} />} />
+            <ReferenceLine y={0} stroke="var(--border)" strokeDasharray="4 2" />
             <Line
               type="monotone"
               dataKey="balance"
-              stroke="#10b981"
+              stroke="var(--income)"
               strokeWidth={2.5}
-              dot={{ fill: '#10b981', r: 3, strokeWidth: 0 }}
+              dot={{ fill: 'var(--income)', r: 3, strokeWidth: 0 }}
               activeDot={{ r: 5, strokeWidth: 0 }}
             />
           </LineChart>

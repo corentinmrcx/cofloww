@@ -46,7 +46,7 @@ const PreferencesForm = () => {
         timezone:    user.timezone              ?? 'Europe/Paris',
       })
     }
-  }, [user?.id])
+  }, [user])
 
   const onSubmit = (data: FormValues) => {
     mutate(data, {
@@ -119,7 +119,7 @@ const PreferencesForm = () => {
         <button type="submit" disabled={isPending} className={BTN}>
           {isPending ? t('saving') : t('save')}
         </button>
-        {isSuccess && <p className="text-xs text-emerald-600 dark:text-emerald-400">{t('saved')}</p>}
+        {isSuccess && <p className="text-xs text-success">{t('saved')}</p>}
       </div>
     </form>
   )

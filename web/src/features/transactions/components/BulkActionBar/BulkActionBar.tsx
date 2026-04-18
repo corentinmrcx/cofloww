@@ -5,6 +5,15 @@ import { useCategories } from '../../../category/hooks/useCategories'
 import { useTags } from '../../../tag/hooks/useTags'
 import { useBulkDeleteTransactions } from '../../hooks/useBulkDeleteTransactions'
 import { useBulkSetCategory, useBulkAddTag } from '../../hooks/useBulkUpdateTransactions'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '../../../../components/ui/alert-dialog'
 import type { Transaction } from '../../types/transaction.types'
 
 interface BulkActionBarProps {
@@ -27,15 +36,8 @@ const BulkActionBar = ({ selectedIds, transactions, onClearSelection, onSelectAl
   const { mutate: bulkAddTag, isPending: isAddingTag } = useBulkAddTag()
 
   const [activePanel, setActivePanel] = useState<ActivePanel>(null)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const isPending = isDeleting || isSettingCategory || isAddingTag
-
-  const handleDelete = () => {
-    const confirmed = window.confirm(
-      t('delete_confirm').replace('{n}', String(selectedIds.length))
-    )
-    if (!confirmed) return
-    bulkDelete(selectedIds, { onSuccess: onClearSelection })
-  }
 
   const handleCategorySelect = (categoryId: string | null) => {
     bulkSetCategory(
@@ -81,7 +83,7 @@ const BulkActionBar = ({ selectedIds, transactions, onClearSelection, onSelectAl
         <div className="w-px h-5 bg-white/20 mx-1" />
 
         {/* Supprimer */}
-        <button type="button" className={actionBtnClass} onClick={handleDelete} disabled={isPending}>
+        <button type="button" className={actionBtnClass} onClick={() => setShowDeleteDialog(true)} disabled={isPending}>
           <Trash2 size={14} />
           <span className="hidden sm:inline">{t('delete')}</span>
         </button>
@@ -115,7 +117,7 @@ const BulkActionBar = ({ selectedIds, transactions, onClearSelection, onSelectAl
                 >
                   <span
                     className="h-2.5 w-2.5 rounded-full shrink-0"
-                    style={{ backgroundColor: c.color ?? '#888' }}
+                    style={{ backgroundColor: c.color ?? 'var(--muted-foreground)' }}
                   />
                   {c.name}
                 </button>
@@ -146,7 +148,7 @@ const BulkActionBar = ({ selectedIds, transactions, onClearSelection, onSelectAl
                 >
                   <span
                     className="h-2.5 w-2.5 rounded-full shrink-0"
-                    style={{ backgroundColor: tag.color ?? '#888' }}
+                    style={{ backgroundColor: tag.color ?? 'var(--muted-foreground)' }}
                   />
                   {tag.name}
                 </button>
@@ -162,6 +164,24 @@ const BulkActionBar = ({ selectedIds, transactions, onClearSelection, onSelectAl
           <X size={14} />
         </button>
       </div>
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t('delete_confirm').replace('{n}', String(selectedIds.length))}
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => { bulkDelete(selectedIds, { onSuccess: onClearSelection }); setShowDeleteDialog(false) }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {t('delete')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   )
 }

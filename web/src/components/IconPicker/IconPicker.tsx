@@ -42,7 +42,7 @@ const IconPicker = ({ value, onChange, className }: IconPickerProps) => {
               title={name}
               onClick={() => onChange(selected ? undefined : name)}
               className={cn(
-                'flex items-center justify-center w-8 h-8 rounded-md border transition-colors',
+                'flex items-center justify-center size-8 rounded-md border transition-colors',
                 selected
                   ? 'border-primary bg-primary/10 text-primary'
                   : 'border-transparent text-muted-foreground hover:bg-muted hover:text-foreground',

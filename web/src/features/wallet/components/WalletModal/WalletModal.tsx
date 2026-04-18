@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -31,6 +32,14 @@ interface WalletModalProps {
 const WalletModal = ({ wallet, onClose }: WalletModalProps) => {
   const t = useT(import.meta.url)
   const isEdit = wallet !== undefined
+  const closeRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    closeRef.current?.focus()
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [onClose])
 
   const { mutate: createWallet, isPending: isCreating } = useCreateWallet()
   const { mutate: updateWallet, isPending: isUpdating } = useUpdateWallet(wallet?.id ?? '')
@@ -64,14 +73,21 @@ const WalletModal = ({ wallet, onClose }: WalletModalProps) => {
       onClick={onClose}
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="wallet-modal-title"
         className="bg-card border border-border rounded-xl shadow-xl w-full max-w-md p-6 m-4"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-base font-semibold">
+          <h2 id="wallet-modal-title" className="text-base font-semibold">
             {t(isEdit ? 'title_edit' : 'title_add')}
           </h2>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
+          <button
+            ref={closeRef}
+            onClick={onClose}
+            className="text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded"
+          >
             <X size={18} />
           </button>
         </div>

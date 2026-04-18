@@ -1,7 +1,19 @@
+import { useEffect, useRef, useState } from 'react'
 import { X, Pencil, Trash2, ArrowRight, Tag } from 'lucide-react'
 import { useT } from '../../../../components/T/T'
+import { Separator } from '../../../../components/ui/separator'
+import { cn } from '../../../../lib/utils'
 import { useFormatters } from '../../../../lib/format'
 import { useDeleteTransaction } from '../../hooks/useDeleteTransaction'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '../../../../components/ui/alert-dialog'
 import type { Transaction } from '../../types/transaction.types'
 
 interface TransactionDetailProps {
@@ -14,20 +26,30 @@ const TransactionDetail = ({ transaction: tx, onClose, onEdit }: TransactionDeta
   const t = useT(import.meta.url)
   const { formatAmount, formatDateFull } = useFormatters()
   const { mutate: deleteTransaction } = useDeleteTransaction()
+  const closeRef = useRef<HTMLButtonElement>(null)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
   const isIncome   = tx.type === 'income'
   const isTransfer = tx.type === 'transfer'
 
-  const handleDelete = () => {
-    if (!window.confirm(t('delete_confirm').replace('{label}', tx.label))) return
-    deleteTransaction(tx.id, { onSuccess: onClose })
-  }
+  useEffect(() => {
+    closeRef.current?.focus()
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [onClose])
 
   const amountColor = isIncome
-    ? 'text-emerald-600 dark:text-emerald-400'
+    ? 'text-income'
     : isTransfer
-      ? 'text-blue-500'
+      ? 'text-transfer'
       : 'text-foreground'
+
+  const typeBadgeClass = isIncome
+    ? 'bg-income/10 text-income border-income/20'
+    : isTransfer
+      ? 'bg-transfer/10 text-transfer border-transfer/20'
+      : 'bg-expense/10 text-expense border-expense/20'
 
   return (
     <div
@@ -35,31 +57,32 @@ const TransactionDetail = ({ transaction: tx, onClose, onEdit }: TransactionDeta
       onClick={onClose}
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tx-detail-title"
         className="bg-card border border-border rounded-xl shadow-xl w-full max-w-md m-4 flex flex-col"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
-          <h2 className="text-base font-semibold">{t('title')}</h2>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
+          <h2 id="tx-detail-title" className="text-base font-semibold">{t('title')}</h2>
+          <button
+            ref={closeRef}
+            onClick={onClose}
+            className="text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded"
+          >
             <X size={18} />
           </button>
         </div>
 
         {/* Montant + libellé */}
         <div className="flex flex-col items-center gap-1 py-6 px-5">
-          <p className={`text-3xl font-bold tabular-nums ${amountColor}`}>
+          <p className={cn('text-3xl font-bold tabular-nums', amountColor)}>
             {isIncome ? '+' : isTransfer ? '' : '−'}{formatAmount(Math.abs(tx.amount))}
           </p>
           <p className="text-base font-medium text-foreground mt-1">{tx.label}</p>
           <div className="mt-2">
-            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium border ${
-              isIncome
-                ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20 dark:text-emerald-400'
-                : isTransfer
-                  ? 'bg-blue-500/10 text-blue-600 border-blue-500/20 dark:text-blue-400'
-                  : 'bg-red-500/10 text-red-600 border-red-500/20 dark:text-red-400'
-            }`}>
+            <span className={cn('inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium border', typeBadgeClass)}>
               {t(`type_${tx.type}`)}
             </span>
           </div>
@@ -70,7 +93,6 @@ const TransactionDetail = ({ transaction: tx, onClose, onEdit }: TransactionDeta
 
           <Row label={t('date')} value={formatDateFull(tx.date)} />
 
-          {/* Wallet(s) */}
           {isTransfer && tx.to_wallet ? (
             <div className="flex items-center justify-between px-5 py-3 gap-3">
               <span className="text-sm text-muted-foreground shrink-0">{t('wallets')}</span>
@@ -84,21 +106,19 @@ const TransactionDetail = ({ transaction: tx, onClose, onEdit }: TransactionDeta
             <Row label={t('wallet')} value={tx.wallet?.name ?? '—'} />
           )}
 
-          {/* Catégorie */}
           {tx.category && (
             <div className="flex items-center justify-between px-5 py-3 gap-3">
               <span className="text-sm text-muted-foreground shrink-0">{t('category')}</span>
               <div className="flex items-center gap-2">
                 <span
                   className="h-2.5 w-2.5 rounded-full shrink-0"
-                  style={{ backgroundColor: tx.category.color ?? '#94a3b8' }}
+                  style={{ backgroundColor: tx.category.color ?? 'var(--muted-foreground)' }}
                 />
                 <span className="text-sm font-medium">{tx.category.name}</span>
               </div>
             </div>
           )}
 
-          {/* Tags */}
           {tx.tags.length > 0 && (
             <div className="flex items-start justify-between px-5 py-3 gap-3">
               <span className="text-sm text-muted-foreground shrink-0">{t('tags')}</span>
@@ -116,7 +136,6 @@ const TransactionDetail = ({ transaction: tx, onClose, onEdit }: TransactionDeta
             </div>
           )}
 
-          {/* Notes */}
           {tx.notes && (
             <div className="flex flex-col gap-1.5 px-5 py-3">
               <span className="text-sm text-muted-foreground">{t('notes')}</span>
@@ -126,10 +145,11 @@ const TransactionDetail = ({ transaction: tx, onClose, onEdit }: TransactionDeta
 
         </div>
 
+        <Separator />
         {/* Footer actions */}
-        <div className="flex gap-2 px-5 py-4 border-t border-border">
+        <div className="flex gap-2 px-5 py-4">
           <button
-            onClick={handleDelete}
+            onClick={() => setShowDeleteDialog(true)}
             className="flex items-center gap-1.5 h-9 px-3 rounded-md text-sm font-medium text-destructive border border-destructive/30 hover:bg-destructive/10 transition-colors"
           >
             <Trash2 size={14} />
@@ -144,6 +164,24 @@ const TransactionDetail = ({ transaction: tx, onClose, onEdit }: TransactionDeta
           </button>
         </div>
       </div>
+    <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            {t('delete_confirm').replace('{label}', tx.label)}
+          </AlertDialogTitle>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={() => deleteTransaction(tx.id, { onSuccess: onClose })}
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+          >
+            {t('delete')}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
     </div>
   )
 }

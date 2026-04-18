@@ -33,4 +33,4 @@ const T = ({ url, children }: TProps) => {
   return <>{t(children)}</>
 }
 
-export default T
+export { T }

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import api from '../../../services/api'
+import { api } from '../../../services/api'
 import type { PaginatedTransactions, TransactionFilters } from '../types/transaction.types'
 
 export const useTransactions = (filters: TransactionFilters = {}) =>

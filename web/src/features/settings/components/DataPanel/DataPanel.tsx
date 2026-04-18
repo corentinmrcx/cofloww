@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import { Download, Trash2, AlertTriangle } from 'lucide-react'
 import { useExportData, useDeleteAccount } from '../../hooks/useSettings'
 import { useT } from '../../../../components/T'
@@ -8,6 +9,7 @@ const DataPanel = () => {
   const { mutate: exportData,    isPending: exporting } = useExportData()
   const { mutate: deleteAccount, isPending: deleting }  = useDeleteAccount()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const t = useT(import.meta.url)
 
   const [confirmStep, setConfirmStep] = useState<0 | 1 | 2>(0)
@@ -17,8 +19,11 @@ const DataPanel = () => {
   const handleDeleteConfirm = () => {
     setDeleteError('')
     deleteAccount(password, {
-      onSuccess: () => { navigate('/login') },
-      onError:   () => setDeleteError(t('pwd_error')),
+      onSuccess: () => {
+        queryClient.clear()
+        navigate('/login')
+      },
+      onError: () => setDeleteError(t('pwd_error')),
     })
   }
 

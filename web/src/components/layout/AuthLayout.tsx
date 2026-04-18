@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router'
-import ThemeToggle from '../ThemeToggle'
+import { ThemeToggle } from '../ThemeToggle'
 import { LangSelector } from '../LangSelector'
 
 const AuthLayout = () => {
@@ -16,4 +16,4 @@ const AuthLayout = () => {
   )
 }
 
-export default AuthLayout
+export { AuthLayout }

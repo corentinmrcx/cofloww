@@ -12,7 +12,8 @@
     "type_transfer":  "Transfert",
     "edit":           "Modifier",
     "delete":         "Supprimer",
-    "delete_confirm": "Supprimer \"{label}\" ?"
+    "delete_confirm": "Supprimer \"{label}\" ?",
+    "cancel":         "Annuler"
   },
   "en": {
     "title":          "Transaction detail",
@@ -27,6 +28,7 @@
     "type_transfer":  "Transfer",
     "edit":           "Edit",
     "delete":         "Delete",
-    "delete_confirm": "Delete \"{label}\"?"
+    "delete_confirm": "Delete \"{label}\"?",
+    "cancel":         "Cancel"
   }
 }

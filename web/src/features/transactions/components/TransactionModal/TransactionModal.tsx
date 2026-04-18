@@ -11,6 +11,8 @@ import { TagInput } from '../../../tag/components/TagInput'
 import { useWallets } from '../../../wallet/hooks/useWallets'
 import { useCreateTransaction } from '../../hooks/useCreateTransaction'
 import { useUpdateTransaction } from '../../hooks/useUpdateTransaction'
+import { useAutoTransferLabel } from '../../hooks/useAutoTransferLabel'
+import { cn } from '../../../../lib/utils'
 import type { Transaction } from '../../types/transaction.types'
 import type { Wallet } from '../../../wallet/types/wallet.types'
 
@@ -43,6 +45,14 @@ interface TransactionModalProps {
 const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
   const t = useT(import.meta.url)
   const isEdit = transaction !== undefined
+  const closeRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    closeRef.current?.focus()
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [onClose])
   const { data: wallets } = useWallets()
   const walletList: Wallet[] = wallets ?? []
 
@@ -63,7 +73,7 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
           wallet_id:    transaction.wallet_id,
           to_wallet_id: transaction.to_wallet_id ?? null,
           category_id:  transaction.category_id ?? null,
-          tag_ids:      transaction.tags.map(t => t.id),
+          tag_ids:      transaction.tags?.map(t => t.id) ?? [],
           notes:        transaction.notes ?? '',
         }
       : {
@@ -78,19 +88,18 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
   const selectedWalletId = watch('wallet_id')
   const selectedToWallet = watch('to_wallet_id')
   const currentLabel     = watch('label')
-  const lastAutoLabel    = useRef<string>('')
 
-  useEffect(() => {
-    if (selectedType !== 'transfer' || isEdit) return
-    const from = walletList.find(w => w.id === selectedWalletId)?.name
-    const to   = walletList.find(w => w.id === selectedToWallet)?.name
-    if (!from || !to) return
-    const autoLabel = `Transfert de ${from} vers ${to}`
-    if (!currentLabel || currentLabel === lastAutoLabel.current) {
-      setValue('label', autoLabel)
-      lastAutoLabel.current = autoLabel
-    }
-  }, [selectedType, selectedWalletId, selectedToWallet])
+  useAutoTransferLabel({
+    type:           selectedType,
+    walletId:       selectedWalletId,
+    toWalletId:     selectedToWallet,
+    currentLabel,
+    wallets:        walletList,
+    isEdit,
+    setValue,
+    transferPrefix: t('transfer_prefix'),
+    transferJoiner: t('transfer_joiner'),
+  })
 
   const onSubmit = (data: FormValues) => {
     if (isEdit) {
@@ -106,14 +115,21 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
       onClick={onClose}
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tx-modal-title"
         className="bg-card border border-border rounded-xl shadow-xl w-full max-w-lg p-6 m-4 max-h-[90vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-base font-semibold">
+          <h2 id="tx-modal-title" className="text-base font-semibold">
             {t(isEdit ? 'title_edit' : 'title_add')}
           </h2>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
+          <button
+            ref={closeRef}
+            onClick={onClose}
+            className="text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded"
+          >
             <X size={18} />
           </button>
         </div>
@@ -125,11 +141,10 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
             {(['expense', 'income', 'transfer'] as const).map(type => (
               <label key={type} className="flex-1">
                 <input type="radio" {...register('type')} value={type} className="sr-only" />
-                <div className={`h-9 flex items-center justify-center rounded-md border text-sm cursor-pointer transition-colors ${
-                  selectedType === type
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'border-input hover:bg-accent'
-                }`}>
+                <div className={cn(
+                  'h-9 flex items-center justify-center rounded-md border text-sm cursor-pointer transition-colors',
+                  selectedType === type ? 'bg-primary text-primary-foreground border-primary' : 'border-input hover:bg-accent',
+                )}>
                   {t(`type_${type}`)}
                 </div>
               </label>

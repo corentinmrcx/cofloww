@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Wallet as WalletIcon } from 'lucide-react'
 import {
   DndContext,
   closestCenter,
@@ -68,8 +69,10 @@ const WalletList = ({ wallets, onEditClick, onDeleteClick }: WalletListProps) =>
 
   if (items.length === 0) {
     return (
-      <div className="rounded-xl border border-border py-16 text-center text-sm text-muted-foreground">
-        {t('empty')}
+      <div className="flex flex-col items-center gap-2 rounded-xl border border-border py-16 text-muted-foreground">
+        <WalletIcon size={28} className="opacity-30" />
+        <p className="text-sm">{t('empty')}</p>
+        <p className="text-xs opacity-60">{t('empty_cta')}</p>
       </div>
     )
   }

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Camera, LogOut } from 'lucide-react'
+import { Separator } from '../../../../components/ui/separator'
 import { useAuth } from '../../../auth/hooks/useAuth'
 import { useUpdateProfile, useUpdatePassword, useUploadAvatar } from '../../hooks/useSettings'
 import { useLogout } from '../../../auth/hooks/useLogout'
@@ -82,7 +83,7 @@ const ProfileForm = () => {
         <p className="text-sm font-semibold">{t('photo_title')}</p>
         <div className="flex items-center gap-4">
           <div
-            className="relative w-16 h-16 rounded-full bg-muted flex items-center justify-center overflow-hidden cursor-pointer group"
+            className="relative size-16 rounded-full bg-muted flex items-center justify-center overflow-hidden cursor-pointer group"
             onClick={() => fileRef.current?.click()}
           >
             {avatarSrc ? (
@@ -147,7 +148,7 @@ const ProfileForm = () => {
           <button type="submit" disabled={savingProfile} className={BTN}>
             {savingProfile ? t('saving') : t('save')}
           </button>
-          {savedProfile && <p className="text-xs text-emerald-600 dark:text-emerald-400">{t('saved')}</p>}
+          {savedProfile && <p className="text-xs text-success">{t('saved')}</p>}
         </div>
       </form>
 
@@ -187,13 +188,14 @@ const ProfileForm = () => {
           <button type="submit" disabled={savingPwd} className={BTN}>
             {savingPwd ? t('updating_password') : t('update_password')}
           </button>
-          {savedPwd  && <p className="text-xs text-emerald-600 dark:text-emerald-400">{t('password_updated')}</p>}
+          {savedPwd  && <p className="text-xs text-success">{t('password_updated')}</p>}
           {pwdError  && <p className="text-xs text-destructive">{t('password_error')}</p>}
         </div>
       </form>
 
+      <Separator />
       {/* Déconnexion */}
-      <div className="pt-2 border-t border-border">
+      <div className="pt-2">
         <button
           type="button"
           onClick={() => logout()}

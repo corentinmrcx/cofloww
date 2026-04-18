@@ -3,17 +3,19 @@ import { useDebounce } from '../../../../hooks/useDebounce'
 import { useSetInvestmentPct } from '../../hooks/useSetInvestmentPct'
 import { cn } from '../../../../lib/utils'
 import { useFormatters } from '../../../../lib/format'
+import { useT } from '../../../../components/T'
 import { ICONS } from '../../../../components/IconPicker'
 import type { Wallet } from '../../../wallet/types/wallet.types'
 
 interface WalletInvestmentRowProps {
   wallet: Wallet
-  allocation?: number   // montant calculé par le serveur (source de vérité)
-  investable?: number   // montant investissable total, pour preview immédiat côté client
+  allocation?: number
+  investable?: number
   pasArrondi?: number
 }
 
 const WalletInvestmentRow = ({ wallet, allocation, investable, pasArrondi = 100 }: WalletInvestmentRowProps) => {
+  const t = useT(import.meta.url)
   const { formatAmountShort: fmtEuros } = useFormatters()
   const [pctInput, setPctInput] = useState(
     wallet.investment_target_pct != null && wallet.investment_target_pct > 0
@@ -41,7 +43,6 @@ const WalletInvestmentRow = ({ wallet, allocation, investable, pasArrondi = 100 
     }
   }, [debouncedPct]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Sync depuis le serveur sans écraser une saisie en cours
   useEffect(() => {
     const serverVal = wallet.investment_target_pct != null && wallet.investment_target_pct > 0
       ? String(wallet.investment_target_pct)
@@ -57,7 +58,6 @@ const WalletInvestmentRow = ({ wallet, allocation, investable, pasArrondi = 100 
   const hasTarget = (!isNaN(parsedPct) && parsedPct > 0)
     || (wallet.investment_target_pct != null && wallet.investment_target_pct > 0)
 
-  // Montant à afficher : serveur en priorité, sinon calcul client immédiat
   const localAmount = (investable != null && !isNaN(parsedPct) && parsedPct > 0)
     ? Math.floor(investable * parsedPct / 100 / pasArrondi) * pasArrondi
     : undefined
@@ -71,7 +71,7 @@ const WalletInvestmentRow = ({ wallet, allocation, investable, pasArrondi = 100 
       !hasTarget && 'opacity-40',
     )}>
       <div
-        className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+        className="size-8 rounded-lg flex items-center justify-center shrink-0"
         style={{ backgroundColor: wallet.color + '28' }}
       >
         {Icon
@@ -83,18 +83,17 @@ const WalletInvestmentRow = ({ wallet, allocation, investable, pasArrondi = 100 
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium truncate">{wallet.name}</p>
         <p className="text-xs text-muted-foreground tabular-nums">
-          Solde : {fmtEuros(wallet.balance)}
+          {t('balance')}{fmtEuros(wallet.balance)}
         </p>
       </div>
 
-      {/* Montant à verser — dès que l'utilisateur tape un %, calcul immédiat */}
       {hasTarget && displayAmount !== undefined && (
         <div className="text-right shrink-0 mr-1">
-          <p className="text-xs text-muted-foreground">à verser</p>
+          <p className="text-xs text-muted-foreground">{t('to_send')}</p>
           <p className={cn(
             'text-sm font-bold tabular-nums',
             displayAmount > 0
-              ? 'text-emerald-600 dark:text-emerald-400'
+              ? 'text-income'
               : 'text-muted-foreground',
           )}>
             {fmtEuros(displayAmount)}

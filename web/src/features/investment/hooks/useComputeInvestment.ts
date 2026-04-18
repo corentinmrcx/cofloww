@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import api from '../../../services/api'
+import { api } from '../../../services/api'
 import type { ComputeInvestmentParams, ComputeInvestmentResult } from '../types/investment.types'
 
 export const useComputeInvestment = (params: ComputeInvestmentParams) =>

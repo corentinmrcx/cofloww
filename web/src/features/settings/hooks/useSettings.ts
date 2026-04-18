@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import api from '../../../services/api'
+import { api } from '../../../services/api'
 
 export const useUpdateProfile = () => {
   const qc = useQueryClient()
@@ -48,7 +48,7 @@ export const useExportData = () =>
       a.href    = url
       a.download = `cofloww-export-${new Date().toISOString().slice(0, 10)}.json`
       a.click()
-      URL.revokeObjectURL(url)
+      setTimeout(() => URL.revokeObjectURL(url), 100)
     },
   })
 

@@ -3,6 +3,7 @@ import { ChevronRight } from 'lucide-react'
 import { ICONS } from '../../../../components/IconPicker'
 import { useT } from '../../../../components/T'
 import { useFormatters } from '../../../../lib/format'
+import { cn } from '../../../../lib/utils'
 import type { DashboardTransaction } from '../../types/dashboard.types'
 
 interface RecentTransactionsWidgetProps {
@@ -20,32 +21,33 @@ const RecentTransactionsWidget = ({ transactions }: RecentTransactionsWidgetProp
         <p className="text-sm font-semibold">{t('title')}</p>
         <button
           onClick={() => navigate('/transactions')}
-          className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-0.5 transition-colors"
+          aria-label={t('see_all_label')}
+          className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-0.5 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded"
         >
           {t('see_all')} <ChevronRight size={13} />
         </button>
       </div>
 
-      <div className="flex-1 flex flex-col justify-center divide-y divide-border">
+      <ul className="flex-1 flex flex-col justify-center divide-y divide-border">
         {transactions.length === 0 ? (
-          <p className="px-4 py-6 text-sm text-muted-foreground text-center">
+          <li className="px-4 py-6 text-sm text-muted-foreground text-center">
             {t('empty')}
-          </p>
+          </li>
         ) : (
           transactions.map(tx => {
             const Icon    = tx.category?.icon ? ICONS[tx.category.icon] : null
-            const catColor = tx.category?.color ?? '#94a3b8'
+            const catColor = tx.category?.color ?? 'var(--muted-foreground)'
             const isIncome = tx.type === 'income'
 
             return (
-              <div key={tx.id} className="flex items-center gap-3 px-4 py-2.5">
+              <li key={tx.id} className="flex items-center gap-3 px-4 py-2.5">
                 <div
-                  className="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
+                  className="size-7 rounded-md flex items-center justify-center shrink-0"
                   style={{ backgroundColor: catColor + '28' }}
                 >
                   {Icon
                     ? <Icon size={13} style={{ color: catColor }} />
-                    : <span className="w-2 h-2 rounded-full block" style={{ backgroundColor: catColor }} />
+                    : <span className="size-2 rounded-full block" style={{ backgroundColor: catColor }} />
                   }
                 </div>
 
@@ -56,20 +58,17 @@ const RecentTransactionsWidget = ({ transactions }: RecentTransactionsWidgetProp
                   </p>
                 </div>
 
-                <span className={`text-sm font-semibold tabular-nums shrink-0 ${
-                  isIncome
-                    ? 'text-emerald-600 dark:text-emerald-400'
-                    : tx.type === 'transfer'
-                      ? 'text-muted-foreground'
-                      : 'text-foreground'
-                }`}>
-                  {isIncome ? '+' : tx.type === 'expense' ? '−' : ''}{fmt(tx.amount)}
+                <span className={cn(
+                  'text-sm font-semibold tabular-nums shrink-0',
+                  isIncome ? 'text-income' : tx.type === 'transfer' ? 'text-muted-foreground' : 'text-foreground',
+                )}>
+                  {isIncome ? '+' : tx.type === 'expense' ? '−' : ''}{fmt(Math.abs(tx.amount))}
                 </span>
-              </div>
+              </li>
             )
           })
         )}
-      </div>
+      </ul>
     </div>
   )
 }

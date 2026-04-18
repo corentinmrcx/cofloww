@@ -1,10 +1,12 @@
 {
   "fr": {
-    "add":   "Ajouter un compte",
-    "empty": "Aucun compte pour l'instant."
+    "add":       "Ajouter un compte",
+    "empty":     "Aucun compte pour l'instant.",
+    "empty_cta": "Créez votre premier portefeuille"
   },
   "en": {
-    "add":   "Add account",
-    "empty": "No accounts yet."
+    "add":       "Add account",
+    "empty":     "No accounts yet.",
+    "empty_cta": "Create your first wallet"
   }
 }

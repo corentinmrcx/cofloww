@@ -29,7 +29,9 @@
     "amount_required": "Le montant doit être supérieur à 0",
     "wallet_required": "Le portefeuille est requis",
     "to_wallet_required": "Le portefeuille destinataire est requis",
-    "date_required": "La date est requise"
+    "date_required": "La date est requise",
+    "transfer_prefix": "Transfert de ",
+    "transfer_joiner": " vers "
   },
   "en": {
     "title_add": "New transaction",
@@ -61,6 +63,8 @@
     "amount_required": "Amount must be greater than 0",
     "wallet_required": "Wallet is required",
     "to_wallet_required": "Destination wallet is required",
-    "date_required": "Date is required"
+    "date_required": "Date is required",
+    "transfer_prefix": "Transfer from ",
+    "transfer_joiner": " to "
   }
 }

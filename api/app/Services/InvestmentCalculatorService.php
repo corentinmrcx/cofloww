@@ -20,11 +20,11 @@ class InvestmentCalculatorService
      */
     public function compute(
         Collection $pockets,
-        int $depenses,
-        int $soldeAvant,
-        int $salaire,
-        int $seuil,
-        int $pasArrondi,
+        int        $depenses,
+        int        $soldeAvant,
+        int        $salaire,
+        int        $seuil,
+        int        $pasArrondi,
     ): array {
         $disponible = $soldeAvant + $salaire;
         $investable = max(0, $disponible - $seuil - $depenses);

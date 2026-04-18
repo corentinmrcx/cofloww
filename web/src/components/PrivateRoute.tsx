@@ -9,4 +9,4 @@ const PrivateRoute = () => {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />
 }
 
-export default PrivateRoute
+export { PrivateRoute }

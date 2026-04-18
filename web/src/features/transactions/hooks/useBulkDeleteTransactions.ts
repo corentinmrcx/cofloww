@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import api from '../../../services/api'
+import { api } from '../../../services/api'
 
 export const useBulkDeleteTransactions = () => {
   const queryClient = useQueryClient()
@@ -7,6 +7,10 @@ export const useBulkDeleteTransactions = () => {
   return useMutation({
     mutationFn: (ids: string[]) =>
       api.post('/api/v1/transactions/bulk-delete', { ids }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['transactions'] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['transactions'] })
+      queryClient.invalidateQueries({ queryKey: ['wallets'] })
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+    },
   })
 }

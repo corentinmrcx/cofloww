@@ -7,6 +7,7 @@ import { useToggleRecurringRule } from '../features/recurring/hooks/useToggleRec
 import { useDeleteRecurringRule } from '../features/recurring/hooks/useDeleteRecurringRule'
 import { useT } from '../components/T'
 import { useFormatters } from '../lib/format'
+import { cn } from '../lib/utils'
 import type { RecurringRule } from '../features/recurring/types/recurring.types'
 
 const MONTHLY_MULTIPLIERS: Record<string, number> = {
@@ -33,8 +34,8 @@ const RecurringRulesPage = () => {
   }, 0)
 
   const forecastColor = monthlyForecast >= 0
-    ? 'text-emerald-600 dark:text-emerald-400'
-    : 'text-destructive'
+    ? 'text-income'
+    : 'text-expense'
 
   return (
     <div className="flex flex-col gap-4">
@@ -42,7 +43,7 @@ const RecurringRulesPage = () => {
         <h1 className="text-xl font-semibold">{t('recurring_title')}</h1>
         <button
           onClick={() => setModalRule('new')}
-          className="flex items-center justify-center w-9 h-9 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shrink-0"
+          className="flex items-center justify-center size-9 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shrink-0"
           aria-label={t('recurring_new')}
         >
           <Plus size={18} />
@@ -54,7 +55,7 @@ const RecurringRulesPage = () => {
           <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
             {t('recurring_forecast')}
           </p>
-          <p className={`text-2xl font-bold tabular-nums mt-0.5 ${forecastColor}`}>
+          <p className={cn('text-2xl font-bold tabular-nums mt-0.5', forecastColor)}>
             {monthlyForecast >= 0 ? '+' : ''}{formatAmount(monthlyForecast)}
           </p>
         </div>
@@ -86,4 +87,4 @@ const RecurringRulesPage = () => {
   )
 }
 
-export default RecurringRulesPage
+export { RecurringRulesPage }

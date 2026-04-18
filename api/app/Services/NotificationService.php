@@ -72,7 +72,7 @@ class NotificationService
             $alreadyNotified = AppNotification::withoutGlobalScopes()
                 ->where('user_id', $userId)
                 ->where('type', 'budget_alert')
-                ->whereJsonContains('data->budget_id', $budget->id)
+                ->whereRaw("(data->>'budget_id')::int = ?", [$budget->id])
                 ->whereMonth('created_at', $now->month)
                 ->whereYear('created_at', $now->year)
                 ->exists();

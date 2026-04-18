@@ -9,6 +9,7 @@ import { useT } from '../components/T'
 import { useLangStore } from '../stores/langStore'
 import { useFormatters } from '../lib/format'
 import { usePreferencesStore } from '../stores/preferencesStore'
+import { cn } from '../lib/utils'
 
 const CURRENCY_SYMBOLS: Record<string, string> = {
   EUR: '€', USD: '$', GBP: '£', CHF: 'Fr', CAD: 'CA$',
@@ -153,7 +154,7 @@ const InvestmentPage = () => {
                       field.onChange(isNaN(v) ? 0 : Math.round(v * 100))
                     }}
                     placeholder="0"
-                    className={`${INPUT_CLASS} pr-8`}
+                    className={cn(INPUT_CLASS, 'pr-8')}
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">{currencySymbol}</span>
                 </div>
@@ -215,7 +216,7 @@ const InvestmentPage = () => {
               <p className="text-sm font-semibold">{t('invest_to_invest')}</p>
               <p className="text-xs text-muted-foreground">{t('invest_distribute')}</p>
             </div>
-            <span className="text-2xl font-bold tabular-nums text-emerald-600 dark:text-emerald-400">
+            <span className="text-2xl font-bold tabular-nums text-income">
               {fmt(compute.investable)}
             </span>
           </div>
@@ -236,7 +237,7 @@ const InvestmentPage = () => {
             <p className="text-xs text-muted-foreground">{t('invest_pct_hint')}</p>
           </div>
           {totalPct > 0 && (
-            <span className={`text-sm font-semibold tabular-nums ${pctOver ? 'text-destructive' : 'text-muted-foreground'}`}>
+            <span className={cn('text-sm font-semibold tabular-nums', pctOver ? 'text-destructive' : 'text-muted-foreground')}>
               {totalPct % 1 === 0 ? totalPct : totalPct.toFixed(1)}%
               {pctOver && ' ⚠'}
             </span>
@@ -265,4 +266,4 @@ const InvestmentPage = () => {
   )
 }
 
-export default InvestmentPage
+export { InvestmentPage }

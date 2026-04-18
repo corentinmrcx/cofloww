@@ -2,6 +2,7 @@ import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { useT } from '../../../../components/T'
 import { useLangStore } from '../../../../stores/langStore'
 import { useFormatters } from '../../../../lib/format'
+import { cn } from '../../../../lib/utils'
 import type { MonthSummary } from '../../types/dashboard.types'
 
 const Trend = ({ prev, current, positiveIsGood = true }: { prev: number; current: number; positiveIsGood?: boolean }) => {
@@ -12,7 +13,7 @@ const Trend = ({ prev, current, positiveIsGood = true }: { prev: number; current
   const good  = positiveIsGood ? delta > 0 : delta < 0
   const Icon  = delta > 0 ? TrendingUp : TrendingDown
   return (
-    <span className={`inline-flex items-center gap-0.5 text-xs font-medium ${good ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
+    <span className={cn('inline-flex items-center gap-0.5 text-xs font-medium', good ? 'text-income' : 'text-expense')}>
       <Icon size={11} />
       {Math.abs(pct)}%
     </span>
@@ -44,7 +45,7 @@ const MonthSummaryWidget = ({ current, prev }: MonthSummaryWidgetProps) => {
           {/* Revenus */}
           <div className="flex flex-col items-center gap-2 px-4">
             <p className="text-sm font-medium text-muted-foreground">{t('income')}</p>
-            <p className="text-4xl font-bold tabular-nums text-emerald-600 dark:text-emerald-400">
+            <p className="text-4xl font-bold tabular-nums text-income">
               {fmt(current.income)}
             </p>
             <Trend prev={prev.income} current={current.income} positiveIsGood />
@@ -53,7 +54,7 @@ const MonthSummaryWidget = ({ current, prev }: MonthSummaryWidgetProps) => {
           {/* Dépenses */}
           <div className="flex flex-col items-center gap-2 px-4">
             <p className="text-sm font-medium text-muted-foreground">{t('expenses')}</p>
-            <p className="text-4xl font-bold tabular-nums text-red-500">
+            <p className="text-4xl font-bold tabular-nums text-expense">
               {fmt(current.expenses)}
             </p>
             <Trend prev={prev.expenses} current={current.expenses} positiveIsGood={false} />

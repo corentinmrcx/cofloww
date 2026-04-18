@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react'
 import { ThemeContext, type Theme } from '../../hooks/useTheme'
 
 function getInitialTheme(): Theme {
-  const stored = localStorage.getItem('theme')
-  if (stored === 'light' || stored === 'dark') return stored
+  try {
+    const stored = localStorage.getItem('theme')
+    if (stored === 'light' || stored === 'dark') return stored
+  } catch {}
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
@@ -17,7 +19,7 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     } else {
       root.classList.remove('dark')
     }
-    localStorage.setItem('theme', theme)
+    try { localStorage.setItem('theme', theme) } catch {}
   }, [theme])
 
   const toggleTheme = () => setTheme(t => (t === 'dark' ? 'light' : 'dark'))
@@ -30,4 +32,4 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-export default ThemeProvider
+export { ThemeProvider }

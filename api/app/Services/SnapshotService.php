@@ -106,8 +106,10 @@ class SnapshotService
     {
         $prev = Carbon::now()->subMonth();
 
-        User::query()->each(function (User $user) use ($prev) {
-            $this->persistForUser($user->id, $prev->year, $prev->month);
+        User::query()->chunk(100, function ($users) use ($prev) {
+            foreach ($users as $user) {
+                $this->persistForUser($user->id, $prev->year, $prev->month);
+            }
         });
     }
 

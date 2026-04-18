@@ -6,7 +6,7 @@ type FormProps = {
 }
 
 const FormHeader = ({ children }: { children: ReactNode }) => (
-  <div className="mb-8 space-y-1">
+  <div className="mb-8 flex flex-col gap-1">
     {children}
   </div>
 )
@@ -48,4 +48,4 @@ const Form = Object.assign(
   },
 )
 
-export default Form
+export { Form }

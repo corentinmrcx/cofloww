@@ -49,7 +49,7 @@ const TransactionsPage = () => {
           />
           <button
             onClick={() => setShowModal(true)}
-            className="flex items-center justify-center w-9 h-9 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shrink-0"
+            className="flex items-center justify-center size-9 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shrink-0"
             aria-label={t('tx_new')}
           >
             <Plus size={18} />

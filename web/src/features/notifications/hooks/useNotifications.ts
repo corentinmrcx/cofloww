@@ -1,12 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import api from '../../../services/api'
+import { api } from '../../../services/api'
 import type { NotificationsResponse } from '../types/notification.types'
 
 export const useNotifications = () =>
   useQuery<NotificationsResponse>({
     queryKey: ['notifications'],
     queryFn: () => api.get<NotificationsResponse>('/api/v1/notifications').then(r => r.data),
-    refetchInterval: 60 * 1000, // poll toutes les minutes
+    refetchInterval: 60 * 1000,
+    refetchIntervalInBackground: false,
     staleTime: 30 * 1000,
   })
 

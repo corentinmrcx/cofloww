@@ -2,18 +2,22 @@ import { Pencil, Trash2, AlertTriangle } from 'lucide-react'
 import { useT } from '../../../../components/T'
 import { ActionMenu } from '../../../../components/ActionMenu'
 import { useFormatters } from '../../../../lib/format'
+import { cn } from '../../../../lib/utils'
 import type { Budget } from '../../types/budget.types'
 
+const BUDGET_DANGER_THRESHOLD  = 90
+const BUDGET_WARNING_THRESHOLD = 70
+
 const barColor = (pct: number) => {
-  if (pct >= 90) return 'bg-destructive'
-  if (pct >= 70) return 'bg-orange-400'
-  return 'bg-emerald-500'
+  if (pct >= BUDGET_DANGER_THRESHOLD)  return 'bg-destructive'
+  if (pct >= BUDGET_WARNING_THRESHOLD) return 'bg-warning'
+  return 'bg-income'
 }
 
 const pctTextColor = (pct: number) => {
-  if (pct >= 90) return 'text-destructive'
-  if (pct >= 70) return 'text-orange-500'
-  return 'text-emerald-600 dark:text-emerald-400'
+  if (pct >= BUDGET_DANGER_THRESHOLD)  return 'text-destructive'
+  if (pct >= BUDGET_WARNING_THRESHOLD) return 'text-warning'
+  return 'text-income'
 }
 
 interface BudgetCardProps {
@@ -36,7 +40,7 @@ const BudgetCard = ({ budget, onEdit, onDelete }: BudgetCardProps) => {
             <span key={c.id} className="flex items-center gap-1 text-sm font-medium">
               <span
                 className="h-2.5 w-2.5 rounded-full shrink-0"
-                style={{ backgroundColor: c.color ?? '#94A3B8' }}
+                style={{ backgroundColor: c.color ?? 'var(--muted-foreground)' }}
               />
               {c.name}
             </span>
@@ -50,7 +54,7 @@ const BudgetCard = ({ budget, onEdit, onDelete }: BudgetCardProps) => {
         </div>
 
         <div className="flex items-center gap-1 shrink-0">
-          <span className={`text-sm font-semibold tabular-nums ${pctTextColor(budget.pct_used)}`}>
+          <span className={cn('text-sm font-semibold tabular-nums', pctTextColor(budget.pct_used))}>
             {budget.pct_used}%
           </span>
           <ActionMenu
@@ -65,7 +69,11 @@ const BudgetCard = ({ budget, onEdit, onDelete }: BudgetCardProps) => {
       {/* Barre de progression */}
       <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
         <div
-          className={`h-full rounded-full transition-all ${barColor(budget.pct_used)}`}
+          role="progressbar"
+          aria-valuenow={pct}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          className={cn('h-full rounded-full transition-all', barColor(budget.pct_used))}
           style={{ width: `${pct}%` }}
         />
       </div>

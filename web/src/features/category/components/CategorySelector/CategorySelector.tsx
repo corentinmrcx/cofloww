@@ -88,23 +88,25 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
       <button
         type="button"
         onClick={() => setOpen(!open)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
         className={cn(
-          'flex h-9 w-full items-center gap-2 rounded-md border border-input bg-background px-3 text-sm transition-colors hover:bg-accent',
+          'flex h-9 w-full items-center gap-2 rounded-md border border-input bg-background px-3 text-sm transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
           !selected && 'text-muted-foreground',
         )}
       >
         {selected ? (
           <>
             <span
-              className="h-3 w-3 shrink-0 rounded-full"
-              style={{ backgroundColor: selected.color ?? '#94A3B8' }}
+              className="size-3 shrink-0 rounded-full"
+              style={{ backgroundColor: selected.color ?? 'var(--muted-foreground)' }}
             />
             <span className="flex-1 truncate text-left text-foreground">{selected.name}</span>
           </>
         ) : (
           <span className="flex-1 text-left">{t('placeholder')}</span>
         )}
-        <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
+        <ChevronDown className="size-4 shrink-0 opacity-50" />
       </button>
 
       {open && (
@@ -112,7 +114,7 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
           {view === 'list' ? (
             <>
               <div className="flex items-center gap-2 border-b border-border px-3 py-2">
-                <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <Search className="size-4 shrink-0 text-muted-foreground" />
                 <input
                   ref={searchRef}
                   value={search}
@@ -145,11 +147,11 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
                     className="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-accent"
                   >
                     <span
-                      className="h-3 w-3 shrink-0 rounded-full"
-                      style={{ backgroundColor: category.color ?? '#94A3B8' }}
+                      className="size-3 shrink-0 rounded-full"
+                      style={{ backgroundColor: category.color ?? 'var(--muted-foreground)' }}
                     />
                     <span className="flex-1 text-left">{category.name}</span>
-                    {category.id === value && <Check className="h-4 w-4 text-primary" />}
+                    {category.id === value && <Check className="size-4 text-primary" />}
                   </button>
                 ))}
 
@@ -159,7 +161,7 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
                     onClick={openCreate}
                     className="flex w-full items-center gap-2 border-t border-border px-3 py-2 text-sm text-primary hover:bg-accent"
                   >
-                    <Plus className="h-4 w-4" />
+                    <Plus className="size-4" />
                     <span>
                       {t('create_label')} &quot;{search}&quot;
                     </span>
@@ -168,13 +170,13 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
               </div>
             </>
           ) : (
-            <div className="p-3 space-y-3">
+            <div className="p-3 flex flex-col gap-3">
               <button
                 type="button"
                 onClick={() => setView('list')}
                 className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
               >
-                <ArrowLeft className="h-4 w-4" />
+                <ArrowLeft className="size-4" />
                 {t('create_title')}
               </button>
 

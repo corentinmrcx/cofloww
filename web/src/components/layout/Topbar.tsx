@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router'
-import ThemeToggle from '../ThemeToggle'
+import { ThemeToggle } from '../ThemeToggle'
 import { NotificationBell } from '../../features/notifications/components/NotificationBell'
 import { useT } from '../T'
 
@@ -30,4 +30,4 @@ const Topbar = () => {
   )
 }
 
-export default Topbar
+export { Topbar }

@@ -35,8 +35,9 @@ export const useFormatters = () => {
    * Date courte pour les listes (ex : 3 avr. / Apr 3 / 2024-04-03)
    */
   const formatDate = (iso: string): string => {
-    const d = new Date(iso)
-    if (dateFormat === 'YYYY-MM-DD') return iso.slice(0, 10)
+    const dateOnly = iso.slice(0, 10)
+    const d = new Date(dateOnly + 'T00:00:00')
+    if (dateFormat === 'YYYY-MM-DD') return dateOnly
     if (dateFormat === 'MM/DD/YYYY') return d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
     return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
   }
@@ -45,7 +46,7 @@ export const useFormatters = () => {
    * Date longue complète selon le format choisi (ex : 03/04/2024)
    */
   const formatDateFull = (iso: string): string => {
-    const d   = new Date(iso)
+    const d   = new Date(iso.slice(0, 10) + 'T00:00:00')
     const day = String(d.getDate()).padStart(2, '0')
     const mon = String(d.getMonth() + 1).padStart(2, '0')
     const yr  = d.getFullYear()

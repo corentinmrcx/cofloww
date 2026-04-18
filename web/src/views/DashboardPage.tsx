@@ -10,9 +10,11 @@ import { RecentTransactionsWidget } from '../features/dashboard/components/Recen
 import { MiniBarChart }             from '../features/dashboard/components/MiniBarChart'
 import { TransactionModal }         from '../features/transactions/components/TransactionModal'
 import { useT } from '../components/T'
+import { Skeleton } from '../components/ui/skeleton'
+import { cn } from '../lib/utils'
 
 const SkeletonCard = ({ className = '' }: { className?: string }) => (
-  <div className={`bg-card border border-border rounded-xl animate-pulse ${className}`} />
+  <Skeleton className={cn('rounded-xl', className)} />
 )
 
 // Wrapper qui rend toute la card cliquable.
@@ -27,7 +29,7 @@ const CardLink = ({ to, children, className = '' }: { to: string; children: Reac
   }
   return (
     <div
-      className={`cursor-pointer rounded-xl hover:shadow-md transition-shadow ${className}`}
+      className={cn('cursor-pointer rounded-xl hover:shadow-md transition-shadow', className)}
       onClick={handleClick}
     >
       {children}
@@ -97,7 +99,7 @@ const DashboardPage = () => {
                 to="/stats"
                 className="flex items-center gap-4 bg-card border border-border rounded-xl p-4 hover:shadow-md transition-shadow"
               >
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <div className="size-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                   <BarChart2 size={20} className="text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -118,4 +120,4 @@ const DashboardPage = () => {
   )
 }
 
-export default DashboardPage
+export { DashboardPage }

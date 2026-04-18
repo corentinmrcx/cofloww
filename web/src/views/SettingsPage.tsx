@@ -3,6 +3,7 @@ import { ProfileForm }     from '../features/settings/components/ProfileForm'
 import { PreferencesForm } from '../features/settings/components/PreferencesForm'
 import { DataPanel }       from '../features/settings/components/DataPanel'
 import { useT } from '../components/T'
+import { cn } from '../lib/utils'
 
 type Tab = 'profil' | 'preferences' | 'donnees'
 
@@ -26,11 +27,10 @@ const SettingsPage = () => {
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
-            className={`flex-1 h-8 rounded-md text-sm font-medium transition-colors ${
-              tab === t.id
-                ? 'bg-background text-foreground shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
+            className={cn(
+              'flex-1 h-8 rounded-md text-sm font-medium transition-colors',
+              tab === t.id ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground',
+            )}
           >
             {t.label}
           </button>
@@ -47,4 +47,4 @@ const SettingsPage = () => {
   )
 }
 
-export default SettingsPage
+export { SettingsPage }

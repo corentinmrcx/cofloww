@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import api from '../../../services/api'
+import { api } from '../../../services/api'
 import type { UpdateBudgetPayload, Budget } from '../types/budget.types'
 
 export const useUpdateBudget = (id: string) => {

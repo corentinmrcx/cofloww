@@ -2,6 +2,18 @@ import { useState, useMemo } from 'react'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
 import { useExpensesByCategory } from '../../hooks/useExpensesByCategory'
 import { useFormatters } from '../../../../lib/format'
+import { useT } from '../../../../components/T'
+
+interface TooltipPayloadItem {
+  name: string
+  value: number
+}
+
+interface CustomTooltipProps {
+  active?: boolean
+  payload?: TooltipPayloadItem[]
+  fmt: (n: number) => string
+}
 
 const buildMonthOptions = (numLocale: string) => {
   const opts: { label: string; from: string; to: string }[] = []
@@ -21,22 +33,23 @@ const buildMonthOptions = (numLocale: string) => {
   return opts
 }
 
+const CustomTooltip = ({ active, payload, fmt }: CustomTooltipProps) => {
+  if (!active || !payload?.length) return null
+  const { name, value } = payload[0]
+  return (
+    <div className="bg-popover border border-border rounded-lg px-3 py-2 text-sm shadow-md">
+      <p className="font-medium text-foreground">{name}</p>
+      <p className="text-muted-foreground">{fmt(value)}</p>
+    </div>
+  )
+}
+
 const CategoryDonut = () => {
   const [monthIdx, setMonthIdx] = useState(0)
+  const t = useT(import.meta.url)
   const { formatAmountShort: fmt, numLocale } = useFormatters()
   const MONTH_OPTIONS = useMemo(() => buildMonthOptions(numLocale), [numLocale])
   const selected = MONTH_OPTIONS[monthIdx]
-
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (!active || !payload?.length) return null
-    const { name, value } = payload[0]
-    return (
-      <div className="bg-popover border border-border rounded-lg px-3 py-2 text-sm shadow-md">
-        <p className="font-medium text-foreground">{name}</p>
-        <p className="text-muted-foreground">{fmt(value)}</p>
-      </div>
-    )
-  }
 
   const { data = [], isLoading } = useExpensesByCategory(selected.from, selected.to)
 
@@ -46,8 +59,8 @@ const CategoryDonut = () => {
     <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-semibold">Dépenses par catégorie</p>
-          <p className="text-xs text-muted-foreground">Répartition mensuelle</p>
+          <p className="text-sm font-semibold">{t('title')}</p>
+          <p className="text-xs text-muted-foreground">{t('subtitle')}</p>
         </div>
         <select
           value={monthIdx}
@@ -62,11 +75,11 @@ const CategoryDonut = () => {
 
       {isLoading ? (
         <div className="h-52 flex items-center justify-center text-sm text-muted-foreground">
-          Chargement…
+          {t('loading')}
         </div>
       ) : data.length === 0 ? (
         <div className="h-52 flex items-center justify-center text-sm text-muted-foreground">
-          Aucune dépense ce mois
+          {t('empty')}
         </div>
       ) : (
         <>
@@ -87,12 +100,11 @@ const CategoryDonut = () => {
                     <Cell key={cat.category_id ?? i} fill={cat.color} />
                   ))}
                 </Pie>
-                <Tooltip content={<CustomTooltip />} />
+                <Tooltip content={<CustomTooltip fmt={fmt} />} />
               </PieChart>
             </ResponsiveContainer>
           </div>
 
-          {/* Tableau détaillé */}
           <div className="flex flex-col divide-y divide-border">
             {data.map((cat, i) => {
               const pct = total > 0 ? (cat.amount / total * 100) : 0
@@ -114,7 +126,7 @@ const CategoryDonut = () => {
             })}
             <div className="flex items-center gap-3 py-2.5">
               <span className="w-2.5 h-2.5 shrink-0" />
-              <span className="flex-1 text-sm font-semibold">Total</span>
+              <span className="flex-1 text-sm font-semibold">{t('total')}</span>
               <span className="text-xs text-muted-foreground w-10" />
               <span className="text-sm font-bold tabular-nums w-24 text-right">{fmt(total)}</span>
             </div>

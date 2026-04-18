@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router'
-import api from '../../../services/api'
+import { api } from '../../../services/api'
 
 export const useLogout = () => {
   const queryClient = useQueryClient()
@@ -10,6 +10,10 @@ export const useLogout = () => {
     mutationFn: () => api.post('/logout'),
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ['auth'] })
+      navigate('/login')
+    },
+    onError: () => {
+      queryClient.clear()
       navigate('/login')
     },
   })

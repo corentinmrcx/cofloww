@@ -1,8 +1,9 @@
-import { Pencil, Trash2, PauseCircle, PlayCircle } from 'lucide-react'
+import { Pencil, Trash2, PauseCircle, PlayCircle, Repeat2 } from 'lucide-react'
 import { useT } from '../../../../components/T'
 import { List } from '../../../../components/List'
 import { ActionMenu } from '../../../../components/ActionMenu'
 import { useFormatters } from '../../../../lib/format'
+import { cn } from '../../../../lib/utils'
 import type { RecurringRule } from '../../types/recurring.types'
 
 const FREQUENCY_KEYS = {
@@ -31,11 +32,10 @@ const RecurringRuleRow = ({ rule, onEdit, onToggle, onDelete }: RecurringRuleRow
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium truncate">{rule.label}</span>
           <span
-            className={`shrink-0 text-xs px-1.5 py-0.5 rounded-full font-medium ${
-              rule.is_active
-                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
-                : 'bg-muted text-muted-foreground'
-            }`}
+            className={cn(
+              'shrink-0 text-xs px-1.5 py-0.5 rounded-full font-medium',
+              rule.is_active ? 'bg-income/10 text-income' : 'bg-muted text-muted-foreground',
+            )}
           >
             {t(rule.is_active ? 'active' : 'inactive')}
           </span>
@@ -57,9 +57,7 @@ const RecurringRuleRow = ({ rule, onEdit, onToggle, onDelete }: RecurringRuleRow
       </div>
 
       <span
-        className={`text-sm font-semibold tabular-nums shrink-0 ${
-          rule.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-destructive'
-        }`}
+        className={cn('text-sm font-semibold tabular-nums shrink-0', rule.type === 'income' ? 'text-income' : 'text-expense')}
       >
         {rule.type === 'income' ? '+' : '-'}{amountDisplay}
       </span>
@@ -91,8 +89,10 @@ const RecurringRuleList = ({ rules, onEditClick, onToggleClick, onDeleteClick }:
 
   if (rules.length === 0) {
     return (
-      <div className="rounded-xl border border-border py-16 text-center text-sm text-muted-foreground">
-        {t('empty')}
+      <div className="flex flex-col items-center gap-2 rounded-xl border border-border py-16 text-muted-foreground">
+        <Repeat2 size={28} className="opacity-30" />
+        <p className="text-sm">{t('empty')}</p>
+        <p className="text-xs opacity-60">{t('empty_cta')}</p>
       </div>
     )
   }

@@ -10,10 +10,12 @@ import { ActionMenu } from '../components/ActionMenu'
 import { ICONS } from '../components/IconPicker'
 import { TYPE_DEFAULT_ICONS } from '../features/wallet/lib/wallet-icons'
 import { useFormatters } from '../lib/format'
+import { useT } from '../components/T'
 
 const WalletDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const t = useT(import.meta.url)
   const { data: wallet, isPending: walletPending } = useWallet(id ?? '')
   const { mutate: deleteWallet } = useDeleteWallet()
   const { formatAmount: formatBalance } = useFormatters()
@@ -27,11 +29,11 @@ const WalletDetailPage = () => {
   })
 
   if (walletPending) {
-    return <div className="text-sm text-muted-foreground p-6">Chargement…</div>
+    return <div className="text-sm text-muted-foreground p-6">{t('wallet_detail_loading')}</div>
   }
 
   if (!wallet) {
-    return <div className="text-sm text-muted-foreground p-6">Portefeuille introuvable.</div>
+    return <div className="text-sm text-muted-foreground p-6">{t('wallet_detail_not_found')}</div>
   }
 
   const Icon = (wallet.icon && ICONS[wallet.icon]) || TYPE_DEFAULT_ICONS[wallet.type]
@@ -50,13 +52,13 @@ const WalletDetailPage = () => {
           className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ChevronLeft size={16} />
-          Portefeuilles
+          {t('wallet_detail_back')}
         </Link>
 
         <ActionMenu
           items={[
-            { label: 'Modifier',  icon: Pencil,  onClick: () => setShowEdit(true) },
-            { label: 'Archiver',  icon: Archive, onClick: handleArchive, destructive: true },
+            { label: t('wallet_detail_edit'),    icon: Pencil,  onClick: () => setShowEdit(true) },
+            { label: t('wallet_detail_archive'),  icon: Archive, onClick: handleArchive, destructive: true },
           ]}
         />
       </div>
@@ -64,7 +66,7 @@ const WalletDetailPage = () => {
       {/* Hero — solde */}
       <div className="bg-card border border-border rounded-xl p-6 flex items-center gap-4">
         <div
-          className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+          className="size-12 rounded-xl flex items-center justify-center shrink-0"
           style={{ backgroundColor: wallet.color + '28' }}
         >
           <Icon size={22} style={{ color: wallet.color }} />
@@ -78,7 +80,7 @@ const WalletDetailPage = () => {
         </div>
 
         <div className="text-right shrink-0">
-          <p className="text-xs text-muted-foreground mb-0.5">Solde</p>
+          <p className="text-xs text-muted-foreground mb-0.5">{t('wallet_detail_balance')}</p>
           <p className="text-2xl font-bold tabular-nums">{formatBalance(wallet.balance)}</p>
         </div>
       </div>
@@ -86,7 +88,7 @@ const WalletDetailPage = () => {
       {/* Transactions */}
       <div className="bg-card border border-border rounded-xl overflow-hidden">
         <div className="px-4 pt-4 pb-2">
-          <p className="text-sm font-semibold">Transactions</p>
+          <p className="text-sm font-semibold">{t('wallet_detail_transactions')}</p>
         </div>
         <div className="px-2">
           <TransactionTable
@@ -105,4 +107,4 @@ const WalletDetailPage = () => {
   )
 }
 
-export default WalletDetailPage
+export { WalletDetailPage }

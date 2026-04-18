@@ -32,6 +32,7 @@ const Button = ({
 }: ButtonProps) => {
   return (
     <button
+      aria-disabled={props.disabled}
       className={cn(
         'rounded-md font-medium transition-colors disabled:opacity-50',
         variantClasses[variant],

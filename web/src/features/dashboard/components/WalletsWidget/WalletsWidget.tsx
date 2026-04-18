@@ -45,7 +45,8 @@ const WalletsWidget = ({ wallets }: WalletsWidgetProps) => {
         <p className="text-sm font-semibold">{t('title')}</p>
         <button
           onClick={() => navigate('/wallets')}
-          className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-0.5 transition-colors"
+          aria-label={t('see_all_label')}
+          className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-0.5 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded"
         >
           {t('see_all')} <ChevronRight size={13} />
         </button>
@@ -61,15 +62,15 @@ const WalletsWidget = ({ wallets }: WalletsWidgetProps) => {
               <button
                 key={wallet.id}
                 onClick={() => navigate(`/wallets/${wallet.id}`)}
-                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/40 transition-colors text-left"
+                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/40 transition-colors text-left focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-lg"
               >
                 <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                  style={{ backgroundColor: (wallet.color ?? '#94a3b8') + '28' }}
+                  className="size-8 rounded-lg flex items-center justify-center shrink-0"
+                  style={{ backgroundColor: (wallet.color ?? 'var(--muted-foreground)') + '28' }}
                 >
                   {Icon
-                    ? <Icon size={15} style={{ color: wallet.color ?? '#94a3b8' }} />
-                    : <span className="w-2.5 h-2.5 rounded-full block" style={{ backgroundColor: wallet.color ?? '#94a3b8' }} />
+                    ? <Icon size={15} style={{ color: wallet.color ?? 'var(--muted-foreground)' }} />
+                    : <span className="w-2.5 h-2.5 rounded-full block" style={{ backgroundColor: wallet.color ?? 'var(--muted-foreground)' }} />
                   }
                 </div>
 
@@ -83,7 +84,7 @@ const WalletsWidget = ({ wallets }: WalletsWidgetProps) => {
                 {wallet.sparkline.length > 1 && (
                   <Sparkline
                     data={wallet.sparkline}
-                    color={wallet.color ?? '#10b981'}
+                    color={wallet.color ?? 'var(--income)'}
                   />
                 )}
               </button>

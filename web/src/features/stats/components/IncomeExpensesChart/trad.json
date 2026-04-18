@@ -1,0 +1,26 @@
+{
+  "fr": {
+    "title":      "Revenus vs Dépenses",
+    "subtitle":   "Comparaison mensuelle",
+    "loading":    "Chargement…",
+    "income":     "Revenus",
+    "expenses":   "Dépenses",
+    "net":        "Net",
+    "period_3m":  "3 mois",
+    "period_6m":  "6 mois",
+    "period_12m": "1 an",
+    "period_24m": "2 ans"
+  },
+  "en": {
+    "title":      "Income vs Expenses",
+    "subtitle":   "Monthly comparison",
+    "loading":    "Loading…",
+    "income":     "Income",
+    "expenses":   "Expenses",
+    "net":        "Net",
+    "period_3m":  "3 months",
+    "period_6m":  "6 months",
+    "period_12m": "1 year",
+    "period_24m": "2 years"
+  }
+}

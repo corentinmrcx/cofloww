@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Pencil, Trash2 } from 'lucide-react'
+import { memo, useState } from 'react'
+import { Pencil, Trash2, ArrowUpDown } from 'lucide-react'
 import { cn } from '../../../../lib/utils'
 import { useFormatters } from '../../../../lib/format'
 import { useT } from '../../../../components/T/T'
@@ -9,6 +9,15 @@ import { List } from '../../../../components/List'
 import { TransactionModal } from '../TransactionModal'
 import { TransactionDetail } from '../TransactionDetail'
 import { useDeleteTransaction } from '../../hooks/useDeleteTransaction'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '../../../../components/ui/alert-dialog'
 import type { Transaction, PaginatedTransactions } from '../../types/transaction.types'
 
 const MODULE_URL = import.meta.url
@@ -28,20 +37,23 @@ interface TransactionItemProps {
   onDelete: () => void
 }
 
-const TransactionItem = ({ tx, t, onOpen, onEdit, onDelete }: TransactionItemProps) => {
+const TransactionItem = memo(({ tx, t, onOpen, onEdit, onDelete }: TransactionItemProps) => {
   const { formatAmount, formatDate } = useFormatters()
   const isIncome = tx.type === 'income'
   const isPending = tx.status === 'pending'
 
   return (
     <div
-      className="flex items-center gap-3 px-4 py-3 hover:bg-muted/30 transition-colors cursor-pointer"
+      role="button"
+      tabIndex={0}
+      className="flex items-center gap-3 px-4 py-3 hover:bg-muted/30 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-lg"
       onClick={onOpen}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen() } }}
     >
       {/* Accent bar */}
       <div className={cn(
         'w-1 self-stretch rounded-full shrink-0',
-        isIncome ? 'bg-green-500' : tx.type === 'transfer' ? 'bg-blue-400' : 'bg-red-400',
+        isIncome ? 'bg-income' : tx.type === 'transfer' ? 'bg-transfer' : 'bg-expense',
       )} />
 
       {/* Main info */}
@@ -49,7 +61,7 @@ const TransactionItem = ({ tx, t, onOpen, onEdit, onDelete }: TransactionItemPro
         <div className="flex items-center gap-1.5">
           <p className="text-sm font-medium truncate">{tx.label}</p>
           {isPending && (
-            <span className="shrink-0 inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium bg-yellow-500/10 text-yellow-600 dark:text-yellow-400">
+            <span className="shrink-0 inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium bg-warning/10 text-warning">
               {t('status_pending')}
             </span>
           )}
@@ -66,7 +78,7 @@ const TransactionItem = ({ tx, t, onOpen, onEdit, onDelete }: TransactionItemPro
       <div className="flex flex-col items-end gap-1 shrink-0">
         <span className={cn(
           'text-sm font-semibold tabular-nums',
-          isIncome ? 'text-green-600 dark:text-green-400' : 'text-foreground',
+          isIncome ? 'text-income' : 'text-foreground',
         )}>
           {isIncome ? '+' : '−'}{formatAmount(Math.abs(tx.amount))}
         </span>
@@ -74,8 +86,8 @@ const TransactionItem = ({ tx, t, onOpen, onEdit, onDelete }: TransactionItemPro
           <span
             className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium"
             style={{
-              backgroundColor: (tx.category.color ?? '#888') + '22',
-              color: tx.category.color ?? '#888',
+              backgroundColor: (tx.category.color ?? 'var(--muted-foreground)') + '22',
+              color: tx.category.color ?? 'var(--muted-foreground)',
             }}
           >
             {tx.category.name}
@@ -94,21 +106,17 @@ const TransactionItem = ({ tx, t, onOpen, onEdit, onDelete }: TransactionItemPro
       </div>
     </div>
   )
-}
+})
 
 const TransactionTable = ({ result, isPending, page, onPageChange }: TransactionTableProps) => {
   const t = useT(MODULE_URL)
   const [detailTx, setDetailTx] = useState<Transaction | null>(null)
   const [editingTx, setEditingTx] = useState<Transaction | null>(null)
+  const [deletingTx, setDeletingTx] = useState<Transaction | null>(null)
   const { mutate: deleteTransaction } = useDeleteTransaction()
 
   const rows = result?.data ?? []
   const meta = result?.meta
-
-  const handleDelete = (tx: Transaction) => {
-    if (!window.confirm(`Supprimer "${tx.label}" ?`)) return
-    deleteTransaction(tx.id)
-  }
 
   return (
     <div className="flex flex-col gap-3 pb-4">
@@ -119,8 +127,10 @@ const TransactionTable = ({ result, isPending, page, onPageChange }: Transaction
           </div>
         )}
         {!isPending && rows.length === 0 && (
-          <div className="py-16 text-center text-sm text-muted-foreground">
-            {t('empty')}
+          <div className="flex flex-col items-center gap-2 py-16 text-muted-foreground">
+            <ArrowUpDown size={28} className="opacity-30" />
+            <p className="text-sm">{t('empty')}</p>
+            <p className="text-xs opacity-60">{t('empty_cta')}</p>
           </div>
         )}
         {!isPending && rows.map(tx => (
@@ -130,7 +140,7 @@ const TransactionTable = ({ result, isPending, page, onPageChange }: Transaction
             t={t}
             onOpen={() => setDetailTx(tx)}
             onEdit={() => setEditingTx(tx)}
-            onDelete={() => handleDelete(tx)}
+            onDelete={() => setDeletingTx(tx)}
           />
         ))}
       </List>
@@ -167,6 +177,25 @@ const TransactionTable = ({ result, isPending, page, onPageChange }: Transaction
           onClose={() => setEditingTx(null)}
         />
       )}
+
+      <AlertDialog open={!!deletingTx} onOpenChange={o => { if (!o) setDeletingTx(null) }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t('delete_confirm').replace('{label}', deletingTx?.label ?? '')}
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => { deleteTransaction(deletingTx!.id); setDeletingTx(null) }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {t('delete')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

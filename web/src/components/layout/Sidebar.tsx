@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router'
 import { cn } from '../../lib/utils'
 import { navItems } from './navItems'
-import ThemeToggle from '../ThemeToggle'
+import { ThemeToggle } from '../ThemeToggle'
 import { NotificationBell } from '../../features/notifications/components/NotificationBell'
 import { useT } from '../T'
 
@@ -42,4 +42,4 @@ const Sidebar = () => {
   )
 }
 
-export default Sidebar
+export { Sidebar }

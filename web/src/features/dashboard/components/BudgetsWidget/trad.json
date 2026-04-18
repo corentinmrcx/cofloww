@@ -1,14 +1,16 @@
 {
   "fr": {
-    "title":   "Budgets du mois",
-    "see_all": "Voir tout",
-    "empty":   "Aucun budget ce mois",
-    "over":    "Dépassé de "
+    "title":         "Budgets du mois",
+    "see_all":       "Voir tout",
+    "see_all_label": "Voir tous les budgets",
+    "empty":         "Aucun budget ce mois",
+    "over":          "Dépassé de "
   },
   "en": {
-    "title":   "Monthly budgets",
-    "see_all": "See all",
-    "empty":   "No budget this month",
-    "over":    "Over by "
+    "title":         "Monthly budgets",
+    "see_all":       "See all",
+    "see_all_label": "See all budgets",
+    "empty":         "No budget this month",
+    "over":          "Over by "
   }
 }

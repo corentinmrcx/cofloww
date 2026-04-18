@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Outlet } from 'react-router'
-import Sidebar from './Sidebar'
-import BottomNav from './BottomNav'
+import { Sidebar } from './Sidebar'
+import { BottomNav } from './BottomNav'
 import { useAuth } from '../../features/auth/hooks/useAuth'
 import { usePreferencesStore } from '../../stores/preferencesStore'
 import { useLangStore } from '../../stores/langStore'
@@ -44,4 +44,4 @@ const AppLayout = () => {
   )
 }
 
-export default AppLayout
+export { AppLayout }

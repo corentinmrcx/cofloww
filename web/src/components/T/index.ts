@@ -1,2 +1,1 @@
-export { default } from './T'
-export { useT } from './T'
+export { T, useT } from './T'

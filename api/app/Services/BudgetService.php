@@ -36,23 +36,26 @@ class BudgetService
         $applyAllMonths = (bool) ($data['apply_all_months'] ?? false);
         unset($data['category_ids'], $data['apply_all_months']);
 
-        $budget = Budget::create([...$data, 'user_id' => $userId]);
-        $budget->categories()->sync($categoryIds);
+        $budget = DB::transaction(function () use ($data, $userId, $categoryIds, $applyAllMonths) {
+            $budget = Budget::create([...$data, 'user_id' => $userId]);
+            $budget->categories()->sync($categoryIds);
 
-        // Créer les budgets mensuels pour les mois suivants (même année)
-        if ($applyAllMonths && isset($data['month']) && $data['month'] !== null) {
-            $fromMonth = (int) $data['month'];
-            $year      = (int) $data['year'];
-            for ($m = $fromMonth + 1; $m <= 12; $m++) {
-                $next = Budget::create([
-                    ...$data,
-                    'month'   => $m,
-                    'year'    => $year,
-                    'user_id' => $userId,
-                ]);
-                $next->categories()->sync($categoryIds);
+            if ($applyAllMonths && isset($data['month']) && $data['month'] !== null) {
+                $fromMonth = (int) $data['month'];
+                $year      = (int) $data['year'];
+                for ($m = $fromMonth + 1; $m <= 12; $m++) {
+                    $next = Budget::create([
+                        ...$data,
+                        'month'   => $m,
+                        'year'    => $year,
+                        'user_id' => $userId,
+                    ]);
+                    $next->categories()->sync($categoryIds);
+                }
             }
-        }
+
+            return $budget;
+        });
 
         $collection = $this->withSpent(new Collection([$budget->load('categories')]), $userId);
 

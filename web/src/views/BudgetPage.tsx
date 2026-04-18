@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Plus, PiggyBank } from 'lucide-react'
 import { BudgetCard } from '../features/budget/components/BudgetCard'
 import { BudgetModal } from '../features/budget/components/BudgetModal'
 import { useBudgets } from '../features/budget/hooks/useBudgets'
+import { Skeleton } from '../components/ui/skeleton'
 import { useDeleteBudget } from '../features/budget/hooks/useDeleteBudget'
 import { useT } from '../components/T'
 import { useLangStore } from '../stores/langStore'
@@ -42,7 +43,7 @@ const BudgetPage = () => {
         <h1 className="text-xl font-semibold">{t('budget_title')}</h1>
         <button
           onClick={() => setModalBudget('new')}
-          className="flex items-center justify-center w-9 h-9 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shrink-0"
+          className="flex items-center justify-center size-9 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shrink-0"
           aria-label={t('budget_new')}
         >
           <Plus size={18} />
@@ -77,12 +78,27 @@ const BudgetPage = () => {
 
       {/* Contenu */}
       {isPending ? (
-        <div className="rounded-xl border border-border py-16 text-center text-sm text-muted-foreground">
-          {t('loading')}
+        <div className="flex flex-col gap-3">
+          {[0, 1, 2].map(i => (
+            <div key={i} className="bg-card border border-border rounded-xl p-4 flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <Skeleton className="size-2.5 rounded-full" />
+                <Skeleton className="h-3 w-24" />
+                <Skeleton className="ml-auto h-3 w-8" />
+              </div>
+              <Skeleton className="h-2 w-full rounded-full" />
+              <div className="flex justify-between">
+                <Skeleton className="h-2.5 w-20" />
+                <Skeleton className="h-2.5 w-16" />
+              </div>
+            </div>
+          ))}
         </div>
       ) : budgets.length === 0 ? (
-        <div className="rounded-xl border border-border py-16 text-center text-sm text-muted-foreground">
-          {t('budget_empty')}
+        <div className="flex flex-col items-center gap-2 rounded-xl border border-border py-16 text-muted-foreground">
+          <PiggyBank size={28} className="opacity-30" />
+          <p className="text-sm">{t('budget_empty')}</p>
+          <p className="text-xs opacity-60">{t('budget_empty_cta')}</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
@@ -109,4 +125,4 @@ const BudgetPage = () => {
   )
 }
 
-export default BudgetPage
+export { BudgetPage }

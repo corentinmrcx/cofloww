@@ -3,10 +3,10 @@ import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { useOverview } from '../../hooks/useOverview'
 import { useIncomeVsExpenses } from '../../hooks/useIncomeVsExpenses'
 import { useFormatters } from '../../../../lib/format'
+import { Skeleton } from '../../../../components/ui/skeleton'
+import { useT } from '../../../../components/T'
+import { cn } from '../../../../lib/utils'
 import type { MonthlyDataPoint } from '../../types/stats.types'
-
-const MONTH_FR = ['', 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-  'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
 
 const fmtPct = (n: number) =>
   `${n >= 0 ? '+' : ''}${n.toFixed(1)}%`
@@ -14,22 +14,23 @@ const fmtPct = (n: number) =>
 interface TrendProps {
   value: number
   suffix?: string
+  t: (key: string) => string
 }
 
-const Trend = ({ value, suffix = '' }: TrendProps) => {
+const Trend = ({ value, suffix = '', t }: TrendProps) => {
   if (Math.abs(value) < 0.1) {
     return (
       <span className="inline-flex items-center gap-0.5 text-xs text-muted-foreground">
-        <Minus size={12} /> stable
+        <Minus size={12} /> {t('stable')}
       </span>
     )
   }
   const positive = value > 0
   const Icon     = positive ? TrendingUp : TrendingDown
   return (
-    <span className={`inline-flex items-center gap-0.5 text-xs font-medium ${positive ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
+    <span className={cn('inline-flex items-center gap-0.5 text-xs font-medium', positive ? 'text-income' : 'text-expense')}>
       <Icon size={12} />
-      {fmtPct(value)}{suffix} vs 6 mois préc.
+      {fmtPct(value)}{suffix} {t('vs_prev')}
     </span>
   )
 }
@@ -40,31 +41,36 @@ interface KpiCardProps {
   sub?: string
   trend?: number
   trendSuffix?: string
-  trendInvert?: boolean  // true = hausse = mauvais (ex: dépenses)
+  trendInvert?: boolean
+  t: (key: string) => string
 }
 
-const KpiCard = ({ label, value, sub, trend, trendSuffix, trendInvert = false }: KpiCardProps) => (
+const KpiCard = ({ label, value, sub, trend, trendSuffix, trendInvert = false, t }: KpiCardProps) => (
   <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-1.5">
     <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{label}</p>
     <p className="text-2xl font-bold tabular-nums">{value}</p>
     {sub && <p className="text-xs text-muted-foreground">{sub}</p>}
     {trend !== undefined && (
-      <Trend value={trendInvert ? -trend : trend} suffix={trendSuffix} />
+      <Trend value={trendInvert ? -trend : trend} suffix={trendSuffix} t={t} />
     )}
   </div>
 )
 
-// Calcule le taux d'épargne sur une liste de mois
 const savingsRateFrom = (rows: MonthlyDataPoint[]) => {
   const income   = rows.reduce((s, r) => s + r.income,   0)
   const expenses = rows.reduce((s, r) => s + r.expenses, 0)
   return income > 0 ? ((income - expenses) / income) * 100 : 0
 }
 
+const monthLabel = (month: number, year: number, locale: string) =>
+  new Date(year, month - 1).toLocaleDateString(locale, { month: 'long', year: 'numeric' })
+    .replace(/^\w/, c => c.toUpperCase())
+
 const KpiCards = () => {
   const { data: overview }       = useOverview()
   const { data: monthly12 = [] } = useIncomeVsExpenses('12m')
-  const { formatAmountShort: fmt } = useFormatters()
+  const { formatAmountShort: fmt, numLocale } = useFormatters()
+  const t = useT(import.meta.url)
 
   const { savingsRateTrend, expensesTrend, worstMonth } = useMemo(() => {
     if (monthly12.length < 12) return { savingsRateTrend: 0, expensesTrend: 0, worstMonth: null }
@@ -91,45 +97,48 @@ const KpiCards = () => {
     return (
       <div className="grid grid-cols-2 gap-3">
         {[0, 1, 2, 3].map(i => (
-          <div key={i} className="bg-card border border-border rounded-xl p-4 h-24 animate-pulse" />
+          <Skeleton key={i} className="rounded-xl p-4 h-24" />
         ))}
       </div>
     )
   }
 
   const bestMonth  = overview.best_month
-  const worstLabel = worstMonth
-    ? `${MONTH_FR[worstMonth.month]} ${worstMonth.year}`
-    : '—'
+  const worstLabel = worstMonth ? monthLabel(worstMonth.month, worstMonth.year, numLocale) : t('no_data')
+  const bestLabel  = bestMonth  ? monthLabel(bestMonth.month,  bestMonth.year,  numLocale) : t('no_data')
 
   return (
     <div className="grid grid-cols-2 gap-3">
       <KpiCard
-        label="Taux d'épargne"
+        label={t('savings_rate')}
         value={`${overview.savings_rate.toFixed(1)}%`}
-        sub="Moyenne sur 12 mois"
+        sub={t('savings_avg_sub')}
         trend={savingsRateTrend}
         trendSuffix=" pts"
+        t={t}
       />
 
       <KpiCard
-        label="Dépenses moyennes"
+        label={t('avg_expenses')}
         value={fmt(overview.avg_monthly_expenses)}
-        sub="Par mois sur 12 mois"
+        sub={t('avg_expenses_sub')}
         trend={expensesTrend}
         trendInvert
+        t={t}
       />
 
       <KpiCard
-        label="Meilleur mois"
+        label={t('best_month')}
         value={bestMonth ? fmt(bestMonth.net) : '—'}
-        sub={bestMonth ? `${MONTH_FR[bestMonth.month]} ${bestMonth.year}` : 'Aucune donnée'}
+        sub={bestLabel}
+        t={t}
       />
 
       <KpiCard
-        label="Mois le plus dépensier"
+        label={t('worst_month')}
         value={worstMonth ? fmt(worstMonth.expenses) : '—'}
         sub={worstLabel}
+        t={t}
       />
     </div>
   )

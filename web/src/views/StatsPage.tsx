@@ -21,4 +21,4 @@ const StatsPage = () => {
   )
 }
 
-export default StatsPage
+export { StatsPage }

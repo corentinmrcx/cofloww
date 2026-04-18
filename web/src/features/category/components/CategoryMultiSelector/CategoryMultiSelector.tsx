@@ -70,8 +70,8 @@ const CategoryMultiSelector = ({ value, onChange, type }: CategoryMultiSelectorP
                 className="flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-medium"
               >
                 <span
-                  className="h-2 w-2 rounded-full shrink-0"
-                  style={{ backgroundColor: c.color ?? '#94A3B8' }}
+                  className="size-2 rounded-full shrink-0"
+                  style={{ backgroundColor: c.color ?? 'var(--muted-foreground)' }}
                 />
                 {c.name}
                 <button
@@ -85,13 +85,13 @@ const CategoryMultiSelector = ({ value, onChange, type }: CategoryMultiSelectorP
             ))}
           </>
         )}
-        <ChevronDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+        <ChevronDown className="ml-auto size-4 shrink-0 opacity-50" />
       </button>
 
       {open && (
         <div className="absolute left-0 top-full z-50 mt-1 w-full rounded-md border border-border bg-popover shadow-md">
           <div className="flex items-center gap-2 border-b border-border px-3 py-2">
-            <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+            <Search className="size-4 shrink-0 text-muted-foreground" />
             <input
               ref={searchRef}
               value={search}
@@ -113,11 +113,11 @@ const CategoryMultiSelector = ({ value, onChange, type }: CategoryMultiSelectorP
                 className="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-accent"
               >
                 <span
-                  className="h-3 w-3 shrink-0 rounded-full"
-                  style={{ backgroundColor: category.color ?? '#94A3B8' }}
+                  className="size-3 shrink-0 rounded-full"
+                  style={{ backgroundColor: category.color ?? 'var(--muted-foreground)' }}
                 />
                 <span className="flex-1 text-left">{category.name}</span>
-                {value.includes(category.id) && <Check className="h-4 w-4 text-primary" />}
+                {value.includes(category.id) && <Check className="size-4 text-primary" />}
               </button>
             ))}
           </div>

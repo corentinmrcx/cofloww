@@ -2,4 +2,4 @@ import { ForgotPasswordForm } from '../features/auth/components/ForgotPasswordFo
 
 const ForgotPasswordPage = () => <ForgotPasswordForm />
 
-export default ForgotPasswordPage
+export { ForgotPasswordPage }

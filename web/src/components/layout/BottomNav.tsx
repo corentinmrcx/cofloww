@@ -38,4 +38,4 @@ const BottomNav = () => {
   )
 }
 
-export default BottomNav
+export { BottomNav }

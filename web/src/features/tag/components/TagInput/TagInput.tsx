@@ -107,7 +107,7 @@ const TagInput = ({ value, onChange }: TagInputProps) => {
           <span
             key={tag.id}
             className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium text-white"
-            style={{ backgroundColor: tag.color ?? '#64748B' }}
+            style={{ backgroundColor: tag.color ?? 'var(--muted-foreground)' }}
           >
             {tag.name}
             <button
@@ -150,7 +150,7 @@ const TagInput = ({ value, onChange }: TagInputProps) => {
               >
                 <span
                   className="h-3 w-3 shrink-0 rounded-full"
-                  style={{ backgroundColor: tag.color ?? '#64748B' }}
+                  style={{ backgroundColor: tag.color ?? 'var(--muted-foreground)' }}
                 />
                 {tag.name}
               </button>

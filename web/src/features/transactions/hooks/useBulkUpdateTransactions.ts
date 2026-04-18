@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import api from '../../../services/api'
+import { api } from '../../../services/api'
 
 interface BulkCategoryPayload {
   ids: string[]
@@ -16,7 +16,10 @@ export const useBulkSetCategory = () => {
   return useMutation({
     mutationFn: ({ ids, category_id }: BulkCategoryPayload) =>
       Promise.all(ids.map(id => api.put(`/api/v1/transactions/${id}`, { category_id }))),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['transactions'] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['transactions'] })
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+    },
   })
 }
 
@@ -26,6 +29,9 @@ export const useBulkAddTag = () => {
   return useMutation({
     mutationFn: ({ updates }: BulkTagPayload) =>
       Promise.all(updates.map(({ id, tag_ids }) => api.put(`/api/v1/transactions/${id}`, { tag_ids }))),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['transactions'] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['transactions'] })
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+    },
   })
 }

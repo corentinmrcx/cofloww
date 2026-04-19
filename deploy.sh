@@ -1,6 +1,6 @@
 set -euo pipefail
 
-COMPOSE="docker compose -f docker-compose.prod.yml"
+COMPOSE="docker compose -f docker-compose.prod.yml --env-file ./api/.env"
 
 echo ""
 echo "╔══════════════════════════════════╗"

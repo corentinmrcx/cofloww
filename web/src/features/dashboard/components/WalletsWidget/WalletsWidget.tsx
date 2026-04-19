@@ -13,7 +13,7 @@ interface SparklineProps {
 }
 
 const Sparkline = ({ data, color }: SparklineProps) => {
-  const points = data.map((v, i) => ({ v }))
+  const points = data.map(v => ({ v }))
   return (
     <ResponsiveContainer width={56} height={28}>
       <LineChart data={points}>

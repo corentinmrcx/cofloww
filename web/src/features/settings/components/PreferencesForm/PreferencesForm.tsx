@@ -49,7 +49,7 @@ const PreferencesForm = () => {
   }, [user])
 
   const onSubmit = (data: FormValues) => {
-    mutate(data, {
+    mutate(data as Record<string, string>, {
       onSuccess: () => {
         setLang(data.language as 'fr' | 'en')
         if (data.theme !== 'system') setTheme(data.theme as 'light' | 'dark')

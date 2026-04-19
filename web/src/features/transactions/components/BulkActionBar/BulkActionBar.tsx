@@ -26,7 +26,7 @@ interface BulkActionBarProps {
 
 type ActivePanel = 'category' | 'tag' | null
 
-const BulkActionBar = ({ selectedIds, transactions, onClearSelection, onSelectAll, allSelected }: BulkActionBarProps) => {
+const BulkActionBar = ({ selectedIds, transactions, onClearSelection, onSelectAll }: BulkActionBarProps) => {
   const t = useT(import.meta.url)
   const { data: categories = [] } = useCategories()
   const { data: tags = [] } = useTags()

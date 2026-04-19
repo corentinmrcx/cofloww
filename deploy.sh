@@ -21,17 +21,26 @@ $COMPOSE up -d db
 echo ""
 
 echo "▶ Attente de la base de données..."
-$COMPOSE run --rm api bash -c "
-  until php -r \"new PDO('pgsql:host=db;dbname=\${DB_DATABASE}', '\${DB_USERNAME}', '\${DB_PASSWORD}');\" 2>/dev/null; do
-    echo '  En attente...'
-    sleep 2
-  done
-  echo '  BDD prête !'
+$COMPOSE run --rm api php -r "
+  \$attempts = 0;
+  while (\$attempts < 30) {
+      try {
+          new PDO('pgsql:host=db;dbname=' . getenv('DB_DATABASE'), getenv('DB_USERNAME'), getenv('DB_PASSWORD'));
+          exit(0);
+      } catch (Exception \$e) {
+          echo '  En attente de Postgres... \n';
+          sleep(2);
+          \$attempts++;
+      }
+  }
+  exit(1);
 "
 echo ""
 
-echo "▶ Migrations Laravel..."
+echo "▶ Migrations et Optimisations Laravel..."
 $COMPOSE run --rm api php artisan migrate --force
+$COMPOSE run --rm api php artisan storage:link --force
+$COMPOSE run --rm api php artisan optimize
 echo ""
 
 echo "▶ Démarrage de tous les services..."

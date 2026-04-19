@@ -28,10 +28,10 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts
 # Code source
 COPY . .
 
-# Autoload optimisé + répertoires Laravel requis
-RUN composer dump-autoload --no-dev --optimize --classmap-authoritative \
-    && mkdir -p storage/framework/{sessions,views,cache} bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
+# Répertoires Laravel requis + autoload optimisé (--no-scripts évite package:discover sans env)
+RUN mkdir -p storage/framework/{sessions,views,cache} bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache \
+    && composer dump-autoload --no-dev --optimize --classmap-authoritative --no-scripts
 
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

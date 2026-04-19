@@ -26,6 +26,12 @@ echo "▶ Migrations Laravel..."
 $COMPOSE run --rm api php artisan migrate --force
 echo ""
 
+echo "▶ Cache de configuration Laravel..."
+$COMPOSE run --rm api php artisan config:cache
+$COMPOSE run --rm api php artisan route:cache
+$COMPOSE run --rm api php artisan view:cache
+echo ""
+
 echo "▶ Démarrage de tous les services..."
 $COMPOSE up -d
 echo ""

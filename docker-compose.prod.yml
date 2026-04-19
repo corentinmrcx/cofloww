@@ -47,6 +47,8 @@ services:
     build:
       context: ./web
       target: prod
+      args:
+        VITE_API_URL: https://api.cofloww.app
     networks:
       - npm-network
     restart: unless-stopped

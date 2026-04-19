@@ -9,7 +9,8 @@ class RecurringRuleService
 {
     public function index(int $userId): LengthAwarePaginator
     {
-        return RecurringRule::with(['wallet', 'category'])
+        return RecurringRule::where('user_id', $userId)
+            ->with(['wallet', 'category'])
             ->orderBy('created_at', 'desc')
             ->paginate(25);
     }

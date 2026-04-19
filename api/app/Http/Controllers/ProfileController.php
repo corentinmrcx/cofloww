@@ -18,32 +18,21 @@ class ProfileController extends Controller
 
     public function update(UpdateProfileRequest $request): JsonResponse
     {
-        $request->user()->update($request->validated());
+        $user = $this->profileService->updateProfile($request->user(), $request->validated());
 
-        return response()->json(['data' => new UserResource($request->user()->fresh())]);
+        return response()->json(['data' => new UserResource($user)]);
     }
 
     public function updatePassword(UpdatePasswordRequest $request): JsonResponse
     {
-        $request->user()->update(['password' => $request->validated('password')]);
+        $this->profileService->updatePassword($request->user(), $request->validated('password'));
 
         return response()->json(['message' => 'Mot de passe mis à jour.']);
     }
 
     public function uploadAvatar(UploadAvatarRequest $request): JsonResponse
     {
-        $user = $request->user();
-
-        if ($user->avatar) {
-            if (Storage::disk('local')->exists($user->avatar)) {
-                Storage::disk('local')->delete($user->avatar);
-            } elseif (Storage::disk('public')->exists($user->avatar)) {
-                Storage::disk('public')->delete($user->avatar);
-            }
-        }
-
-        $path = $request->file('avatar')->store('avatars', 'local');
-        $user->update(['avatar' => $path]);
+        $path = $this->profileService->uploadAvatar($request->user(), $request->file('avatar'));
 
         $avatarUrl = url('/api/v1/profile/avatar') . '?v=' . substr(md5($path), 0, 8);
 

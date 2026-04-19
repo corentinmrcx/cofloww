@@ -12,7 +12,7 @@ class WalletService
     {
         return DB::transaction(function () use ($data, $userId) {
             if (!empty($data['is_default'])) {
-                Wallet::query()->update(['is_default' => false]);
+                $this->clearDefault($userId);
             }
 
             return Wallet::create([
@@ -27,7 +27,7 @@ class WalletService
     {
         return DB::transaction(function () use ($wallet, $data) {
             if (!empty($data['is_default'])) {
-                Wallet::query()->update(['is_default' => false]);
+                $this->clearDefault($wallet->user_id);
             }
 
             if (isset($data['name'])) {
@@ -55,6 +55,13 @@ class WalletService
                     ->update(['sort_order' => $item['sort_order']]);
             }
         });
+    }
+
+    private function clearDefault(int $userId): void
+    {
+        Wallet::withoutGlobalScopes()
+            ->where('user_id', $userId)
+            ->update(['is_default' => false]);
     }
 
     private function uniqueSlug(string $name, int $userId, ?string $excludeId = null): string

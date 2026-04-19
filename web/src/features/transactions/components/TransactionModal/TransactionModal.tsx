@@ -49,9 +49,13 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
 
   useEffect(() => {
     closeRef.current?.focus()
+    document.body.style.overflow = 'hidden'
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
   }, [onClose])
   const { data: wallets } = useWallets()
   const walletList: Wallet[] = wallets ?? []
@@ -111,14 +115,14 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay"
       onClick={onClose}
     >
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="tx-modal-title"
-        className="bg-card border border-border rounded-xl shadow-xl w-full max-w-lg p-6 m-4 max-h-[90vh] overflow-y-auto"
+        className="bg-card border border-border rounded-xl shadow-lg w-full max-w-lg p-6 m-4 max-h-[90vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
@@ -153,14 +157,16 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
 
           {/* Label */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">{t('label')}</label>
+            <label htmlFor="tx-label" className="text-sm font-medium">{t('label')}</label>
             <input
+              id="tx-label"
               {...register('label')}
               placeholder={t('label_placeholder')}
               className={INPUT_CLASS}
               autoFocus={!isEdit}
+              aria-describedby={errors.label ? 'tx-label-error' : undefined}
             />
-            {errors.label && <p className="text-xs text-destructive">{t('label_required')}</p>}
+            {errors.label && <p id="tx-label-error" className="text-xs text-destructive">{t('label_required')}</p>}
           </div>
 
           {/* Montant + Date */}
@@ -178,35 +184,35 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
             </div>
 
             <div className="flex flex-col gap-1.5 flex-1">
-              <label className="text-sm font-medium">{t('date')}</label>
-              <input type="date" {...register('date')} className={INPUT_CLASS} />
-              {errors.date && <p className="text-xs text-destructive">{t('date_required')}</p>}
+              <label htmlFor="tx-date" className="text-sm font-medium">{t('date')}</label>
+              <input id="tx-date" type="date" {...register('date')} className={INPUT_CLASS} aria-describedby={errors.date ? 'tx-date-error' : undefined} />
+              {errors.date && <p id="tx-date-error" className="text-xs text-destructive">{t('date_required')}</p>}
             </div>
           </div>
 
           {/* Wallet */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">{t('wallet')}</label>
-            <select {...register('wallet_id')} className={INPUT_CLASS}>
+            <label htmlFor="tx-wallet" className="text-sm font-medium">{t('wallet')}</label>
+            <select id="tx-wallet" {...register('wallet_id')} className={INPUT_CLASS} aria-describedby={errors.wallet_id ? 'tx-wallet-error' : undefined}>
               <option value="">{t('wallet_placeholder')}</option>
               {walletList.map((w: Wallet) => (
                 <option key={w.id} value={w.id}>{w.name}</option>
               ))}
             </select>
-            {errors.wallet_id && <p className="text-xs text-destructive">{t('wallet_required')}</p>}
+            {errors.wallet_id && <p id="tx-wallet-error" className="text-xs text-destructive">{t('wallet_required')}</p>}
           </div>
 
           {/* To wallet (transfer only) */}
           {selectedType === 'transfer' && (
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium">{t('to_wallet')}</label>
-              <select {...register('to_wallet_id')} className={INPUT_CLASS}>
+              <label htmlFor="tx-to-wallet" className="text-sm font-medium">{t('to_wallet')}</label>
+              <select id="tx-to-wallet" {...register('to_wallet_id')} className={INPUT_CLASS} aria-describedby={errors.to_wallet_id ? 'tx-to-wallet-error' : undefined}>
                 <option value="">{t('wallet_placeholder')}</option>
                 {walletList.filter((w: Wallet) => w.id !== selectedWalletId).map((w: Wallet) => (
                   <option key={w.id} value={w.id}>{w.name}</option>
                 ))}
               </select>
-              {errors.to_wallet_id && <p className="text-xs text-destructive">{t('to_wallet_required')}</p>}
+              {errors.to_wallet_id && <p id="tx-to-wallet-error" className="text-xs text-destructive">{t('to_wallet_required')}</p>}
             </div>
           )}
 

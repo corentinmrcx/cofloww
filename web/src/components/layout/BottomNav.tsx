@@ -7,7 +7,7 @@ import { NotificationBell } from '../../features/notifications/components/Notifi
 const BottomNav = () => {
   const t = useT(import.meta.url)
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-10 md:hidden border-t border-border bg-background">
+    <nav aria-label="Navigation principale" className="fixed bottom-0 left-0 right-0 z-10 md:hidden border-t border-border bg-background">
       <div className="grid grid-cols-2">
         {navItems.map(({ to, label, icon: Icon }) => (
           <div key={to} className="relative flex items-center justify-center">
@@ -16,7 +16,7 @@ const BottomNav = () => {
               end={to === '/'}
               className={({ isActive }) =>
                 cn(
-                  'flex flex-col items-center justify-center gap-1 py-2 text-xs transition-colors w-full',
+                  'flex flex-col items-center justify-center gap-1 py-3 text-xs transition-colors w-full',
                   isActive
                     ? 'text-foreground font-medium'
                     : 'text-muted-foreground',

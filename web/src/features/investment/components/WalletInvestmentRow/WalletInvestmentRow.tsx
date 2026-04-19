@@ -111,6 +111,7 @@ const WalletInvestmentRow = ({ wallet, allocation, investable, pasArrondi = 100 
           value={pctInput}
           onChange={e => setPctInput(e.target.value)}
           placeholder="—"
+          aria-label={`${t('invest_target_pct')} — ${wallet.name}`}
           className="h-8 w-full rounded-md border border-input bg-background text-foreground px-2 pr-6 text-sm text-right tabular-nums placeholder:text-center placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
         />
         <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground pointer-events-none">

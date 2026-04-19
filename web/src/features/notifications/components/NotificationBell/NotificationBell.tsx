@@ -77,7 +77,7 @@ const NotificationBell = ({ placement = 'bottom-right' }: NotificationBellProps)
       <button
         onClick={() => setOpen(o => !o)}
         className="relative size-9 flex items-center justify-center rounded-md hover:bg-muted transition-colors"
-        aria-label={t('title')}
+        aria-label={unread > 0 ? `${t('title')} (${unread})` : t('title')}
         aria-expanded={open}
       >
         <Bell size={18} />

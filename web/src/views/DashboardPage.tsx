@@ -22,15 +22,32 @@ const SkeletonCard = ({ className = '' }: { className?: string }) => (
 // Sinon → navigation vers `to`.
 const CardLink = ({ to, children, className = '' }: { to: string; children: React.ReactNode; className?: string }) => {
   const navigate = useNavigate()
+
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement
-    if (target.closest('a, button, input, select, textarea, [role="button"]')) return
+    const interactive = target.closest('a, button, input, select, textarea, [role="button"]')
+    if (interactive && interactive !== e.currentTarget) return
     navigate(to)
   }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      navigate(to)
+    }
+  }
+
   return (
     <div
-      className={cn('cursor-pointer rounded-xl hover:shadow-md transition-shadow', className)}
+      role="button"
+      tabIndex={0}
+      className={cn(
+        'cursor-pointer rounded-xl hover:shadow-md transition-shadow',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1',
+        className,
+      )}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
     >
       {children}
     </div>

@@ -45,7 +45,7 @@ const MonthSummaryWidget = ({ current, prev }: MonthSummaryWidgetProps) => {
           {/* Revenus */}
           <div className="flex flex-col items-center gap-2 px-4">
             <p className="text-sm font-medium text-muted-foreground">{t('income')}</p>
-            <p className="text-4xl font-bold tabular-nums text-income">
+            <p className="text-2xl font-bold tabular-nums text-income">
               {fmt(current.income)}
             </p>
             <Trend prev={prev.income} current={current.income} positiveIsGood />
@@ -54,7 +54,7 @@ const MonthSummaryWidget = ({ current, prev }: MonthSummaryWidgetProps) => {
           {/* Dépenses */}
           <div className="flex flex-col items-center gap-2 px-4">
             <p className="text-sm font-medium text-muted-foreground">{t('expenses')}</p>
-            <p className="text-4xl font-bold tabular-nums text-expense">
+            <p className="text-2xl font-bold tabular-nums text-expense">
               {fmt(current.expenses)}
             </p>
             <Trend prev={prev.expenses} current={current.expenses} positiveIsGood={false} />

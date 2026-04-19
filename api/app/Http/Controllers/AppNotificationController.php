@@ -12,11 +12,16 @@ class AppNotificationController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $notifications = AppNotification::orderByDesc('created_at')
+        $userId = $request->user()->id;
+
+        $notifications = AppNotification::where('user_id', $userId)
+            ->orderByDesc('created_at')
             ->limit(50)
             ->get();
 
-        $unreadCount = AppNotification::whereNull('read_at')->count();
+        $unreadCount = AppNotification::where('user_id', $userId)
+            ->whereNull('read_at')
+            ->count();
 
         return response()->json([
             'data'         => AppNotificationResource::collection($notifications),
@@ -24,8 +29,10 @@ class AppNotificationController extends Controller
         ]);
     }
 
-    public function markRead(AppNotification $notification): JsonResponse
+    public function markRead(Request $request, AppNotification $notification): JsonResponse
     {
+        abort_if($notification->user_id !== $request->user()->id, 403);
+
         $notification->update(['read_at' => Carbon::now()]);
 
         return response()->json(['data' => new AppNotificationResource($notification)]);
@@ -33,7 +40,8 @@ class AppNotificationController extends Controller
 
     public function markAllRead(Request $request): JsonResponse
     {
-        AppNotification::whereNull('read_at')
+        AppNotification::where('user_id', $request->user()->id)
+            ->whereNull('read_at')
             ->update(['read_at' => Carbon::now()]);
 
         return response()->json(['success' => true]);

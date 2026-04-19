@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { BarChart, Bar, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { useT } from '../../../../components/T'
 import { useFormatters } from '../../../../lib/format'
@@ -29,14 +30,14 @@ const MiniBarChart = ({ data }: MiniBarChartProps) => {
   const t = useT(import.meta.url)
   const { formatAmountShort: fmt, numLocale } = useFormatters()
 
-  const chartData = data.map(d => ({
+  const chartData = useMemo(() => data.map(d => ({
     name: new Date(d.year, d.month - 1, 1)
       .toLocaleDateString(numLocale, { month: 'short' })
       .replace(/\.$/, '')
       .replace(/^\w/, c => c.toUpperCase()),
     income:   d.income,
     expenses: d.expenses,
-  }))
+  })), [data, numLocale])
 
   const isEmpty = data.every(d => d.income === 0 && d.expenses === 0)
 

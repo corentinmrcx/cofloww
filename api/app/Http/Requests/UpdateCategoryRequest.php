@@ -20,7 +20,7 @@ class UpdateCategoryRequest extends FormRequest
             'type'       => ['sometimes', Rule::enum(CategoryType::class)],
             'color'      => ['nullable', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'icon'       => ['nullable', 'string', 'max:50'],
-            'parent_id'  => ['nullable', 'uuid', 'exists:categories,id'],
+            'parent_id'  => ['nullable', 'uuid', Rule::exists('categories', 'id')->where('user_id', $this->user()->id)],
             'sort_order' => ['integer', 'min:0'],
         ];
     }

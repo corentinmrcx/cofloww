@@ -86,14 +86,21 @@ const InvestmentPage = () => {
   const { data: compute } = useComputeInvestment(debouncedParams)
 
   const sourceWallet  = wallets.find(w => w.id === sourceWalletId)
-  const allocationMap = new Map(compute?.allocations.map(a => [a.wallet.id, a.amount]) ?? [])
+  const allocationMap = useMemo(
+    () => new Map(compute?.allocations.map(a => [a.wallet.id, a.amount]) ?? []),
+    [compute?.allocations],
+  )
 
-  // Seuls les wallets épargne/investissement peuvent être des poches cibles
   const SAVINGS_TYPES = ['savings', 'investment', 'crypto'] as const
-  const savingsWallets = wallets.filter(w => SAVINGS_TYPES.includes(w.type as typeof SAVINGS_TYPES[number]))
+  const { savingsWallets, walletsWithPct, walletsWithout } = useMemo(() => {
+    const savings = wallets.filter(w => SAVINGS_TYPES.includes(w.type as typeof SAVINGS_TYPES[number]))
+    return {
+      savingsWallets: savings,
+      walletsWithPct: savings.filter(w => w.investment_target_pct != null && w.investment_target_pct > 0),
+      walletsWithout: savings.filter(w => !w.investment_target_pct),
+    }
+  }, [wallets])
 
-  const walletsWithPct = savingsWallets.filter(w => w.investment_target_pct != null && w.investment_target_pct > 0)
-  const walletsWithout = savingsWallets.filter(w => !w.investment_target_pct)
   const totalPct = walletsWithPct.reduce((s, w) => s + (w.investment_target_pct ?? 0), 0)
   const pctOver  = totalPct > 100
 
@@ -105,7 +112,7 @@ const InvestmentPage = () => {
       <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-3">
 
         {/* Ligne 1 : compte source + mois */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-muted-foreground">{t('invest_source')}</label>
             <select
@@ -129,14 +136,14 @@ const InvestmentPage = () => {
               className={INPUT_CLASS}
             >
               {monthOptions.map((o, i) => (
-                <option key={i} value={i}>{o.label}</option>
+                <option key={`${o.year}-${o.month}`} value={i}>{o.label}</option>
               ))}
             </select>
           </div>
         </div>
 
         {/* Ligne 2 : seuil + arrondi */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-muted-foreground">{t('invest_safety')}</label>
             <Controller

@@ -34,6 +34,8 @@ const TransactionFilters = ({ filters, onChange, onReset, hasActive, activeCount
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
+        aria-label={hasActive ? `${t('filters')} (${activeCount})` : t('filters')}
+        aria-expanded={open}
         className={cn(
           'flex items-center gap-2 h-9 px-3 rounded-md border text-sm transition-colors',
           open || hasActive
@@ -73,8 +75,9 @@ const TransactionFilters = ({ filters, onChange, onReset, hasActive, activeCount
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('wallet')}</label>
+              <label htmlFor="filter-wallet" className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('wallet')}</label>
               <select
+                id="filter-wallet"
                 className={SELECT_CLASS}
                 value={filters.wallet_id ?? ''}
                 onChange={e => onChange('wallet_id', e.target.value || undefined)}
@@ -87,8 +90,9 @@ const TransactionFilters = ({ filters, onChange, onReset, hasActive, activeCount
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('type')}</label>
+              <label htmlFor="filter-type" className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('type')}</label>
               <select
+                id="filter-type"
                 className={SELECT_CLASS}
                 value={filters.type ?? ''}
                 onChange={e => onChange('type', e.target.value || undefined)}
@@ -101,8 +105,9 @@ const TransactionFilters = ({ filters, onChange, onReset, hasActive, activeCount
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('category')}</label>
+              <label htmlFor="filter-category" className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('category')}</label>
               <select
+                id="filter-category"
                 className={SELECT_CLASS}
                 value={filters.category_id ?? ''}
                 onChange={e => onChange('category_id', e.target.value || undefined)}
@@ -115,8 +120,9 @@ const TransactionFilters = ({ filters, onChange, onReset, hasActive, activeCount
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('tag')}</label>
+              <label htmlFor="filter-tag" className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('tag')}</label>
               <select
+                id="filter-tag"
                 className={SELECT_CLASS}
                 value={filters.tag_id ?? ''}
                 onChange={e => onChange('tag_id', e.target.value || undefined)}
@@ -130,8 +136,9 @@ const TransactionFilters = ({ filters, onChange, onReset, hasActive, activeCount
 
             <div className="flex gap-2">
               <div className="flex flex-col gap-1.5 flex-1 min-w-0">
-                <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('date_from')}</label>
+                <label htmlFor="filter-date-from" className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('date_from')}</label>
                 <input
+                  id="filter-date-from"
                   type="date"
                   className={DATE_CLASS}
                   value={filters.date_from ?? ''}
@@ -139,8 +146,9 @@ const TransactionFilters = ({ filters, onChange, onReset, hasActive, activeCount
                 />
               </div>
               <div className="flex flex-col gap-1.5 flex-1 min-w-0">
-                <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('date_to')}</label>
+                <label htmlFor="filter-date-to" className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('date_to')}</label>
                 <input
+                  id="filter-date-to"
                   type="date"
                   className={DATE_CLASS}
                   value={filters.date_to ?? ''}

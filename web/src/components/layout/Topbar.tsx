@@ -20,7 +20,7 @@ const Topbar = () => {
   const title = pathTitles[pathname] ?? 'CoFloww'
 
   return (
-    <header className="h-14 shrink-0 sticky top-0 z-10 flex items-center gap-2 px-4 border-b border-border bg-background/80 backdrop-blur">
+    <header className="h-14 shrink-0 sticky top-0 z-10 flex items-center gap-2 px-4 border-b border-border bg-background">
       <h1 className="text-base font-semibold flex-1">{title}</h1>
       <NotificationBell />
       <div className="md:hidden flex items-center gap-1">

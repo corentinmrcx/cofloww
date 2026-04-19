@@ -95,7 +95,7 @@ const KpiCards = () => {
 
   if (!overview) {
     return (
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {[0, 1, 2, 3].map(i => (
           <Skeleton key={i} className="rounded-xl p-4 h-24" />
         ))}
@@ -108,7 +108,7 @@ const KpiCards = () => {
   const bestLabel  = bestMonth  ? monthLabel(bestMonth.month,  bestMonth.year,  numLocale) : t('no_data')
 
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
       <KpiCard
         label={t('savings_rate')}
         value={`${overview.savings_rate.toFixed(1)}%`}

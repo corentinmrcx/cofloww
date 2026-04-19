@@ -61,7 +61,7 @@ const BulkActionBar = ({ selectedIds, transactions, onClearSelection, onSelectAl
   }
 
   const actionBtnClass =
-    'flex items-center gap-1.5 px-3 h-8 rounded-md text-sm font-medium transition-colors hover:bg-white/10 disabled:opacity-50 shrink-0'
+    'flex items-center gap-1.5 px-3 h-8 rounded-md text-sm font-medium transition-colors hover:bg-background/10 disabled:opacity-50 shrink-0'
 
   return (
     <>
@@ -70,7 +70,7 @@ const BulkActionBar = ({ selectedIds, transactions, onClearSelection, onSelectAl
         <div className="fixed inset-0 z-40" onClick={() => setActivePanel(null)} />
       )}
 
-      <div className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 px-2 h-12 rounded-xl bg-foreground text-background shadow-xl border border-white/10">
+      <div className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 px-2 h-12 rounded-xl bg-foreground text-background shadow-xl border border-background/10">
 
         {/* Compteur + sélection totale */}
         <span className="px-2 text-sm font-medium shrink-0">
@@ -80,7 +80,7 @@ const BulkActionBar = ({ selectedIds, transactions, onClearSelection, onSelectAl
           {t('select_all')}
         </button>
 
-        <div className="w-px h-5 bg-white/20 mx-1" />
+        <div className="w-px h-5 bg-background/20 mx-1" />
 
         {/* Supprimer */}
         <button type="button" className={actionBtnClass} onClick={() => setShowDeleteDialog(true)} disabled={isPending}>
@@ -157,7 +157,7 @@ const BulkActionBar = ({ selectedIds, transactions, onClearSelection, onSelectAl
           )}
         </div>
 
-        <div className="w-px h-5 bg-white/20 mx-1" />
+        <div className="w-px h-5 bg-background/20 mx-1" />
 
         {/* Désélectionner */}
         <button type="button" className={actionBtnClass} onClick={onClearSelection} disabled={isPending}>

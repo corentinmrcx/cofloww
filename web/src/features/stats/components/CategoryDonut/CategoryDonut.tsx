@@ -62,13 +62,15 @@ const CategoryDonut = () => {
           <p className="text-sm font-semibold">{t('title')}</p>
           <p className="text-xs text-muted-foreground">{t('subtitle')}</p>
         </div>
+        <label htmlFor="donut-month-select" className="sr-only">{t('month_label')}</label>
         <select
+          id="donut-month-select"
           value={monthIdx}
           onChange={e => setMonthIdx(Number(e.target.value))}
           className="h-8 rounded-md border border-input bg-background text-foreground px-2 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
         >
           {MONTH_OPTIONS.map((o, i) => (
-            <option key={i} value={i}>{o.label}</option>
+            <option key={o.from} value={i}>{o.label}</option>
           ))}
         </select>
       </div>
@@ -96,8 +98,8 @@ const CategoryDonut = () => {
                   outerRadius={80}
                   paddingAngle={2}
                 >
-                  {data.map((cat, i) => (
-                    <Cell key={cat.category_id ?? i} fill={cat.color} />
+                  {data.map((cat) => (
+                    <Cell key={cat.category_id ?? cat.name} fill={cat.color} />
                   ))}
                 </Pie>
                 <Tooltip content={<CustomTooltip fmt={fmt} />} />
@@ -106,10 +108,10 @@ const CategoryDonut = () => {
           </div>
 
           <div className="flex flex-col divide-y divide-border">
-            {data.map((cat, i) => {
+            {data.map((cat) => {
               const pct = total > 0 ? (cat.amount / total * 100) : 0
               return (
-                <div key={cat.category_id ?? i} className="flex items-center gap-3 py-2.5">
+                <div key={cat.category_id ?? cat.name} className="flex items-center gap-3 py-2.5">
                   <span
                     className="w-2.5 h-2.5 rounded-full shrink-0"
                     style={{ backgroundColor: cat.color }}

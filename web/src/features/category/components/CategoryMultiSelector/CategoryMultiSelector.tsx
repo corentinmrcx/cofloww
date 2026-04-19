@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Check, ChevronDown, Search, X } from 'lucide-react'
 import { cn } from '../../../../lib/utils'
 import { useT } from '../../../../components/T'
@@ -34,10 +34,10 @@ const CategoryMultiSelector = ({ value, onChange, type }: CategoryMultiSelectorP
     if (open) searchRef.current?.focus()
   }, [open])
 
-  const filtered = categories.filter(c =>
+  const filtered = useMemo(() => categories.filter(c =>
     (!type || c.type === type) &&
     c.name.toLowerCase().includes(search.toLowerCase()),
-  )
+  ), [categories, type, search])
 
   const toggle = (id: string) => {
     onChange(value.includes(id) ? value.filter(v => v !== id) : [...value, id])
@@ -55,8 +55,10 @@ const CategoryMultiSelector = ({ value, onChange, type }: CategoryMultiSelectorP
       <button
         type="button"
         onClick={() => setOpen(!open)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
         className={cn(
-          'flex min-h-9 w-full flex-wrap items-center gap-1.5 rounded-md border border-input bg-background px-3 py-1.5 text-sm transition-colors hover:bg-accent',
+          'flex min-h-9 w-full flex-wrap items-center gap-1.5 rounded-md border border-input bg-background px-3 py-1.5 text-sm transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
           value.length === 0 && 'text-muted-foreground',
         )}
       >
@@ -91,12 +93,13 @@ const CategoryMultiSelector = ({ value, onChange, type }: CategoryMultiSelectorP
       {open && (
         <div className="absolute left-0 top-full z-50 mt-1 w-full rounded-md border border-border bg-popover shadow-md">
           <div className="flex items-center gap-2 border-b border-border px-3 py-2">
-            <Search className="size-4 shrink-0 text-muted-foreground" />
+            <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
             <input
               ref={searchRef}
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder={t('search_placeholder')}
+              aria-label={t('search_placeholder')}
               className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
             />
           </div>

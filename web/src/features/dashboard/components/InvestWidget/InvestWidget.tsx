@@ -29,7 +29,7 @@ const InvestWidget = ({ data }: InvestWidgetProps) => {
       <div className="flex-1 flex items-center justify-center px-4 pb-4">
         <div className="text-center">
           <p className="text-sm text-muted-foreground mb-1">{t('to_invest')}</p>
-          <p className="text-4xl font-bold tabular-nums text-income">
+          <p className="text-2xl font-bold tabular-nums text-income">
             {fmt(data.amount)}
           </p>
           {data.source_wallet && (

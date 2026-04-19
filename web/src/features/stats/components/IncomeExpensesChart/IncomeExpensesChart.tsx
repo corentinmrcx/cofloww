@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Legend,
@@ -63,11 +63,11 @@ const IncomeExpensesChart = () => {
   const { formatAmountShort: fmt, numLocale } = useFormatters()
   const t = useT(import.meta.url)
 
-  const chartData = data.map(d => ({
+  const chartData = useMemo(() => data.map(d => ({
     name:     new Date(d.year, d.month - 1).toLocaleDateString(numLocale, { month: 'short', year: '2-digit' }),
     income:   d.income,
     expenses: d.expenses,
-  }))
+  })), [data, numLocale])
 
   return (
     <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-4">

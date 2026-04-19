@@ -48,7 +48,7 @@ const ActionMenu = ({ items }: ActionMenuProps) => {
           }
           setOpen(v => !v)
         }}
-        className="size-8 flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+        className="size-10 flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
         aria-label="Actions"
         aria-haspopup="menu"
         aria-expanded={open}
@@ -61,11 +61,11 @@ const ActionMenu = ({ items }: ActionMenuProps) => {
           role="menu"
           className={cn('absolute right-0 z-50 min-w-36 bg-popover border border-border rounded-lg shadow-md py-1 overflow-hidden', dropUp ? 'bottom-full mb-1' : 'top-full mt-1')}
         >
-          {items.map((item, i) => {
+          {items.map((item) => {
             const Icon = item.icon
             return (
               <button
-                key={i}
+                key={item.label}
                 role="menuitem"
                 onClick={e => { e.stopPropagation(); item.onClick(); setOpen(false) }}
                 className={cn(

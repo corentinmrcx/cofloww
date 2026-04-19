@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -37,9 +38,21 @@ interface RecurringRuleModalProps {
 const RecurringRuleModal = ({ rule, onClose }: RecurringRuleModalProps) => {
   const t = useT(import.meta.url)
   const isEdit = rule !== undefined
+  const closeRef = useRef<HTMLButtonElement>(null)
 
   const { data: wallets = [] } = useWallets()
   const { data: categories = [] } = useCategories()
+
+  useEffect(() => {
+    closeRef.current?.focus()
+    document.body.style.overflow = 'hidden'
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [onClose])
 
   const { mutate: create, isPending: isCreating } = useCreateRecurringRule()
   const { mutate: update, isPending: isUpdating } = useUpdateRecurringRule(rule?.id ?? '')
@@ -93,40 +106,50 @@ const RecurringRuleModal = ({ rule, onClose }: RecurringRuleModalProps) => {
       onClick={onClose}
     >
       <div
-        className="bg-card border border-border rounded-xl shadow-xl w-full max-w-md p-6 m-4 max-h-[90vh] overflow-y-auto"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="recurring-modal-title"
+        className="bg-card border border-border rounded-xl shadow-lg w-full max-w-md p-6 m-4 max-h-[90vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-base font-semibold">
+          <h2 id="recurring-modal-title" className="text-base font-semibold">
             {t(isEdit ? 'title_edit' : 'title_add')}
           </h2>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
+          <button
+            ref={closeRef}
+            onClick={onClose}
+            aria-label={t('close')}
+            className="text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded"
+          >
             <X size={18} />
           </button>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">{t('label')}</label>
+            <label htmlFor="rr-label" className="text-sm font-medium">{t('label')}</label>
             <input
+              id="rr-label"
               {...register('label')}
               placeholder={t('label_placeholder')}
               className={INPUT_CLASS}
+              aria-describedby={errors.label ? 'rr-label-error' : undefined}
             />
-            {errors.label && <p className="text-xs text-destructive">{t('label_required')}</p>}
+            {errors.label && <p id="rr-label-error" className="text-xs text-destructive">{t('label_required')}</p>}
           </div>
 
           <div className="flex gap-4">
             <div className="flex flex-col gap-1.5 flex-1">
-              <label className="text-sm font-medium">{t('type')}</label>
-              <select {...register('type')} className={INPUT_CLASS}>
+              <label htmlFor="rr-type" className="text-sm font-medium">{t('type')}</label>
+              <select id="rr-type" {...register('type')} className={INPUT_CLASS}>
                 <option value="expense">{t('type_expense')}</option>
                 <option value="income">{t('type_income')}</option>
               </select>
             </div>
 
             <div className="flex flex-col gap-1.5 flex-1">
-              <label className="text-sm font-medium">{t('amount')}</label>
+              <label htmlFor="rr-amount" className="text-sm font-medium">{t('amount')}</label>
               <Controller
                 name="amount"
                 control={control}
@@ -134,14 +157,14 @@ const RecurringRuleModal = ({ rule, onClose }: RecurringRuleModalProps) => {
                   <MoneyInput value={field.value} onChange={field.onChange} />
                 )}
               />
-              {errors.amount && <p className="text-xs text-destructive">{t('amount_required')}</p>}
+              {errors.amount && <p id="rr-amount-error" className="text-xs text-destructive">{t('amount_required')}</p>}
             </div>
           </div>
 
           <div className="flex gap-4">
             <div className="flex flex-col gap-1.5 flex-1">
-              <label className="text-sm font-medium">{t('frequency')}</label>
-              <select {...register('frequency')} className={INPUT_CLASS}>
+              <label htmlFor="rr-frequency" className="text-sm font-medium">{t('frequency')}</label>
+              <select id="rr-frequency" {...register('frequency')} className={INPUT_CLASS}>
                 <option value="daily">{t('frequency_daily')}</option>
                 <option value="weekly">{t('frequency_weekly')}</option>
                 <option value="monthly">{t('frequency_monthly')}</option>
@@ -151,8 +174,8 @@ const RecurringRuleModal = ({ rule, onClose }: RecurringRuleModalProps) => {
 
             {frequency === 'weekly' && (
               <div className="flex flex-col gap-1.5 flex-1">
-                <label className="text-sm font-medium">{t('day_of_week')}</label>
-                <select {...register('day_of_week', { valueAsNumber: true })} className={INPUT_CLASS}>
+                <label htmlFor="rr-day-of-week" className="text-sm font-medium">{t('day_of_week')}</label>
+                <select id="rr-day-of-week" {...register('day_of_week', { valueAsNumber: true })} className={INPUT_CLASS}>
                   {[0, 1, 2, 3, 4, 5, 6].map(d => (
                     <option key={d} value={d}>{t(`day_of_week_${d}`)}</option>
                   ))}
@@ -162,8 +185,9 @@ const RecurringRuleModal = ({ rule, onClose }: RecurringRuleModalProps) => {
 
             {frequency === 'monthly' && (
               <div className="flex flex-col gap-1.5 flex-1">
-                <label className="text-sm font-medium">{t('day_of_month')}</label>
+                <label htmlFor="rr-day-of-month" className="text-sm font-medium">{t('day_of_month')}</label>
                 <input
+                  id="rr-day-of-month"
                   type="number"
                   min={1}
                   max={31}
@@ -175,19 +199,19 @@ const RecurringRuleModal = ({ rule, onClose }: RecurringRuleModalProps) => {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">{t('wallet')}</label>
-            <select {...register('wallet_id')} className={INPUT_CLASS}>
+            <label htmlFor="rr-wallet" className="text-sm font-medium">{t('wallet')}</label>
+            <select id="rr-wallet" {...register('wallet_id')} className={INPUT_CLASS} aria-describedby={errors.wallet_id ? 'rr-wallet-error' : undefined}>
               <option value="">{t('wallet_placeholder')}</option>
               {wallets.map(w => (
                 <option key={w.id} value={w.id}>{w.name}</option>
               ))}
             </select>
-            {errors.wallet_id && <p className="text-xs text-destructive">{t('wallet_required')}</p>}
+            {errors.wallet_id && <p id="rr-wallet-error" className="text-xs text-destructive">{t('wallet_required')}</p>}
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">{t('category')}</label>
-            <select {...register('category_id')} className={INPUT_CLASS}>
+            <label htmlFor="rr-category" className="text-sm font-medium">{t('category')}</label>
+            <select id="rr-category" {...register('category_id')} className={INPUT_CLASS}>
               <option value="">{t('category_none')}</option>
               {categories.map(c => (
                 <option key={c.id} value={c.id}>{c.name}</option>
@@ -197,16 +221,18 @@ const RecurringRuleModal = ({ rule, onClose }: RecurringRuleModalProps) => {
 
           <div className="flex gap-4">
             <div className="flex flex-col gap-1.5 flex-1">
-              <label className="text-sm font-medium">{t('starts_at')}</label>
+              <label htmlFor="rr-starts-at" className="text-sm font-medium">{t('starts_at')}</label>
               <input
+                id="rr-starts-at"
                 type="date"
                 {...register('starts_at')}
                 className={INPUT_CLASS}
               />
             </div>
             <div className="flex flex-col gap-1.5 flex-1">
-              <label className="text-sm font-medium">{t('ends_at')}</label>
+              <label htmlFor="rr-ends-at" className="text-sm font-medium">{t('ends_at')}</label>
               <input
+                id="rr-ends-at"
                 type="date"
                 {...register('ends_at')}
                 placeholder={t('ends_at_placeholder')}

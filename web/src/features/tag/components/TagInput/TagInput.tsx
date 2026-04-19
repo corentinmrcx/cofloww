@@ -12,6 +12,14 @@ const TAG_COLORS = [
 
 const getRandomColor = () => TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)]
 
+const getTagTextColor = (hex: string): string => {
+  const r = parseInt(hex.slice(1, 3), 16) / 255
+  const g = parseInt(hex.slice(3, 5), 16) / 255
+  const b = parseInt(hex.slice(5, 7), 16) / 255
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b
+  return luminance > 0.35 ? '#000000' : '#ffffff'
+}
+
 interface TagInputProps {
   value: string[]
   onChange: (ids: string[]) => void
@@ -106,8 +114,11 @@ const TagInput = ({ value, onChange }: TagInputProps) => {
         {selectedTags.map(tag => (
           <span
             key={tag.id}
-            className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium text-white"
-            style={{ backgroundColor: tag.color ?? 'var(--muted-foreground)' }}
+            className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium"
+            style={{
+              backgroundColor: tag.color ?? 'var(--muted-foreground)',
+              color: getTagTextColor(tag.color ?? '#64748b'),
+            }}
           >
             {tag.name}
             <button

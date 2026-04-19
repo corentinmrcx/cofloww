@@ -1,16 +1,18 @@
 {
   "fr": {
-    "title":   "Dépenses par catégorie",
-    "subtitle": "Répartition mensuelle",
-    "loading": "Chargement…",
-    "empty":   "Aucune dépense ce mois",
-    "total":   "Total"
+    "title":       "Dépenses par catégorie",
+    "subtitle":    "Répartition mensuelle",
+    "loading":     "Chargement…",
+    "empty":       "Aucune dépense ce mois",
+    "total":       "Total",
+    "month_label": "Sélectionner le mois"
   },
   "en": {
-    "title":   "Expenses by category",
-    "subtitle": "Monthly breakdown",
-    "loading": "Loading…",
-    "empty":   "No expenses this month",
-    "total":   "Total"
+    "title":       "Expenses by category",
+    "subtitle":    "Monthly breakdown",
+    "loading":     "Loading…",
+    "empty":       "No expenses this month",
+    "total":       "Total",
+    "month_label": "Select month"
   }
 }

@@ -19,8 +19,8 @@ class InvestmentController extends Controller
         $user = $request->user();
         $data = $request->validated();
 
-        // Solde = balance du compte sélectionné (salaire déjà inclus dans le solde)
-        $sourceWallet = Wallet::findOrFail($data['wallet_id']);
+        // Solde = balance du compte sélectionné, vérifié appartenance à l'utilisateur
+        $sourceWallet = Wallet::where('user_id', $user->id)->findOrFail($data['wallet_id']);
         $solde        = $sourceWallet->balance;
 
         // Mois cible : fourni par le front ou mois prochain par défaut

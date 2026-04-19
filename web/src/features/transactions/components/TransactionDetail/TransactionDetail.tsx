@@ -60,7 +60,7 @@ const TransactionDetail = ({ transaction: tx, onClose, onEdit }: TransactionDeta
         role="dialog"
         aria-modal="true"
         aria-labelledby="tx-detail-title"
-        className="bg-card border border-border rounded-xl shadow-xl w-full max-w-md m-4 flex flex-col"
+        className="bg-card border border-border rounded-xl shadow-lg w-full max-w-md m-4 flex flex-col"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}

@@ -37,7 +37,8 @@
     "save_add": "Créer",
     "save_edit": "Enregistrer",
     "saving_add": "Création…",
-    "saving_edit": "Enregistrement…"
+    "saving_edit": "Enregistrement…",
+    "close": "Fermer"
   },
   "en": {
     "title_add": "New recurring rule",
@@ -77,6 +78,7 @@
     "save_add": "Create",
     "save_edit": "Save",
     "saving_add": "Creating…",
-    "saving_edit": "Saving…"
+    "saving_edit": "Saving…",
+    "close": "Close"
   }
 }

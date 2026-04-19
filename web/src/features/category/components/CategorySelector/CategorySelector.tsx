@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, Check, ChevronDown, Plus, Search } from 'lucide-react'
 import { cn } from '../../../../lib/utils'
 import { useT } from '../../../../components/T'
@@ -6,6 +6,8 @@ import { useCategories } from '../../hooks/useCategories'
 import { useCreateCategory } from '../../hooks/useCreateCategory'
 import type { Category, CategoryType, CreateCategoryPayload } from '../../types/category.types'
 
+
+const DEFAULT_CATEGORY_COLOR = '#10b981'
 
 interface CategorySelectorProps {
   value: string | null
@@ -24,7 +26,7 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
   const [view, setView] = useState<'list' | 'create'>('list')
   const [createName, setCreateName] = useState('')
   const [createType, setCreateType] = useState<CategoryType>(type ?? 'expense')
-  const [createColor, setCreateColor] = useState('#F97316')
+  const [createColor, setCreateColor] = useState(DEFAULT_CATEGORY_COLOR)
 
   const ref = useRef<HTMLDivElement>(null)
   const searchRef = useRef<HTMLInputElement>(null)
@@ -45,10 +47,10 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
     if (open && view === 'list') searchRef.current?.focus()
   }, [open, view])
 
-  const filtered = categories.filter(c =>
+  const filtered = useMemo(() => categories.filter(c =>
     (!type || c.type === type) &&
     c.name.toLowerCase().includes(search.toLowerCase()),
-  )
+  ), [categories, type, search])
 
   const exactMatch = filtered.some(c => c.name.toLowerCase() === search.toLowerCase())
   const selected = categories.find(c => c.id === value) ?? null
@@ -63,7 +65,7 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
   const openCreate = () => {
     setCreateName(search)
     setCreateType(type ?? 'expense')
-    setCreateColor('#F97316')
+    setCreateColor(DEFAULT_CATEGORY_COLOR)
     setView('create')
   }
 

@@ -22,7 +22,9 @@ const PreferencesSync = () => {
     if (user.settings?.language) {
       setLang(user.settings.language as 'fr' | 'en')
     }
-  }, [user?.id])
+  // setPreferences and setLang are stable Zustand setters, user.id tracks the actual user change
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, setPreferences, setLang])
 
   return null
 }

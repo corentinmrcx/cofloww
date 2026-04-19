@@ -36,9 +36,10 @@ const BudgetModal = ({ budget, month, year, onClose }: BudgetModalProps) => {
 
   useEffect(() => {
     closeRef.current?.focus()
+    document.body.style.overflow = 'hidden'
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = '' }
   }, [onClose])
 
   const { mutate: create, isPending: isCreating } = useCreateBudget()
@@ -82,14 +83,14 @@ const BudgetModal = ({ budget, month, year, onClose }: BudgetModalProps) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay"
       onClick={onClose}
     >
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="budget-modal-title"
-        className="bg-card border border-border rounded-xl shadow-xl w-full max-w-md p-6 m-4"
+        className="bg-card border border-border rounded-xl shadow-lg w-full max-w-md p-6 m-4"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
@@ -106,8 +107,13 @@ const BudgetModal = ({ budget, month, year, onClose }: BudgetModalProps) => {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">{t('categories')}</label>
+          <div
+            className="flex flex-col gap-1.5"
+            role="group"
+            aria-labelledby="budget-categories-label"
+            aria-describedby={errors.category_ids ? 'budget-categories-error' : undefined}
+          >
+            <label id="budget-categories-label" className="text-sm font-medium">{t('categories')}</label>
             <Controller
               name="category_ids"
               control={control}
@@ -116,12 +122,17 @@ const BudgetModal = ({ budget, month, year, onClose }: BudgetModalProps) => {
               )}
             />
             {errors.category_ids && (
-              <p className="text-xs text-destructive">{t('categories_required')}</p>
+              <p id="budget-categories-error" className="text-xs text-destructive">{t('categories_required')}</p>
             )}
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">{t('amount')}</label>
+          <div
+            className="flex flex-col gap-1.5"
+            role="group"
+            aria-labelledby="budget-amount-label"
+            aria-describedby={errors.amount ? 'budget-amount-error' : undefined}
+          >
+            <label id="budget-amount-label" className="text-sm font-medium">{t('amount')}</label>
             <Controller
               name="amount"
               control={control}
@@ -129,12 +140,13 @@ const BudgetModal = ({ budget, month, year, onClose }: BudgetModalProps) => {
                 <MoneyInput value={field.value} onChange={field.onChange} />
               )}
             />
-            {errors.amount && <p className="text-xs text-destructive">{t('amount_required')}</p>}
+            {errors.amount && <p id="budget-amount-error" className="text-xs text-destructive">{t('amount_required')}</p>}
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">{t('alert_threshold')}</label>
+            <label htmlFor="budget-threshold" className="text-sm font-medium">{t('alert_threshold')}</label>
             <input
+              id="budget-threshold"
               type="number"
               min={0}
               max={100}

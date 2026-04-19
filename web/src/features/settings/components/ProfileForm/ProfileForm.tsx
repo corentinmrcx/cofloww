@@ -83,11 +83,15 @@ const ProfileForm = () => {
         <p className="text-sm font-semibold">{t('photo_title')}</p>
         <div className="flex items-center gap-4">
           <div
-            className="relative size-16 rounded-full bg-muted flex items-center justify-center overflow-hidden cursor-pointer group"
+            role="button"
+            tabIndex={0}
+            aria-label={t('photo_change')}
+            className="relative size-16 rounded-full bg-muted flex items-center justify-center overflow-hidden cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             onClick={() => fileRef.current?.click()}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileRef.current?.click() } }}
           >
             {avatarSrc ? (
-              <img src={avatarSrc} alt="Avatar" className="w-full h-full object-cover" />
+              <img src={avatarSrc} alt="Avatar" loading="lazy" className="w-full h-full object-cover" />
             ) : (
               <span className="text-xl font-bold text-muted-foreground">
                 {user?.firstname?.[0]?.toUpperCase() ?? '?'}

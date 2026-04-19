@@ -23,6 +23,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>
 
 const INPUT_CLASS = 'h-9 w-full rounded-md border border-input bg-background text-foreground px-3 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
+const DEFAULT_WALLET_COLOR = '#6366f1'
 
 interface WalletModalProps {
   wallet?: Wallet
@@ -36,9 +37,10 @@ const WalletModal = ({ wallet, onClose }: WalletModalProps) => {
 
   useEffect(() => {
     closeRef.current?.focus()
+    document.body.style.overflow = 'hidden'
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = '' }
   }, [onClose])
 
   const { mutate: createWallet, isPending: isCreating } = useCreateWallet()
@@ -51,12 +53,12 @@ const WalletModal = ({ wallet, onClose }: WalletModalProps) => {
       ? {
           name:            wallet.name,
           type:            wallet.type,
-          color:           wallet.color ?? '#6366f1',
+          color:           wallet.color ?? DEFAULT_WALLET_COLOR,
           icon:            wallet.icon || undefined,
           institution:     wallet.institution ?? undefined,
           initial_balance: wallet.initial_balance,
         }
-      : { type: 'checking', color: '#6366f1', initial_balance: 0 },
+      : { type: 'checking', color: DEFAULT_WALLET_COLOR, initial_balance: 0 },
   })
 
   const onSubmit = (data: FormValues) => {
@@ -69,14 +71,14 @@ const WalletModal = ({ wallet, onClose }: WalletModalProps) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay"
       onClick={onClose}
     >
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="wallet-modal-title"
-        className="bg-card border border-border rounded-xl shadow-xl w-full max-w-md p-6 m-4"
+        className="bg-card border border-border rounded-xl shadow-lg w-full max-w-md p-6 m-4"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
@@ -94,8 +96,9 @@ const WalletModal = ({ wallet, onClose }: WalletModalProps) => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">{t('name')}</label>
+            <label htmlFor="wallet-name" className="text-sm font-medium">{t('name')}</label>
             <input
+              id="wallet-name"
               {...register('name')}
               placeholder={t('name_placeholder')}
               className={INPUT_CLASS}
@@ -104,8 +107,8 @@ const WalletModal = ({ wallet, onClose }: WalletModalProps) => {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">{t('type')}</label>
-            <select {...register('type')} className={INPUT_CLASS}>
+            <label htmlFor="wallet-type" className="text-sm font-medium">{t('type')}</label>
+            <select id="wallet-type" {...register('type')} className={INPUT_CLASS}>
               <option value="checking">{t('type_checking')}</option>
               <option value="savings">{t('type_savings')}</option>
               <option value="cash">{t('type_cash')}</option>
@@ -114,8 +117,8 @@ const WalletModal = ({ wallet, onClose }: WalletModalProps) => {
             </select>
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">{t('icon')}</label>
+          <div className="flex flex-col gap-1.5" role="group" aria-labelledby="wallet-icon-label">
+            <label id="wallet-icon-label" className="text-sm font-medium">{t('icon')}</label>
             <Controller
               name="icon"
               control={control}
@@ -126,8 +129,9 @@ const WalletModal = ({ wallet, onClose }: WalletModalProps) => {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">{t('institution')}</label>
+            <label htmlFor="wallet-institution" className="text-sm font-medium">{t('institution')}</label>
             <input
+              id="wallet-institution"
               {...register('institution')}
               placeholder={t('institution_placeholder')}
               className={INPUT_CLASS}
@@ -135,8 +139,8 @@ const WalletModal = ({ wallet, onClose }: WalletModalProps) => {
           </div>
 
           <div className="flex gap-4">
-            <div className="flex flex-col gap-1.5 flex-1">
-              <label className="text-sm font-medium">{t('initial_balance')}</label>
+            <div className="flex flex-col gap-1.5 flex-1" role="group" aria-labelledby="wallet-balance-label">
+              <label id="wallet-balance-label" className="text-sm font-medium">{t('initial_balance')}</label>
               <Controller
                 name="initial_balance"
                 control={control}
@@ -147,8 +151,9 @@ const WalletModal = ({ wallet, onClose }: WalletModalProps) => {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium">{t('color')}</label>
+              <label htmlFor="wallet-color" className="text-sm font-medium">{t('color')}</label>
               <input
+                id="wallet-color"
                 type="color"
                 {...register('color')}
                 className="h-9 w-16 rounded-md border border-input cursor-pointer bg-transparent px-1 py-1"

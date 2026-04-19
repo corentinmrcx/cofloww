@@ -3,6 +3,7 @@ import { Pencil, Trash2, ArrowUpDown } from 'lucide-react'
 import { cn } from '../../../../lib/utils'
 import { useFormatters } from '../../../../lib/format'
 import { useT } from '../../../../components/T/T'
+import trad from './trad.json'
 import { Button } from '../../../../components/Button/Button'
 import { ActionMenu } from '../../../../components/ActionMenu'
 import { List } from '../../../../components/List'
@@ -20,7 +21,6 @@ import {
 } from '../../../../components/ui/alert-dialog'
 import type { Transaction, PaginatedTransactions } from '../../types/transaction.types'
 
-const MODULE_URL = import.meta.url
 
 interface TransactionTableProps {
   result: PaginatedTransactions | undefined
@@ -109,7 +109,7 @@ const TransactionItem = memo(({ tx, t, onOpen, onEdit, onDelete }: TransactionIt
 })
 
 const TransactionTable = ({ result, isPending, page, onPageChange }: TransactionTableProps) => {
-  const t = useT(MODULE_URL)
+  const t = useT(trad)
   const [detailTx, setDetailTx] = useState<Transaction | null>(null)
   const [editingTx, setEditingTx] = useState<Transaction | null>(null)
   const [deletingTx, setDeletingTx] = useState<Transaction | null>(null)

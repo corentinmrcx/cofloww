@@ -26,7 +26,7 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 COPY . .
 
-RUN mkdir -p storage/framework/{sessions,views,cache} bootstrap/cache \
+RUN mkdir -p storage/framework/{sessions,views,cache} bootstrap/cache resources/views \
     && chmod -R 775 storage bootstrap/cache \
     && composer dump-autoload --no-dev --optimize --classmap-authoritative --no-scripts
 

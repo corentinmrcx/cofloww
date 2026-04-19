@@ -16,6 +16,7 @@ interface FormValues {
   theme:       string
   currency:    string
   timezone:    string
+  [key: string]: string
 }
 
 const PreferencesForm = () => {
@@ -49,7 +50,7 @@ const PreferencesForm = () => {
   }, [user])
 
   const onSubmit = (data: FormValues) => {
-    mutate(data as Record<string, string>, {
+    mutate(data, {
       onSuccess: () => {
         setLang(data.language as 'fr' | 'en')
         if (data.theme !== 'system') setTheme(data.theme as 'light' | 'dark')

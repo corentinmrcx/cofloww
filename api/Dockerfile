@@ -29,7 +29,7 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts
 COPY . .
 
 # Répertoires Laravel requis + autoload optimisé (--no-scripts évite package:discover sans env)
-RUN mkdir -p storage/framework/{sessions,views,cache} bootstrap/cache \
+RUN mkdir -p storage/framework/{sessions,views,cache} bootstrap/cache resources/views \
     && chmod -R 775 storage bootstrap/cache \
     && composer dump-autoload --no-dev --optimize --classmap-authoritative --no-scripts
 

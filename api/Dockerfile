@@ -17,21 +17,18 @@ CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
 # ─── Prod ─────────────────────────────────────────────────────────────────────
 FROM base AS prod
 
-# Entrypoint (layer stable, mis en cache en premier)
 COPY docker-entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Dépendances Composer — couche mise en cache tant que composer.lock ne change pas
+# Couche Composer mise en cache tant que composer.lock ne change pas
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
-# Code source
 COPY . .
 
-# Répertoires Laravel requis + autoload optimisé (--no-scripts évite package:discover sans env)
-RUN mkdir -p storage/framework/{sessions,views,cache} bootstrap/cache resources/views \
+RUN mkdir -p storage/framework/{sessions,views,cache} bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache \
     && composer dump-autoload --no-dev --optimize --classmap-authoritative --no-scripts
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

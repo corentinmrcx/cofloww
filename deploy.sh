@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 set -euo pipefail
 
 COMPOSE="docker compose -f docker-compose.prod.yml --env-file ./api/.env"
@@ -16,31 +17,13 @@ echo "▶ Construction des images Docker..."
 $COMPOSE build --pull
 echo ""
 
-echo "▶ Démarrage de la base de données..."
-$COMPOSE up -d db
+echo "▶ Démarrage de la base de données et Redis..."
+$COMPOSE up -d db redis
 echo ""
 
-echo "▶ Attente de la base de données..."
-$COMPOSE run --rm api php -r "
-  \$attempts = 0;
-  while (\$attempts < 30) {
-      try {
-          new PDO('pgsql:host=db;dbname=' . getenv('DB_DATABASE'), getenv('DB_USERNAME'), getenv('DB_PASSWORD'));
-          exit(0);
-      } catch (Exception \$e) {
-          echo '  En attente de Postgres... \n';
-          sleep(2);
-          \$attempts++;
-      }
-  }
-  exit(1);
-"
-echo ""
-
-echo "▶ Migrations et Optimisations Laravel..."
+echo "▶ Migrations Laravel..."
+# depends_on service_healthy garantit que db et redis sont prêts avant le lancement
 $COMPOSE run --rm api php artisan migrate --force
-$COMPOSE run --rm api php artisan storage:link --force
-$COMPOSE run --rm api php artisan optimize
 echo ""
 
 echo "▶ Démarrage de tous les services..."

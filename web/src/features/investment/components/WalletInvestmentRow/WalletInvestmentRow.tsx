@@ -6,6 +6,7 @@ import { useFormatters } from '../../../../lib/format'
 import { useT } from '../../../../components/T'
 import { ICONS } from '../../../../components/IconPicker'
 import type { Wallet } from '../../../wallet/types/wallet.types'
+import trad from './trad.json'
 
 interface WalletInvestmentRowProps {
   wallet: Wallet
@@ -15,7 +16,7 @@ interface WalletInvestmentRowProps {
 }
 
 const WalletInvestmentRow = ({ wallet, allocation, investable, pasArrondi = 100 }: WalletInvestmentRowProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { formatAmountShort: fmtEuros } = useFormatters()
   const [pctInput, setPctInput] = useState(
     wallet.investment_target_pct != null && wallet.investment_target_pct > 0

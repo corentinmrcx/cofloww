@@ -7,6 +7,7 @@ import { TransactionTable } from '../features/transactions/components/Transactio
 import { TransactionFilters } from '../features/transactions/components/TransactionFilters'
 import { TransactionModal } from '../features/transactions/components/TransactionModal'
 import { useT } from '../components/T'
+import trad from './trad.json'
 
 const TransactionsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -23,7 +24,7 @@ const TransactionsPage = () => {
 
   const { filters, setFilter, resetFilters, hasActiveFilters, activeCount } = useTransactionFilters()
   const { data, isPending } = useTransactions({ ...filters, page })
-  const t = useT(import.meta.url)
+  const t = useT(trad)
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

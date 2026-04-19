@@ -5,6 +5,7 @@ import { useT } from '../../../../components/T'
 import { useFormatters } from '../../../../lib/format'
 import { cn } from '../../../../lib/utils'
 import type { DashboardTransaction } from '../../types/dashboard.types'
+import trad from './trad.json'
 
 interface RecentTransactionsWidgetProps {
   transactions: DashboardTransaction[]
@@ -12,7 +13,7 @@ interface RecentTransactionsWidgetProps {
 
 const RecentTransactionsWidget = ({ transactions }: RecentTransactionsWidgetProps) => {
   const navigate = useNavigate()
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { formatAmount: fmt, formatDate } = useFormatters()
 
   return (

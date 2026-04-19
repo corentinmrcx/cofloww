@@ -6,6 +6,7 @@ import { useTheme } from '../../../../hooks/useTheme'
 import { useLangStore } from '../../../../stores/langStore'
 import { usePreferencesStore } from '../../../../stores/preferencesStore'
 import { useT } from '../../../../components/T'
+import trad from './trad.json'
 
 const SELECT = 'h-9 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
 const BTN    = 'h-9 px-4 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50'
@@ -25,7 +26,7 @@ const PreferencesForm = () => {
   const { setLang }        = useLangStore()
   const { setPreferences } = usePreferencesStore()
   const { mutate, isPending, isSuccess } = useUpdatePreferences()
-  const t = useT(import.meta.url)
+  const t = useT(trad)
 
   const form = useForm<FormValues>({
     defaultValues: {

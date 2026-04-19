@@ -4,9 +4,10 @@ import { navItems } from './navItems'
 import { ThemeToggle } from '../ThemeToggle'
 import { NotificationBell } from '../../features/notifications/components/NotificationBell'
 import { useT } from '../T'
+import trad from './trad.json'
 
 const Sidebar = () => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   return (
     <aside className="hidden md:flex flex-col fixed inset-y-0 left-0 w-64 border-r border-border bg-sidebar">
       <div className="h-14 flex items-center px-6 border-b border-border shrink-0">

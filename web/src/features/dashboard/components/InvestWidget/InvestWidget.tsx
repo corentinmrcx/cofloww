@@ -3,6 +3,7 @@ import { ChevronRight } from 'lucide-react'
 import { useT } from '../../../../components/T'
 import { useFormatters } from '../../../../lib/format'
 import type { InvestableSummary } from '../../types/dashboard.types'
+import trad from './trad.json'
 
 interface InvestWidgetProps {
   data: InvestableSummary
@@ -10,7 +11,7 @@ interface InvestWidgetProps {
 
 const InvestWidget = ({ data }: InvestWidgetProps) => {
   const navigate = useNavigate()
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { formatAmountShort: fmt } = useFormatters()
 
   return (

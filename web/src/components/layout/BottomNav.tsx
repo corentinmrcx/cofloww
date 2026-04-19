@@ -3,9 +3,10 @@ import { cn } from '../../lib/utils'
 import { navItems } from './navItems'
 import { useT } from '../T'
 import { NotificationBell } from '../../features/notifications/components/NotificationBell'
+import trad from './trad.json'
 
 const BottomNav = () => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   return (
     <nav aria-label="Navigation principale" className="fixed bottom-0 left-0 right-0 z-10 md:hidden border-t border-border bg-background">
       <div className="grid grid-cols-2">

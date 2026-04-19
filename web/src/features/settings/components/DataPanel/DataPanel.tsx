@@ -4,13 +4,14 @@ import { useQueryClient } from '@tanstack/react-query'
 import { Download, Trash2, AlertTriangle } from 'lucide-react'
 import { useExportData, useDeleteAccount } from '../../hooks/useSettings'
 import { useT } from '../../../../components/T'
+import trad from './trad.json'
 
 const DataPanel = () => {
   const { mutate: exportData,    isPending: exporting } = useExportData()
   const { mutate: deleteAccount, isPending: deleting }  = useDeleteAccount()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const t = useT(import.meta.url)
+  const t = useT(trad)
 
   const [confirmStep, setConfirmStep] = useState<0 | 1 | 2>(0)
   const [password, setPassword]       = useState('')

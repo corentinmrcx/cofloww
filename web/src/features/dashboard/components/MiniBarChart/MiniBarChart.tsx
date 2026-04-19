@@ -3,6 +3,7 @@ import { BarChart, Bar, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { useT } from '../../../../components/T'
 import { useFormatters } from '../../../../lib/format'
 import type { TrendPoint } from '../../types/dashboard.types'
+import trad from './trad.json'
 
 interface MiniBarChartProps {
   data: TrendPoint[]
@@ -27,7 +28,7 @@ const CustomTooltip = ({ active, payload, label, fmt }: {
 }
 
 const MiniBarChart = ({ data }: MiniBarChartProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { formatAmountShort: fmt, numLocale } = useFormatters()
 
   const chartData = useMemo(() => data.map(d => ({

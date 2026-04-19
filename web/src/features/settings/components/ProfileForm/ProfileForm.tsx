@@ -8,6 +8,7 @@ import { useAuth } from '../../../auth/hooks/useAuth'
 import { useUpdateProfile, useUpdatePassword, useUploadAvatar } from '../../hooks/useSettings'
 import { useLogout } from '../../../auth/hooks/useLogout'
 import { useT } from '../../../../components/T'
+import trad from './trad.json'
 
 const profileSchema = z.object({
   firstname: z.string().min(1, 'err_required'),
@@ -40,7 +41,7 @@ const ProfileForm = () => {
   const { mutate: updatePassword, isPending: savingPwd, isSuccess: savedPwd, isError: pwdError } = useUpdatePassword()
   const { mutate: uploadAvatar, isPending: uploadingAvatar } = useUploadAvatar()
   const { mutate: logout } = useLogout()
-  const t = useT(import.meta.url)
+  const t = useT(trad)
 
   const profileForm = useForm<ProfileValues>({
     resolver: zodResolver(profileSchema),

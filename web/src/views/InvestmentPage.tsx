@@ -10,6 +10,7 @@ import { useLangStore } from '../stores/langStore'
 import { useFormatters } from '../lib/format'
 import { usePreferencesStore } from '../stores/preferencesStore'
 import { cn } from '../lib/utils'
+import trad from './trad.json'
 
 const CURRENCY_SYMBOLS: Record<string, string> = {
   EUR: '€', USD: '$', GBP: '£', CHF: 'Fr', CAD: 'CA$',
@@ -43,7 +44,7 @@ const buildPasOptions = (symbol: string) => [
 
 const InvestmentPage = () => {
   const { data: wallets = [] } = useWallets()
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { lang } = useLangStore()
   const { formatAmountShort: fmt } = useFormatters()
   const { currency } = usePreferencesStore()

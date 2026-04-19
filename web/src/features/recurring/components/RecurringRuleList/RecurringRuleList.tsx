@@ -5,6 +5,7 @@ import { ActionMenu } from '../../../../components/ActionMenu'
 import { useFormatters } from '../../../../lib/format'
 import { cn } from '../../../../lib/utils'
 import type { RecurringRule } from '../../types/recurring.types'
+import trad from './trad.json'
 
 const FREQUENCY_KEYS = {
   daily:   'frequency_daily',
@@ -21,7 +22,7 @@ interface RecurringRuleRowProps {
 }
 
 const RecurringRuleRow = ({ rule, onEdit, onToggle, onDelete }: RecurringRuleRowProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { formatAmountShort } = useFormatters()
 
   const amountDisplay = formatAmountShort(rule.amount)
@@ -85,7 +86,7 @@ interface RecurringRuleListProps {
 }
 
 const RecurringRuleList = ({ rules, onEditClick, onToggleClick, onDeleteClick }: RecurringRuleListProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
 
   if (rules.length === 0) {
     return (

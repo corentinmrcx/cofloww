@@ -9,12 +9,13 @@ import { useT } from '../components/T'
 import { useLangStore } from '../stores/langStore'
 import { useFormatters } from '../lib/format'
 import type { Budget } from '../features/budget/types/budget.types'
+import trad from './trad.json'
 
 const BudgetPage = () => {
   const now = new Date()
   const [month, setMonth] = useState(now.getMonth() + 1)
   const [year, setYear]   = useState(now.getFullYear())
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { lang } = useLangStore()
   const locale = lang === 'en' ? 'en-US' : 'fr-FR'
   const [modalBudget, setModalBudget] = useState<Budget | 'new' | null>(null)

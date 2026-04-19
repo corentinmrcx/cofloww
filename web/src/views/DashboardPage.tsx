@@ -12,6 +12,7 @@ import { TransactionModal }         from '../features/transactions/components/Tr
 import { useT } from '../components/T'
 import { Skeleton } from '../components/ui/skeleton'
 import { cn } from '../lib/utils'
+import trad from './trad.json'
 
 const SkeletonCard = ({ className = '' }: { className?: string }) => (
   <Skeleton className={cn('rounded-xl', className)} />
@@ -57,7 +58,7 @@ const CardLink = ({ to, children, className = '' }: { to: string; children: Reac
 const DashboardPage = () => {
   const { data, isLoading } = useDashboard()
   const [showModal, setShowModal] = useState(false)
-  const t = useT(import.meta.url)
+  const t = useT(trad)
 
   return (
     <>

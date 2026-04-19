@@ -4,6 +4,7 @@ import { cn } from '../../../../lib/utils'
 import { useT } from '../../../../components/T'
 import { useCategories } from '../../hooks/useCategories'
 import type { CategoryType } from '../../types/category.types'
+import trad from './trad.json'
 
 interface CategoryMultiSelectorProps {
   value: string[]
@@ -12,7 +13,7 @@ interface CategoryMultiSelectorProps {
 }
 
 const CategoryMultiSelector = ({ value, onChange, type }: CategoryMultiSelectorProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { data: categories = [] } = useCategories()
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')

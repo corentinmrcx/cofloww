@@ -4,12 +4,13 @@ import { PreferencesForm } from '../features/settings/components/PreferencesForm
 import { DataPanel }       from '../features/settings/components/DataPanel'
 import { useT } from '../components/T'
 import { cn } from '../lib/utils'
+import trad from './trad.json'
 
 type Tab = 'profil' | 'preferences' | 'donnees'
 
 const SettingsPage = () => {
   const [tab, setTab] = useState<Tab>('profil')
-  const t = useT(import.meta.url)
+  const t = useT(trad)
 
   const TABS: { id: Tab; label: string }[] = [
     { id: 'profil',       label: t('settings_tab_profile') },

@@ -6,6 +6,7 @@ import { useWallets } from '../../../wallet/hooks/useWallets'
 import { useCategories } from '../../../category/hooks/useCategories'
 import { useTags } from '../../../tag/hooks/useTags'
 import type { TransactionFilters as Filters } from '../../types/transaction.types'
+import trad from './trad.json'
 
 const SELECT_CLASS =
   'h-9 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring'
@@ -22,7 +23,7 @@ interface TransactionFiltersProps {
 }
 
 const TransactionFilters = ({ filters, onChange, onReset, hasActive, activeCount }: TransactionFiltersProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { data: wallets = [] } = useWallets()
   const { data: categories = [] } = useCategories()
   const { data: tags = [] } = useTags()

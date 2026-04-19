@@ -3,6 +3,7 @@ import { Search } from 'lucide-react'
 import { useT } from '../T'
 import { cn } from '../../lib/utils'
 import { ICONS, ICON_NAMES } from './icons'
+import trad from './trad.json'
 
 interface IconPickerProps {
   value?: string
@@ -11,7 +12,7 @@ interface IconPickerProps {
 }
 
 const IconPicker = ({ value, onChange, className }: IconPickerProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const [search, setSearch] = useState('')
 
   const filtered = search

@@ -10,6 +10,7 @@ import { CategoryMultiSelector } from '../../../category/components/CategoryMult
 import { useCreateBudget } from '../../hooks/useCreateBudget'
 import { useUpdateBudget } from '../../hooks/useUpdateBudget'
 import type { Budget } from '../../types/budget.types'
+import trad from './trad.json'
 
 const schema = z.object({
   category_ids:        z.array(z.string().min(1)).min(1),
@@ -30,7 +31,7 @@ interface BudgetModalProps {
 }
 
 const BudgetModal = ({ budget, month, year, onClose }: BudgetModalProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const isEdit = budget !== undefined
   const closeRef = useRef<HTMLButtonElement>(null)
 

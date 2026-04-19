@@ -7,6 +7,7 @@ import { useFormatters } from '../../../../lib/format'
 import { ICONS } from '../../../../components/IconPicker'
 import { TYPE_DEFAULT_ICONS } from '../../lib/wallet-icons'
 import type { Wallet } from '../../types/wallet.types'
+import trad from './trad.json'
 
 interface WalletCardProps {
   wallet: Wallet
@@ -27,7 +28,7 @@ const WalletCard = ({
   onDelete,
   onClick,
 }: WalletCardProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { formatAmount: formatBalance } = useFormatters()
   const Icon = (wallet.icon && ICONS[wallet.icon]) || TYPE_DEFAULT_ICONS[wallet.type]
 

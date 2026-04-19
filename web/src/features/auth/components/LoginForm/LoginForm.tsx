@@ -7,9 +7,10 @@ import { T, useT } from '../../../../components/T'
 import { type LoginSchema } from '../../schemas/auth.schemas'
 import { useAuthSchemas } from '../../schemas/useAuthSchemas'
 import { useLogin } from '../../hooks/useLogin'
+import trad from './trad.json'
 
 const LoginForm = () => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { loginSchema } = useAuthSchemas()
   const { mutate: login, isPending, error } = useLogin()
 
@@ -23,14 +24,14 @@ const LoginForm = () => {
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Form.Header>
         <h1 className="text-2xl font-semibold tracking-tight">
-          <T url={import.meta.url}>title</T>
+          <T dict={trad}>title</T>
         </h1>
       </Form.Header>
 
       <Form.Body>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="email" className="text-sm font-medium">
-            <T url={import.meta.url}>email</T>
+            <T dict={trad}>email</T>
           </label>
           <input
             id="email"
@@ -48,10 +49,10 @@ const LoginForm = () => {
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between">
             <label htmlFor="password" className="text-sm font-medium">
-              <T url={import.meta.url}>password</T>
+              <T dict={trad}>password</T>
             </label>
             <Link to="/forgot-password" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-              <T url={import.meta.url}>forgot_password</T>
+              <T dict={trad}>forgot_password</T>
             </Link>
           </div>
           <input
@@ -72,12 +73,12 @@ const LoginForm = () => {
 
       <Form.Footer>
         <Button type="submit" disabled={isPending} fullWidth>
-          <T url={import.meta.url}>{isPending ? 'submitting' : 'submit'}</T>
+          <T dict={trad}>{isPending ? 'submitting' : 'submit'}</T>
         </Button>
         <p className="text-xs text-muted-foreground">
-          <T url={import.meta.url}>no_account</T>{' '}
+          <T dict={trad}>no_account</T>{' '}
           <Link to="/register" className="text-foreground hover:underline">
-            <T url={import.meta.url}>register</T>
+            <T dict={trad}>register</T>
           </Link>
         </p>
       </Form.Footer>

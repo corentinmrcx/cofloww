@@ -4,6 +4,7 @@ import { cn } from '../../../../lib/utils'
 import { useT } from '../../../../components/T'
 import { useTags } from '../../hooks/useTags'
 import { useCreateTag } from '../../hooks/useCreateTag'
+import trad from './trad.json'
 
 const TAG_COLORS = [
   '#F97316', '#3B82F6', '#8B5CF6', '#EC4899', '#EF4444',
@@ -26,7 +27,7 @@ interface TagInputProps {
 }
 
 const TagInput = ({ value, onChange }: TagInputProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { data: tags = [] } = useTags()
   const { mutate: createTag, isPending: isCreating } = useCreateTag()
 

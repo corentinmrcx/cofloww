@@ -11,11 +11,12 @@ import { ICONS } from '../components/IconPicker'
 import { TYPE_DEFAULT_ICONS } from '../features/wallet/lib/wallet-icons'
 import { useFormatters } from '../lib/format'
 import { useT } from '../components/T'
+import trad from './trad.json'
 
 const WalletDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { data: wallet, isPending: walletPending } = useWallet(id ?? '')
   const { mutate: deleteWallet } = useDeleteWallet()
   const { formatAmount: formatBalance } = useFormatters()

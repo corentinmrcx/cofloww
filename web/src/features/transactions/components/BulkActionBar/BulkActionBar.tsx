@@ -15,6 +15,7 @@ import {
   AlertDialogTitle,
 } from '../../../../components/ui/alert-dialog'
 import type { Transaction } from '../../types/transaction.types'
+import trad from './trad.json'
 
 interface BulkActionBarProps {
   selectedIds: string[]
@@ -27,7 +28,7 @@ interface BulkActionBarProps {
 type ActivePanel = 'category' | 'tag' | null
 
 const BulkActionBar = ({ selectedIds, transactions, onClearSelection, onSelectAll }: BulkActionBarProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { data: categories = [] } = useCategories()
   const { data: tags = [] } = useTags()
 

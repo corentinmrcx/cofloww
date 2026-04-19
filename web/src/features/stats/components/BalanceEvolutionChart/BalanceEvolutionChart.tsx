@@ -8,6 +8,7 @@ import { useOverview } from '../../hooks/useOverview'
 import { useFormatters } from '../../../../lib/format'
 import { useT } from '../../../../components/T'
 import { cn } from '../../../../lib/utils'
+import trad from './trad.json'
 
 interface TooltipPayloadItem {
   value: number
@@ -37,7 +38,7 @@ const BalanceEvolutionChart = () => {
   const { data: monthly = [], isLoading: loadingMonthly } = useIncomeVsExpenses('12m')
   const { data: overview, isLoading: loadingOverview }   = useOverview()
   const { formatAmountShort: fmt, numLocale } = useFormatters()
-  const t = useT(import.meta.url)
+  const t = useT(trad)
 
   const chartData = useMemo(() => {
     if (!overview || monthly.length === 0) return []

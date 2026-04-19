@@ -15,6 +15,7 @@ import { useAutoTransferLabel } from '../../hooks/useAutoTransferLabel'
 import { cn } from '../../../../lib/utils'
 import type { Transaction } from '../../types/transaction.types'
 import type { Wallet } from '../../../wallet/types/wallet.types'
+import trad from './trad.json'
 
 const schema = z.object({
   type:         z.enum(['income', 'expense', 'transfer']),
@@ -43,7 +44,7 @@ interface TransactionModalProps {
 }
 
 const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const isEdit = transaction !== undefined
   const closeRef = useRef<HTMLButtonElement>(null)
 

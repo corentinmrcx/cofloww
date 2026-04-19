@@ -7,6 +7,7 @@ import { Skeleton } from '../../../../components/ui/skeleton'
 import { useT } from '../../../../components/T'
 import { cn } from '../../../../lib/utils'
 import type { MonthlyDataPoint } from '../../types/stats.types'
+import trad from './trad.json'
 
 const fmtPct = (n: number) =>
   `${n >= 0 ? '+' : ''}${n.toFixed(1)}%`
@@ -70,7 +71,7 @@ const KpiCards = () => {
   const { data: overview }       = useOverview()
   const { data: monthly12 = [] } = useIncomeVsExpenses('12m')
   const { formatAmountShort: fmt, numLocale } = useFormatters()
-  const t = useT(import.meta.url)
+  const t = useT(trad)
 
   const { savingsRateTrend, expensesTrend, worstMonth } = useMemo(() => {
     if (monthly12.length < 12) return { savingsRateTrend: 0, expensesTrend: 0, worstMonth: null }

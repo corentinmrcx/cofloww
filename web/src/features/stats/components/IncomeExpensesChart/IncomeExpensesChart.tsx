@@ -8,6 +8,7 @@ import { useFormatters } from '../../../../lib/format'
 import { useT } from '../../../../components/T'
 import { cn } from '../../../../lib/utils'
 import type { StatPeriod } from '../../types/stats.types'
+import trad from './trad.json'
 
 interface TooltipPayloadItem {
   dataKey: string
@@ -61,7 +62,7 @@ const IncomeExpensesChart = () => {
   const [period, setPeriod] = useState<StatPeriod>('6m')
   const { data = [], isLoading } = useIncomeVsExpenses(period)
   const { formatAmountShort: fmt, numLocale } = useFormatters()
-  const t = useT(import.meta.url)
+  const t = useT(trad)
 
   const chartData = useMemo(() => data.map(d => ({
     name:     new Date(d.year, d.month - 1).toLocaleDateString(numLocale, { month: 'short', year: '2-digit' }),

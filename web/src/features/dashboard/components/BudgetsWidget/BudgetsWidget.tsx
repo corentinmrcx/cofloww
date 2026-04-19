@@ -5,6 +5,7 @@ import { useT } from '../../../../components/T'
 import { useFormatters } from '../../../../lib/format'
 import { cn } from '../../../../lib/utils'
 import type { BudgetSummary } from '../../types/dashboard.types'
+import trad from './trad.json'
 
 interface BudgetRowProps {
   budget: BudgetSummary
@@ -72,7 +73,7 @@ interface BudgetsWidgetProps {
 
 const BudgetsWidget = ({ budgets }: BudgetsWidgetProps) => {
   const navigate = useNavigate()
-  const t = useT(import.meta.url)
+  const t = useT(trad)
 
   return (
     <div className="bg-card border border-border rounded-xl flex flex-col h-full">

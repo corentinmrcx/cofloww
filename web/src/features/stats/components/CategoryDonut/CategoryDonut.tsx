@@ -3,6 +3,7 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
 import { useExpensesByCategory } from '../../hooks/useExpensesByCategory'
 import { useFormatters } from '../../../../lib/format'
 import { useT } from '../../../../components/T'
+import trad from './trad.json'
 
 interface TooltipPayloadItem {
   name: string
@@ -46,7 +47,7 @@ const CustomTooltip = ({ active, payload, fmt }: CustomTooltipProps) => {
 
 const CategoryDonut = () => {
   const [monthIdx, setMonthIdx] = useState(0)
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { formatAmountShort: fmt, numLocale } = useFormatters()
   const MONTH_OPTIONS = useMemo(() => buildMonthOptions(numLocale), [numLocale])
   const selected = MONTH_OPTIONS[monthIdx]

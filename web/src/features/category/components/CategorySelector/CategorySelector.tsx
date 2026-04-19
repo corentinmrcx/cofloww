@@ -5,6 +5,7 @@ import { useT } from '../../../../components/T'
 import { useCategories } from '../../hooks/useCategories'
 import { useCreateCategory } from '../../hooks/useCreateCategory'
 import type { Category, CategoryType, CreateCategoryPayload } from '../../types/category.types'
+import trad from './trad.json'
 
 
 const DEFAULT_CATEGORY_COLOR = '#10b981'
@@ -17,7 +18,7 @@ interface CategorySelectorProps {
 }
 
 const CategorySelector = ({ value, onChange, type, clearable = false }: CategorySelectorProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { data: categories = [] } = useCategories()
   const { mutate: createCategory, isPending: isCreating } = useCreateCategory()
 

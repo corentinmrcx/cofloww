@@ -9,6 +9,7 @@ import { useT } from '../components/T'
 import { useFormatters } from '../lib/format'
 import { cn } from '../lib/utils'
 import type { RecurringRule } from '../features/recurring/types/recurring.types'
+import trad from './trad.json'
 
 const MONTHLY_MULTIPLIERS: Record<string, number> = {
   daily:   30,
@@ -23,7 +24,7 @@ const RecurringRulesPage = () => {
   const { mutate: deleteRule } = useDeleteRecurringRule()
   const [modalRule, setModalRule] = useState<RecurringRule | 'new' | null>(null)
 
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { formatAmountShort: formatAmount } = useFormatters()
   const activeRules = rules.filter(r => r.is_active)
 

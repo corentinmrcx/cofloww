@@ -10,6 +10,7 @@ import { IconPicker } from '../../../../components/IconPicker'
 import { useCreateWallet } from '../../hooks/useCreateWallet'
 import { useUpdateWallet } from '../../hooks/useUpdateWallet'
 import type { Wallet } from '../../types/wallet.types'
+import trad from './trad.json'
 
 const schema = z.object({
   name:            z.string().min(1),
@@ -31,7 +32,7 @@ interface WalletModalProps {
 }
 
 const WalletModal = ({ wallet, onClose }: WalletModalProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const isEdit = wallet !== undefined
   const closeRef = useRef<HTMLButtonElement>(null)
 

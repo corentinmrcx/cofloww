@@ -6,6 +6,7 @@ import { useT } from '../../../../components/T'
 import type { DashboardWallet } from '../../types/dashboard.types'
 
 import { useFormatters } from '../../../../lib/format'
+import trad from './trad.json'
 
 interface SparklineProps {
   data: number[]
@@ -36,7 +37,7 @@ interface WalletsWidgetProps {
 
 const WalletsWidget = ({ wallets }: WalletsWidgetProps) => {
   const navigate = useNavigate()
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { formatAmountShort: fmt } = useFormatters()
 
   return (

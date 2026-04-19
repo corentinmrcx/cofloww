@@ -11,6 +11,7 @@ import { useUpdateRecurringRule } from '../../hooks/useUpdateRecurringRule'
 import { useWallets } from '../../../wallet/hooks/useWallets'
 import { useCategories } from '../../../category/hooks/useCategories'
 import type { RecurringRule } from '../../types/recurring.types'
+import trad from './trad.json'
 
 const schema = z.object({
   label:        z.string().min(1),
@@ -36,7 +37,7 @@ interface RecurringRuleModalProps {
 }
 
 const RecurringRuleModal = ({ rule, onClose }: RecurringRuleModalProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const isEdit = rule !== undefined
   const closeRef = useRef<HTMLButtonElement>(null)
 

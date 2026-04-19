@@ -5,6 +5,7 @@ import { useOnClickOutside } from '../../../../hooks/useOnClickOutside'
 import { useT } from '../../../../components/T'
 import { cn } from '../../../../lib/utils'
 import type { AppNotification } from '../../types/notification.types'
+import trad from './trad.json'
 
 const NotifIcon = ({ type }: { type: string }) => {
   if (type === 'budget_alert')   return <AlertTriangle size={14} className="text-warning" />
@@ -52,7 +53,7 @@ interface NotificationBellProps {
 const NotificationBell = ({ placement = 'bottom-right' }: NotificationBellProps) => {
   const [open, setOpen]       = useState(false)
   const ref                   = useRef<HTMLDivElement>(null)
-  const t                     = useT(import.meta.url)
+  const t                     = useT(trad)
   const { data }              = useNotifications()
   const { mutate: markRead }  = useMarkRead()
   const { mutate: markAll }   = useMarkAllRead()

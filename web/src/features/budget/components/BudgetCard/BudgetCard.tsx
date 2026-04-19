@@ -4,6 +4,7 @@ import { ActionMenu } from '../../../../components/ActionMenu'
 import { useFormatters } from '../../../../lib/format'
 import { cn } from '../../../../lib/utils'
 import type { Budget } from '../../types/budget.types'
+import trad from './trad.json'
 
 const BUDGET_DANGER_THRESHOLD  = 90
 const BUDGET_WARNING_THRESHOLD = 70
@@ -27,7 +28,7 @@ interface BudgetCardProps {
 }
 
 const BudgetCard = ({ budget, onEdit, onDelete }: BudgetCardProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { formatAmountShort: formatAmount } = useFormatters()
   const pct = Math.min(budget.pct_used, 100)
 

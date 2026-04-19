@@ -2,10 +2,11 @@ import { useLocation } from 'react-router'
 import { ThemeToggle } from '../ThemeToggle'
 import { NotificationBell } from '../../features/notifications/components/NotificationBell'
 import { useT } from '../T'
+import trad from './trad.json'
 
 const Topbar = () => {
   const { pathname } = useLocation()
-  const t = useT(import.meta.url)
+  const t = useT(trad)
 
   const pathTitles: Record<string, string> = {
     '/':             t('dashboard'),

@@ -1,9 +1,10 @@
 import { useMemo } from 'react'
 import { useT } from '../../../components/T'
 import { loginSchema, registerSchema, forgotPasswordSchema } from './auth.schemas'
+import trad from './trad.json'
 
 export const useAuthSchemas = () => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
 
   return useMemo(() => ({
     loginSchema:          loginSchema(t),

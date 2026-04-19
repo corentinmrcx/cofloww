@@ -4,6 +4,7 @@ import { useLangStore } from '../../../../stores/langStore'
 import { useFormatters } from '../../../../lib/format'
 import { cn } from '../../../../lib/utils'
 import type { MonthSummary } from '../../types/dashboard.types'
+import trad from './trad.json'
 
 const Trend = ({ prev, current, positiveIsGood = true }: { prev: number; current: number; positiveIsGood?: boolean }) => {
   if (prev === 0) return null
@@ -26,7 +27,7 @@ interface MonthSummaryWidgetProps {
 }
 
 const MonthSummaryWidget = ({ current, prev }: MonthSummaryWidgetProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { lang } = useLangStore()
   const { formatAmountShort: fmt } = useFormatters()
   const locale = lang === 'en' ? 'en-US' : 'fr-FR'

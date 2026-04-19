@@ -15,6 +15,7 @@ import {
   AlertDialogTitle,
 } from '../../../../components/ui/alert-dialog'
 import type { Transaction } from '../../types/transaction.types'
+import trad from './trad.json'
 
 interface TransactionDetailProps {
   transaction: Transaction
@@ -23,7 +24,7 @@ interface TransactionDetailProps {
 }
 
 const TransactionDetail = ({ transaction: tx, onClose, onEdit }: TransactionDetailProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const { formatAmount, formatDateFull } = useFormatters()
   const { mutate: deleteTransaction } = useDeleteTransaction()
   const closeRef = useRef<HTMLButtonElement>(null)

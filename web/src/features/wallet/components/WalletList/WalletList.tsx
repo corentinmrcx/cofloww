@@ -21,6 +21,7 @@ import { List } from '../../../../components/List'
 import { WalletCard } from '../WalletCard'
 import { useReorderWallets } from '../../hooks/useReorderWallets'
 import type { Wallet } from '../../types/wallet.types'
+import trad from './trad.json'
 
 const SortableWalletCard = ({ wallet, onEdit, onDelete }: { wallet: Wallet; onEdit: () => void; onDelete: () => void }) => {
   const navigate = useNavigate()
@@ -50,7 +51,7 @@ interface WalletListProps {
 }
 
 const WalletList = ({ wallets, onEditClick, onDeleteClick }: WalletListProps) => {
-  const t = useT(import.meta.url)
+  const t = useT(trad)
   const [items, setItems] = useState(wallets)
   const { mutate: reorder } = useReorderWallets()
 

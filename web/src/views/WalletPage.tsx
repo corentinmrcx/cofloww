@@ -7,12 +7,13 @@ import { useDeleteWallet } from '../features/wallet/hooks/useDeleteWallet'
 import { useT } from '../components/T'
 import { Skeleton } from '../components/ui/skeleton'
 import type { Wallet } from '../features/wallet/types/wallet.types'
+import trad from './trad.json'
 
 const WalletPage = () => {
   const { data: wallets = [], isPending } = useWallets()
   const { mutate: deleteWallet } = useDeleteWallet()
   const [modalWallet, setModalWallet] = useState<Wallet | 'new' | null>(null)
-  const t = useT(import.meta.url)
+  const t = useT(trad)
 
   return (
     <div className="flex flex-col gap-4">

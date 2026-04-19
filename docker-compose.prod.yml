@@ -1,10 +1,9 @@
 services:
-
   api:
+    container_name: cofloww-api
     build:
       context: ./api
       target: prod
-    volumes: []
     env_file:
       - ./api/.env
     environment:
@@ -13,33 +12,45 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - npm-network
+      - cofloww-internal
     restart: unless-stopped
 
   web:
+    container_name: cofloww-web
     build:
       context: ./web
       target: prod
-    ports:
-      - "80:80"
+    networks:
+      - npm-network
     depends_on:
       - api
     restart: unless-stopped
 
   db:
+    container_name: cofloww-db
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: ${DB_DATABASE:-cofloww}
-      POSTGRES_USER: ${DB_USERNAME:-cofloww}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-cofloww}
-    ports: []
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - cofloww_pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-cofloww}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME}"]
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - cofloww-internal
     restart: unless-stopped
+  
+networks:
+  npm-network:
+    external: true
+  cofloww-internal:
+    driver: bridge
 
 volumes:
-  pgdata:
+  cofloww_pgdata:

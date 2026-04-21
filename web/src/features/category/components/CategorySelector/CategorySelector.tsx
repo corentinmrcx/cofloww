@@ -48,10 +48,10 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
     if (open && view === 'list') searchRef.current?.focus()
   }, [open, view])
 
-  const filtered = useMemo(() => categories.filter(c =>
-    (!type || c.type === type) &&
-    c.name.toLowerCase().includes(search.toLowerCase()),
-  ), [categories, type, search])
+  const filtered = useMemo(() => categories
+    .filter(c => (!type || c.type === type) && c.name.toLowerCase().includes(search.toLowerCase()))
+    .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })),
+  [categories, type, search])
 
   const exactMatch = filtered.some(c => c.name.toLowerCase() === search.toLowerCase())
   const selected = categories.find(c => c.id === value) ?? null

@@ -119,7 +119,7 @@ const BudgetModal = ({ budget, month, year, onClose }: BudgetModalProps) => {
               name="category_ids"
               control={control}
               render={({ field }: { field: { value: string[]; onChange: (v: string[]) => void } }) => (
-                <CategoryMultiSelector value={field.value} onChange={field.onChange} />
+                <CategoryMultiSelector value={field.value} onChange={field.onChange} type="expense" />
               )}
             />
             {errors.category_ids && (

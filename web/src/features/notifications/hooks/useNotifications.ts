@@ -27,3 +27,19 @@ export const useMarkAllRead = () => {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['notifications'] }),
   })
 }
+
+export const useDeleteNotification = () => {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => api.delete(`/api/v1/notifications/${id}`),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['notifications'] }),
+  })
+}
+
+export const useDeleteAllNotifications = () => {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: () => api.delete('/api/v1/notifications/all'),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['notifications'] }),
+  })
+}

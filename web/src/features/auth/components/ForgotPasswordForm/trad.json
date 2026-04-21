@@ -1,24 +1,14 @@
 {
   "fr": {
     "title":            "Mot de passe oublié",
-    "description":      "Entrez votre email pour recevoir un lien de réinitialisation.",
-    "email":            "Email",
-    "email_placeholder":"vous@exemple.com",
-    "submit":           "Envoyer le lien",
-    "submitting":       "Envoi…",
+    "description":      "La réinitialisation par email n'est pas encore disponible.",
     "back_to_login":    "Retour à la connexion",
-    "success":          "Si ce compte existe, vous recevrez un email sous peu.",
-    "error":            "Une erreur est survenue."
+    "contact_message":  "Pour réinitialiser votre mot de passe, contactez-nous à"
   },
   "en": {
     "title":            "Forgot password",
-    "description":      "Enter your email to receive a reset link.",
-    "email":            "Email",
-    "email_placeholder":"you@example.com",
-    "submit":           "Send reset link",
-    "submitting":       "Sending…",
+    "description":      "Password reset by email is not available yet.",
     "back_to_login":    "Back to sign in",
-    "success":          "If this account exists, you'll receive an email shortly.",
-    "error":            "Something went wrong."
+    "contact_message":  "To reset your password, contact us at"
   }
 }

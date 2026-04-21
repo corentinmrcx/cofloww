@@ -24,9 +24,9 @@ const WalletInvestmentRow = ({ wallet, allocation, investable, pasArrondi = 100 
       : '',
   )
 
-  const debouncedPct   = useDebounce(pctInput, 400)
+  const debouncedPct  = useDebounce(pctInput, 400)
   const { mutate: setPct } = useSetInvestmentPct(wallet.id)
-  const prevDebounced  = useRef<string | null>(null)
+  const prevDebounced = useRef<string | null>(null)
 
   useEffect(() => {
     if (prevDebounced.current === null) {

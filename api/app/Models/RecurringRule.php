@@ -71,15 +71,13 @@ class RecurringRule extends Model
 
     public function nextOccurrence(): ?Carbon
     {
-        if (! $this->last_generated_at) {
-            $next = $this->starts_at->copy();
-        } else {
-            $next = match ($this->frequency) {
-                RecurringFrequency::Daily   => $this->last_generated_at->copy()->addDay(),
-                RecurringFrequency::Weekly  => $this->last_generated_at->copy()->addWeek(),
-                RecurringFrequency::Monthly => $this->nextMonthlyDate(),
-                RecurringFrequency::Yearly  => $this->last_generated_at->copy()->addYear(),
-            };
+        $base = $this->last_generated_at ?? null;
+        $next = $base ? $this->advanceByFrequency($base) : $this->starts_at->copy();
+
+        // Avance jusqu'à aujourd'hui ou au futur si la date calculée est dans le passé
+        $today = Carbon::today();
+        while ($next->lt($today)) {
+            $next = $this->advanceByFrequency($next);
         }
 
         if ($this->ends_at && $next->gt($this->ends_at)) {
@@ -89,9 +87,19 @@ class RecurringRule extends Model
         return $next;
     }
 
-    private function nextMonthlyDate(): Carbon
+    private function advanceByFrequency(Carbon $from): Carbon
     {
-        $next = $this->last_generated_at->copy()->addMonthNoOverflow();
+        return match ($this->frequency) {
+            RecurringFrequency::Daily   => $from->copy()->addDay(),
+            RecurringFrequency::Weekly  => $from->copy()->addWeek(),
+            RecurringFrequency::Monthly => $this->advanceMonthly($from),
+            RecurringFrequency::Yearly  => $from->copy()->addYear(),
+        };
+    }
+
+    private function advanceMonthly(Carbon $from): Carbon
+    {
+        $next = $from->copy()->addMonthNoOverflow();
 
         if ($this->day_of_month) {
             $next->day(min($this->day_of_month, $next->daysInMonth));

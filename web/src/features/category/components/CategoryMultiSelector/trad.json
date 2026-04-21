@@ -1,14 +1,32 @@
 {
   "fr": {
-    "placeholder": "Sélectionner des catégories…",
-    "search_placeholder": "Rechercher…",
-    "empty": "Aucune catégorie",
-    "selected_count": "catégorie(s) sélectionnée(s)"
+    "placeholder":       "Sélectionner des catégories…",
+    "search_placeholder":"Rechercher…",
+    "empty":             "Aucune catégorie",
+    "create_label":      "Créer",
+    "create_title":      "Nouvelle catégorie",
+    "name_placeholder":  "Nom de la catégorie",
+    "type_expense":      "Dépense",
+    "type_income":       "Revenu",
+    "type_transfer":     "Transfert",
+    "color_label":       "Couleur",
+    "cancel":            "Annuler",
+    "create":            "Créer",
+    "creating":          "Création…"
   },
   "en": {
-    "placeholder": "Select categories…",
-    "search_placeholder": "Search…",
-    "empty": "No categories",
-    "selected_count": "category(ies) selected"
+    "placeholder":       "Select categories…",
+    "search_placeholder":"Search…",
+    "empty":             "No categories",
+    "create_label":      "Create",
+    "create_title":      "New category",
+    "name_placeholder":  "Category name",
+    "type_expense":      "Expense",
+    "type_income":       "Income",
+    "type_transfer":     "Transfer",
+    "color_label":       "Color",
+    "cancel":            "Cancel",
+    "create":            "Create",
+    "creating":          "Creating…"
   }
 }

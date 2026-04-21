@@ -57,7 +57,7 @@ const WalletsWidget = ({ wallets }: WalletsWidgetProps) => {
         {wallets.length === 0 ? (
           <p className="px-4 py-6 text-sm text-muted-foreground text-center">{t('empty')}</p>
         ) : (
-          wallets.map(wallet => {
+          wallets.slice(0, 3).map(wallet => {
             const Icon = wallet.icon ? ICONS[wallet.icon] : null
             return (
               <button
@@ -91,6 +91,14 @@ const WalletsWidget = ({ wallets }: WalletsWidgetProps) => {
               </button>
             )
           })
+        )}
+        {wallets.length > 3 && (
+          <button
+            onClick={() => navigate('/wallets')}
+            className="w-full px-4 py-2.5 text-xs text-muted-foreground hover:text-foreground transition-colors text-center focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-b-xl"
+          >
+            {t('and_more').replace('{n}', String(wallets.length - 3))}
+          </button>
         )}
       </div>
     </div>

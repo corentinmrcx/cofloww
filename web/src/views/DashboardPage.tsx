@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
-import { Plus, BarChart2 } from 'lucide-react'
+import { Plus, BarChart2, Repeat2 } from 'lucide-react'
 import { useDashboard } from '../features/dashboard/hooks/useDashboard'
 import { MonthSummaryWidget }       from '../features/dashboard/components/MonthSummaryWidget'
 import { WalletsWidget }            from '../features/dashboard/components/WalletsWidget'
@@ -103,6 +103,25 @@ const DashboardPage = () => {
               <BudgetsWidget budgets={data.top_budgets} />
             </CardLink>
 
+            {/* Teaser récurrences */}
+            <div className="lg:col-span-3">
+              <Link
+                to="/recurring-rules"
+                className="flex items-center gap-4 bg-card border border-border rounded-xl p-4 hover:shadow-md transition-shadow"
+              >
+                <div className="size-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                  <Repeat2 size={20} className="text-primary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold">{t('dashboard_recurring_title')}</p>
+                  <p className="text-xs text-muted-foreground">{t('dashboard_recurring_desc')}</p>
+                </div>
+                <span className="text-sm text-primary font-medium shrink-0">
+                  {t('dashboard_recurring_cta')}
+                </span>
+              </Link>
+            </div>
+
             {/* Ligne 3 : Derniers mouvements (large) + Tendance (étroit) */}
             <CardLink to="/transactions" className="lg:col-span-2">
               <RecentTransactionsWidget transactions={data.recent_transactions} />
@@ -129,6 +148,7 @@ const DashboardPage = () => {
                 </span>
               </Link>
             </div>
+
           </>
         )}
       </div>

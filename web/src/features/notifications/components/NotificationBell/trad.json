@@ -2,6 +2,7 @@
   "fr": {
     "title":        "Notifications",
     "mark_all":     "Tout lire",
+    "delete_all":   "Tout supprimer",
     "empty":        "Aucune notification",
     "just_now":     "À l'instant",
     "minutes_ago":  "Il y a {m} min",
@@ -11,6 +12,7 @@
   "en": {
     "title":        "Notifications",
     "mark_all":     "Mark all read",
+    "delete_all":   "Delete all",
     "empty":        "No notifications",
     "just_now":     "Just now",
     "minutes_ago":  "{m} min ago",

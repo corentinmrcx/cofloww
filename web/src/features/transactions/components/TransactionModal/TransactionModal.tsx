@@ -197,7 +197,9 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
             <select id="tx-wallet" {...register('wallet_id')} className={INPUT_CLASS} aria-describedby={errors.wallet_id ? 'tx-wallet-error' : undefined}>
               <option value="">{t('wallet_placeholder')}</option>
               {walletList.map((w: Wallet) => (
-                <option key={w.id} value={w.id}>{w.name}</option>
+                <option key={w.id} value={w.id}>
+                  {w.institution ? `${w.name} — ${w.institution}` : w.name}
+                </option>
               ))}
             </select>
             {errors.wallet_id && <p id="tx-wallet-error" className="text-xs text-destructive">{t('wallet_required')}</p>}
@@ -210,7 +212,9 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
               <select id="tx-to-wallet" {...register('to_wallet_id')} className={INPUT_CLASS} aria-describedby={errors.to_wallet_id ? 'tx-to-wallet-error' : undefined}>
                 <option value="">{t('wallet_placeholder')}</option>
                 {walletList.filter((w: Wallet) => w.id !== selectedWalletId).map((w: Wallet) => (
-                  <option key={w.id} value={w.id}>{w.name}</option>
+                  <option key={w.id} value={w.id}>
+                    {w.institution ? `${w.name} — ${w.institution}` : w.name}
+                  </option>
                 ))}
               </select>
               {errors.to_wallet_id && <p id="tx-to-wallet-error" className="text-xs text-destructive">{t('to_wallet_required')}</p>}

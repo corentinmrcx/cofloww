@@ -3,12 +3,14 @@
     "title":         "Comptes",
     "see_all":       "Voir tout",
     "see_all_label": "Voir tous les comptes",
-    "empty":         "Aucun compte"
+    "empty":         "Aucun compte",
+    "and_more":      "et {n} autre(s) compte(s)"
   },
   "en": {
     "title":         "Wallets",
     "see_all":       "See all",
     "see_all_label": "See all wallets",
-    "empty":         "No accounts"
+    "empty":         "No accounts",
+    "and_more":      "and {n} more account(s)"
   }
 }

@@ -23,7 +23,7 @@ interface RecurringRuleRowProps {
 
 const RecurringRuleRow = ({ rule, onEdit, onToggle, onDelete }: RecurringRuleRowProps) => {
   const t = useT(trad)
-  const { formatAmountShort } = useFormatters()
+  const { formatAmountShort, formatDate } = useFormatters()
 
   const amountDisplay = formatAmountShort(rule.amount)
 
@@ -52,7 +52,7 @@ const RecurringRuleRow = ({ rule, onEdit, onToggle, onDelete }: RecurringRuleRow
           <span>·</span>
           <span>
             {t('next_occurrence')}
-            {rule.next_occurrence ?? t('no_next')}
+            {rule.next_occurrence ? formatDate(rule.next_occurrence) : t('no_next')}
           </span>
         </div>
       </div>

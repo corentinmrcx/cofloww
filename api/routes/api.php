@@ -38,6 +38,8 @@ Route::middleware(['auth:sanctum', 'throttle:60,1'])->prefix('v1')->group(functi
     Route::get('notifications',                          [AppNotificationController::class, 'index']);
     Route::patch('notifications/{notification}/read',    [AppNotificationController::class, 'markRead']);
     Route::post('notifications/read-all',                [AppNotificationController::class, 'markAllRead']);
+    Route::delete('notifications/all',                   [AppNotificationController::class, 'destroyAll']);
+    Route::delete('notifications/{notification}',        [AppNotificationController::class, 'destroy']);
 
     Route::post('wallets/reorder', [WalletController::class, 'reorder']);
     Route::apiResource('wallets', WalletController::class);

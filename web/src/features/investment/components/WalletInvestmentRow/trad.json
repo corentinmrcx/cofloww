@@ -1,10 +1,12 @@
 {
   "fr": {
-    "balance": "Solde : ",
-    "to_send": "à verser"
+    "balance":        "Solde : ",
+    "to_send":        "à verser",
+    "invest_target_pct": "Objectif d'investissement"
   },
   "en": {
-    "balance": "Balance: ",
-    "to_send": "to send"
+    "balance":        "Balance: ",
+    "to_send":        "to send",
+    "invest_target_pct": "Investment target"
   }
 }

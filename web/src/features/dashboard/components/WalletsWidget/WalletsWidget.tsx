@@ -76,7 +76,9 @@ const WalletsWidget = ({ wallets }: WalletsWidgetProps) => {
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{wallet.name}</p>
+                  <p className="text-sm font-medium truncate">
+                    {wallet.institution ? `${wallet.name} — ${wallet.institution}` : wallet.name}
+                  </p>
                   <p className="text-xs text-muted-foreground tabular-nums">
                     {fmt(wallet.balance)}
                   </p>

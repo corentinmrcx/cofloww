@@ -1,6 +1,7 @@
 export interface DashboardWallet {
   id: string
   name: string
+  institution: string | null
   type: string
   color: string
   icon: string | null

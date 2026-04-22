@@ -63,13 +63,14 @@ class DashboardService
             }
 
             return [
-                'id'        => $w->id,
-                'name'      => $w->name,
-                'type'      => $w->type->value,
-                'color'     => $w->color,
-                'icon'      => $w->icon,
-                'balance'   => $current,
-                'sparkline' => array_values($sparkline),
+                'id'          => $w->id,
+                'name'        => $w->name,
+                'institution' => $w->institution,
+                'type'        => $w->type->value,
+                'color'       => $w->color,
+                'icon'        => $w->icon,
+                'balance'     => $current,
+                'sparkline'   => array_values($sparkline),
             ];
         })->all();
     }

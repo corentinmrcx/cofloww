@@ -21,3 +21,10 @@ export interface CreateCategoryPayload {
   icon?: string
   parent_id?: string
 }
+
+export interface UpdateCategoryPayload {
+  name?: string
+  type?: CategoryType
+  color?: string | null
+  icon?: string | null
+}

@@ -1,0 +1,32 @@
+{
+  "fr": {
+    "categories_title": "Catégories",
+    "tags_title":       "Tags",
+    "add_category":     "Nouvelle catégorie",
+    "add_tag":          "Nouveau tag",
+    "name_placeholder": "Nom",
+    "type_expense":     "Dépense",
+    "type_income":      "Revenu",
+    "type_transfer":    "Transfert",
+    "system_badge":     "Système",
+    "empty_categories": "Aucune catégorie",
+    "empty_tags":       "Aucun tag",
+    "delete_confirm":   "Supprimer ?",
+    "confirm":          "Confirmer"
+  },
+  "en": {
+    "categories_title": "Categories",
+    "tags_title":       "Tags",
+    "add_category":     "New category",
+    "add_tag":          "New tag",
+    "name_placeholder": "Name",
+    "type_expense":     "Expense",
+    "type_income":      "Income",
+    "type_transfer":    "Transfer",
+    "system_badge":     "System",
+    "empty_categories": "No categories",
+    "empty_tags":       "No tags",
+    "delete_confirm":   "Delete?",
+    "confirm":          "Confirm"
+  }
+}

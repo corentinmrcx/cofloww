@@ -45,7 +45,7 @@ Route::middleware(['auth:sanctum', 'throttle:60,1'])->prefix('v1')->group(functi
     Route::apiResource('wallets', WalletController::class);
 
     Route::apiResource('categories', CategoryController::class)->except('show');
-    Route::apiResource('tags', TagController::class)->only('index', 'store', 'destroy');
+    Route::apiResource('tags', TagController::class)->only('index', 'store', 'update', 'destroy');
 
     Route::apiResource('recurring-rules', RecurringRuleController::class)->except('show');
     Route::apiResource('budgets', BudgetController::class)->except('show');

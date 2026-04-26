@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTagRequest;
+use App\Http\Requests\UpdateTagRequest;
 use App\Http\Resources\TagResource;
 use App\Models\Tag;
 use App\Services\TagService;
@@ -26,6 +27,11 @@ class TagController extends Controller
         $tag = $this->service->store($request->validated(), $request->user()->id);
 
         return (new TagResource($tag))->response()->setStatusCode(201);
+    }
+
+    public function update(UpdateTagRequest $request, Tag $tag): TagResource
+    {
+        return new TagResource($this->service->update($tag, $request->validated()));
     }
 
     public function destroy(Tag $tag): Response

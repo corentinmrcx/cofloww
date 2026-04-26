@@ -14,6 +14,13 @@ class TagService
         ]);
     }
 
+    public function update(Tag $tag, array $data): Tag
+    {
+        $tag->update($data);
+
+        return $tag->fresh();
+    }
+
     public function destroy(Tag $tag): void
     {
         $tag->delete();

@@ -1,21 +1,23 @@
 import { useState } from 'react'
-import { ProfileForm }     from '../features/settings/components/ProfileForm'
-import { PreferencesForm } from '../features/settings/components/PreferencesForm'
-import { DataPanel }       from '../features/settings/components/DataPanel'
+import { ProfileForm }      from '../features/settings/components/ProfileForm'
+import { PreferencesForm }  from '../features/settings/components/PreferencesForm'
+import { DataPanel }        from '../features/settings/components/DataPanel'
+import { CategoriesPanel }  from '../features/settings/components/CategoriesPanel'
 import { useT } from '../components/T'
 import { cn } from '../lib/utils'
 import trad from './trad.json'
 
-type Tab = 'profil' | 'preferences' | 'donnees'
+type Tab = 'profil' | 'preferences' | 'categories' | 'donnees'
 
 const SettingsPage = () => {
   const [tab, setTab] = useState<Tab>('profil')
   const t = useT(trad)
 
   const TABS: { id: Tab; label: string }[] = [
-    { id: 'profil',       label: t('settings_tab_profile') },
-    { id: 'preferences',  label: t('settings_tab_prefs') },
-    { id: 'donnees',      label: t('settings_tab_data') },
+    { id: 'profil',      label: t('settings_tab_profile') },
+    { id: 'preferences', label: t('settings_tab_prefs') },
+    { id: 'categories',  label: t('settings_tab_categories') },
+    { id: 'donnees',     label: t('settings_tab_data') },
   ]
 
   return (
@@ -42,6 +44,7 @@ const SettingsPage = () => {
       <div className="bg-card border border-border rounded-xl p-6">
         {tab === 'profil'      && <ProfileForm />}
         {tab === 'preferences' && <PreferencesForm />}
+        {tab === 'categories'  && <CategoriesPanel />}
         {tab === 'donnees'     && <DataPanel />}
       </div>
     </div>

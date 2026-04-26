@@ -9,7 +9,7 @@ import { MoneyInput } from '../../../../components/Input'
 import { useCreateRecurringRule } from '../../hooks/useCreateRecurringRule'
 import { useUpdateRecurringRule } from '../../hooks/useUpdateRecurringRule'
 import { useWallets } from '../../../wallet/hooks/useWallets'
-import { useCategories } from '../../../category/hooks/useCategories'
+import { CategorySelector } from '../../../category/components/CategorySelector'
 import type { RecurringRule } from '../../types/recurring.types'
 import trad from './trad.json'
 
@@ -42,7 +42,6 @@ const RecurringRuleModal = ({ rule, onClose }: RecurringRuleModalProps) => {
   const closeRef = useRef<HTMLButtonElement>(null)
 
   const { data: wallets = [] } = useWallets()
-  const { data: categories = [] } = useCategories()
 
   useEffect(() => {
     closeRef.current?.focus()
@@ -204,20 +203,25 @@ const RecurringRuleModal = ({ rule, onClose }: RecurringRuleModalProps) => {
             <select id="rr-wallet" {...register('wallet_id')} className={INPUT_CLASS} aria-describedby={errors.wallet_id ? 'rr-wallet-error' : undefined}>
               <option value="">{t('wallet_placeholder')}</option>
               {wallets.map(w => (
-                <option key={w.id} value={w.id}>{w.name}</option>
+                <option key={w.id} value={w.id}>{w.institution ? `${w.name} — ${w.institution}` : w.name}</option>
               ))}
             </select>
             {errors.wallet_id && <p id="rr-wallet-error" className="text-xs text-destructive">{t('wallet_required')}</p>}
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="rr-category" className="text-sm font-medium">{t('category')}</label>
-            <select id="rr-category" {...register('category_id')} className={INPUT_CLASS}>
-              <option value="">{t('category_none')}</option>
-              {categories.map(c => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
+            <label className="text-sm font-medium">{t('category')}</label>
+            <Controller
+              name="category_id"
+              control={control}
+              render={({ field }) => (
+                <CategorySelector
+                  value={field.value ?? null}
+                  onChange={v => field.onChange(v)}
+                  clearable
+                />
+              )}
+            />
           </div>
 
           <div className="flex gap-4">

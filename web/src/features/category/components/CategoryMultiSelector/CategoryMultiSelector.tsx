@@ -7,7 +7,7 @@ import { useCreateCategory } from '../../hooks/useCreateCategory'
 import type { Category, CategoryType, CreateCategoryPayload } from '../../types/category.types'
 import trad from './trad.json'
 
-const DEFAULT_CATEGORY_COLOR = '#10b981'
+const randomCategoryColor = () => '#' + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0')
 
 interface CategoryMultiSelectorProps {
   value: string[]
@@ -25,7 +25,7 @@ const CategoryMultiSelector = ({ value, onChange, type }: CategoryMultiSelectorP
   const [search, setSearch] = useState('')
   const [createName, setCreateName] = useState('')
   const [createType, setCreateType] = useState<CategoryType>(type ?? 'expense')
-  const [createColor, setCreateColor] = useState(DEFAULT_CATEGORY_COLOR)
+  const [createColor, setCreateColor] = useState(randomCategoryColor)
 
   const ref = useRef<HTMLDivElement>(null)
   const searchRef = useRef<HTMLInputElement>(null)
@@ -65,7 +65,7 @@ const CategoryMultiSelector = ({ value, onChange, type }: CategoryMultiSelectorP
   const openCreate = () => {
     setCreateName(search)
     setCreateType(type ?? 'expense')
-    setCreateColor(DEFAULT_CATEGORY_COLOR)
+    setCreateColor(randomCategoryColor())
     setView('create')
   }
 

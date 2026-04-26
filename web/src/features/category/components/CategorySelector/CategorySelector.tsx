@@ -8,7 +8,7 @@ import type { Category, CategoryType, CreateCategoryPayload } from '../../types/
 import trad from './trad.json'
 
 
-const DEFAULT_CATEGORY_COLOR = '#10b981'
+const randomCategoryColor = () => '#' + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0')
 
 interface CategorySelectorProps {
   value: string | null
@@ -27,7 +27,7 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
   const [view, setView] = useState<'list' | 'create'>('list')
   const [createName, setCreateName] = useState('')
   const [createType, setCreateType] = useState<CategoryType>(type ?? 'expense')
-  const [createColor, setCreateColor] = useState(DEFAULT_CATEGORY_COLOR)
+  const [createColor, setCreateColor] = useState(randomCategoryColor)
 
   const ref = useRef<HTMLDivElement>(null)
   const searchRef = useRef<HTMLInputElement>(null)
@@ -66,7 +66,7 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
   const openCreate = () => {
     setCreateName(search)
     setCreateType(type ?? 'expense')
-    setCreateColor(DEFAULT_CATEGORY_COLOR)
+    setCreateColor(randomCategoryColor())
     setView('create')
   }
 

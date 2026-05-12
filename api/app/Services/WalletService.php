@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Services\TransactionService;
 
 class WalletService
 {
@@ -38,6 +39,24 @@ class WalletService
 
             return $wallet->fresh();
         });
+    }
+
+    public function adjust(Wallet $wallet, int $targetBalance, int $userId): void
+    {
+        $diff = $targetBalance - $wallet->balance;
+
+        if ($diff === 0) {
+            return;
+        }
+
+        app(TransactionService::class)->store([
+            'wallet_id' => $wallet->id,
+            'label'     => 'Ajustement de solde',
+            'amount'    => abs($diff),
+            'type'      => $diff > 0 ? 'income' : 'expense',
+            'date'      => now()->toDateString(),
+            'status'    => 'cleared',
+        ], $userId);
     }
 
     public function archive(Wallet $wallet): void

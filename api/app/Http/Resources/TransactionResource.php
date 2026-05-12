@@ -27,9 +27,10 @@ class TransactionResource extends JsonResource
             'to_wallet_id'       => $this->to_wallet_id,
 
             'wallet'    => $this->whenLoaded('wallet', fn () => [
-                'id'    => $this->wallet->id,
-                'name'  => $this->wallet->name,
-                'color' => $this->wallet->color,
+                'id'          => $this->wallet->id,
+                'name'        => $this->wallet->name,
+                'color'       => $this->wallet->color,
+                'institution' => $this->wallet->institution,
             ]),
 
             'category'  => $this->whenLoaded('category', fn () => $this->category ? [
@@ -40,9 +41,10 @@ class TransactionResource extends JsonResource
             ] : null),
 
             'to_wallet' => $this->whenLoaded('toWallet', fn () => $this->toWallet ? [
-                'id'    => $this->toWallet->id,
-                'name'  => $this->toWallet->name,
-                'color' => $this->toWallet->color,
+                'id'          => $this->toWallet->id,
+                'name'        => $this->toWallet->name,
+                'color'       => $this->toWallet->color,
+                'institution' => $this->toWallet->institution,
             ] : null),
 
             'tags' => $this->whenLoaded('tags', fn () => $this->tags->map(fn ($tag) => [

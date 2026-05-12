@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { WalletList } from '../features/wallet/components/WalletList'
 import { WalletModal } from '../features/wallet/components/WalletModal'
+import { WalletAdjustModal } from '../features/wallet/components/WalletAdjustModal'
 import { useWallets } from '../features/wallet/hooks/useWallets'
 import { useDeleteWallet } from '../features/wallet/hooks/useDeleteWallet'
 import { useT } from '../components/T'
@@ -13,6 +14,7 @@ const WalletPage = () => {
   const { data: wallets = [], isPending } = useWallets()
   const { mutate: deleteWallet } = useDeleteWallet()
   const [modalWallet, setModalWallet] = useState<Wallet | 'new' | null>(null)
+  const [adjustWallet, setAdjustWallet] = useState<Wallet | null>(null)
   const t = useT(trad)
 
   return (
@@ -46,6 +48,7 @@ const WalletPage = () => {
         <WalletList
           wallets={wallets}
           onEditClick={setModalWallet}
+          onAdjustClick={setAdjustWallet}
           onDeleteClick={wallet => deleteWallet(wallet.id)}
         />
       )}
@@ -54,6 +57,13 @@ const WalletPage = () => {
         <WalletModal
           wallet={modalWallet === 'new' ? undefined : modalWallet}
           onClose={() => setModalWallet(null)}
+        />
+      )}
+
+      {adjustWallet !== null && (
+        <WalletAdjustModal
+          wallet={adjustWallet}
+          onClose={() => setAdjustWallet(null)}
         />
       )}
     </div>

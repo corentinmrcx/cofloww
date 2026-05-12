@@ -1,4 +1,4 @@
-import { GripVertical, Pencil, Trash2 } from 'lucide-react'
+import { GripVertical, Pencil, SlidersHorizontal, Trash2 } from 'lucide-react'
 import type { DraggableAttributes, DraggableSyntheticListeners } from '@dnd-kit/core'
 import { useT } from '../../../../components/T'
 import { ActionMenu } from '../../../../components/ActionMenu'
@@ -15,6 +15,7 @@ interface WalletCardProps {
   dragAttributes?: DraggableAttributes
   isDragging?: boolean
   onEdit?: () => void
+  onAdjust?: () => void
   onDelete?: () => void
   onClick?: () => void
 }
@@ -25,6 +26,7 @@ const WalletCard = ({
   dragAttributes,
   isDragging = false,
   onEdit,
+  onAdjust,
   onDelete,
   onClick,
 }: WalletCardProps) => {
@@ -74,8 +76,9 @@ const WalletCard = ({
       <div className="shrink-0">
         <ActionMenu
           items={[
-            { label: t('edit'),   icon: Pencil, onClick: onEdit   ?? (() => {}) },
-            { label: t('delete'), icon: Trash2, onClick: onDelete ?? (() => {}), destructive: true },
+            { label: t('edit'),   icon: Pencil,             onClick: onEdit   ?? (() => {}) },
+            { label: t('adjust'), icon: SlidersHorizontal,  onClick: onAdjust ?? (() => {}) },
+            { label: t('delete'), icon: Trash2,             onClick: onDelete ?? (() => {}), destructive: true },
           ]}
         />
       </div>

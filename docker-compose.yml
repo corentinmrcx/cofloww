@@ -16,6 +16,19 @@ services:
       db:
         condition: service_healthy
 
+  scheduler:
+    build:
+      context: ./api
+      target: dev
+    volumes:
+      - ./api:/var/www/api
+    env_file:
+      - ./api/.env
+    command: ["php", "artisan", "schedule:work"]
+    depends_on:
+      db:
+        condition: service_healthy
+
   web:
     build:
       context: ./web

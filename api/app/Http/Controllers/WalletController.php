@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AdjustWalletRequest;
 use App\Http\Requests\ReorderWalletsRequest;
 use App\Http\Requests\StoreWalletRequest;
 use App\Http\Requests\UpdateWalletRequest;
@@ -43,6 +44,13 @@ class WalletController extends Controller
     public function destroy(Wallet $wallet): Response
     {
         $this->service->archive($wallet);
+
+        return response()->noContent();
+    }
+
+    public function adjust(AdjustWalletRequest $request, Wallet $wallet): Response
+    {
+        $this->service->adjust($wallet, $request->validated('target_balance'), $request->user()->id);
 
         return response()->noContent();
     }

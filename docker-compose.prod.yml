@@ -42,6 +42,27 @@ services:
       - cofloww-internal
     restart: unless-stopped
 
+  scheduler:
+    container_name: cofloww-scheduler
+    build:
+      context: ./api
+      target: prod
+    env_file: ./api/.env
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+    volumes:
+      - cofloww_storage:/var/www/api/storage
+    command: ["php", "artisan", "schedule:work"]
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cofloww-internal
+    restart: unless-stopped
+
   web:
     container_name: cofloww-web
     build:

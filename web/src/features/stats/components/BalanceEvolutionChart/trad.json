@@ -1,13 +1,13 @@
 {
   "fr": {
     "title":    "Évolution du patrimoine",
-    "subtitle": "Solde net total — 12 derniers mois",
+    "subtitle": "Solde net total — 12 derniers mois (hors intérêts)",
     "loading":  "Chargement…",
     "today":    "Aujourd'hui"
   },
   "en": {
     "title":    "Net worth evolution",
-    "subtitle": "Total net balance — last 12 months",
+    "subtitle": "Total net balance — last 12 months (excl. interest)",
     "loading":  "Loading…",
     "today":    "Today"
   }

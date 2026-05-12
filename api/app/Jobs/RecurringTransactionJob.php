@@ -26,29 +26,34 @@ class RecurringTransactionJob implements ShouldQueue
             ->where(fn ($q) => $q->whereNull('ends_at')->orWhere('ends_at', '>=', $today))
             ->each(function (RecurringRule $rule) use ($today, $transactionService) {
                 $next = $rule->nextOccurrence();
+                $iterations = 0;
 
-                if (! $next || ! $next->isSameDay($today)) {
-                    return;
-                }
+                while ($next && $next->lte($today) && $iterations < 366) {
+                    $iterations++;
 
-                try {
-                    $transactionService->store([
-                        'wallet_id'    => $rule->wallet_id,
-                        'category_id'  => $rule->category_id,
-                        'label'        => $rule->label,
-                        'amount'       => $rule->amount,
-                        'type'         => $rule->type->value,
-                        'date'         => $today->toDateString(),
-                        'is_recurring' => true,
-                        'recurring_rule_id' => $rule->id,
-                        'status'       => 'cleared',
-                    ], $rule->user_id);
+                    try {
+                        $transactionService->store([
+                            'wallet_id'         => $rule->wallet_id,
+                            'category_id'       => $rule->category_id,
+                            'label'             => $rule->label,
+                            'amount'            => $rule->amount,
+                            'type'              => $rule->type->value,
+                            'date'              => $next->toDateString(),
+                            'is_recurring'      => true,
+                            'recurring_rule_id' => $rule->id,
+                            'status'            => 'cleared',
+                        ], $rule->user_id);
 
-                    $rule->update(['last_generated_at' => $today]);
-                } catch (\Throwable $e) {
-                    Log::error("RecurringTransactionJob: failed for rule {$rule->id}", [
-                        'error' => $e->getMessage(),
-                    ]);
+                        $rule->last_generated_at = $next->copy();
+                        $rule->saveQuietly();
+                    } catch (\Throwable $e) {
+                        Log::error("RecurringTransactionJob: failed for rule {$rule->id}", [
+                            'error' => $e->getMessage(),
+                        ]);
+                        break;
+                    }
+
+                    $next = $rule->nextOccurrence();
                 }
             });
     }

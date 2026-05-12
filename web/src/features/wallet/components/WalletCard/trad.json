@@ -6,6 +6,7 @@
     "investment": "Investissement",
     "crypto":     "Crypto",
     "edit":       "Modifier",
+    "adjust":     "Ajuster",
     "delete":     "Supprimer"
   },
   "en": {
@@ -15,6 +16,7 @@
     "investment": "Investment",
     "crypto":     "Crypto",
     "edit":       "Edit",
+    "adjust":     "Adjust",
     "delete":     "Delete"
   }
 }

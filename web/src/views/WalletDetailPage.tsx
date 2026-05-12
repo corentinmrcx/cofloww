@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router'
-import { ChevronLeft, Pencil, Archive } from 'lucide-react'
+import { ChevronLeft, Pencil, Archive, SlidersHorizontal } from 'lucide-react'
 import { useWallet } from '../features/wallet/hooks/useWallet'
 import { useDeleteWallet } from '../features/wallet/hooks/useDeleteWallet'
 import { useTransactions } from '../features/transactions/hooks/useTransactions'
 import { WalletModal } from '../features/wallet/components/WalletModal'
+import { WalletAdjustModal } from '../features/wallet/components/WalletAdjustModal'
 import { TransactionTable } from '../features/transactions/components/TransactionTable'
 import { ActionMenu } from '../components/ActionMenu'
 import { ICONS } from '../components/IconPicker'
@@ -21,6 +22,7 @@ const WalletDetailPage = () => {
   const { mutate: deleteWallet } = useDeleteWallet()
   const { formatAmount: formatBalance } = useFormatters()
   const [showEdit, setShowEdit] = useState(false)
+  const [showAdjust, setShowAdjust] = useState(false)
   const [page, setPage] = useState(1)
 
   const { data: txResult, isPending: txPending } = useTransactions({
@@ -58,8 +60,9 @@ const WalletDetailPage = () => {
 
         <ActionMenu
           items={[
-            { label: t('wallet_detail_edit'),    icon: Pencil,  onClick: () => setShowEdit(true) },
-            { label: t('wallet_detail_archive'),  icon: Archive, onClick: handleArchive, destructive: true },
+            { label: t('wallet_detail_edit'),    icon: Pencil,             onClick: () => setShowEdit(true) },
+            { label: t('wallet_detail_adjust'),  icon: SlidersHorizontal,  onClick: () => setShowAdjust(true) },
+            { label: t('wallet_detail_archive'), icon: Archive,            onClick: handleArchive, destructive: true },
           ]}
         />
       </div>
@@ -103,6 +106,10 @@ const WalletDetailPage = () => {
 
       {showEdit && (
         <WalletModal wallet={wallet} onClose={() => setShowEdit(false)} />
+      )}
+
+      {showAdjust && (
+        <WalletAdjustModal wallet={wallet} onClose={() => setShowAdjust(false)} />
       )}
     </div>
   )

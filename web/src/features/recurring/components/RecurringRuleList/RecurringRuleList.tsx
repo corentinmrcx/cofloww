@@ -27,6 +27,17 @@ const RecurringRuleRow = ({ rule, onEdit, onToggle, onDelete }: RecurringRuleRow
 
   const amountDisplay = formatAmountShort(rule.amount)
 
+  const todayStr = new Date().toISOString().split('T')[0]
+  const isToday   = rule.next_occurrence === todayStr
+  const isOverdue = rule.next_occurrence != null && rule.next_occurrence < todayStr
+
+  const nextOccurrenceLabel = () => {
+    if (!rule.next_occurrence) return t('no_next')
+    if (isToday)   return <span className="text-amber-500 dark:text-amber-400 font-medium">{t('today')}</span>
+    if (isOverdue) return <span className="text-expense font-medium">{formatDate(rule.next_occurrence)}</span>
+    return formatDate(rule.next_occurrence)
+  }
+
   return (
     <div className="flex items-center gap-3 px-4 py-3">
       <div className="flex-1 min-w-0">
@@ -52,7 +63,7 @@ const RecurringRuleRow = ({ rule, onEdit, onToggle, onDelete }: RecurringRuleRow
           <span>·</span>
           <span>
             {t('next_occurrence')}
-            {rule.next_occurrence ? formatDate(rule.next_occurrence) : t('no_next')}
+            {nextOccurrenceLabel()}
           </span>
         </div>
       </div>

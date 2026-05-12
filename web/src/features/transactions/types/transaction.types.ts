@@ -5,6 +5,7 @@ export interface TransactionWallet {
   id: string
   name: string
   color: string
+  institution: string | null
 }
 
 export interface TransactionCategory {

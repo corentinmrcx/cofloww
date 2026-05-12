@@ -1,0 +1,22 @@
+{
+  "fr": {
+    "title":           "Ajuster le solde",
+    "current_balance": "Solde actuel",
+    "new_balance":     "Solde réel",
+    "will_add":        "Créera un revenu de",
+    "will_deduct":     "Créera une dépense de",
+    "cancel":          "Annuler",
+    "save":            "Ajuster",
+    "saving":          "Enregistrement…"
+  },
+  "en": {
+    "title":           "Adjust balance",
+    "current_balance": "Current balance",
+    "new_balance":     "Actual balance",
+    "will_add":        "Will create an income of",
+    "will_deduct":     "Will create an expense of",
+    "cancel":          "Cancel",
+    "save":            "Adjust",
+    "saving":          "Saving…"
+  }
+}

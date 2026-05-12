@@ -42,6 +42,7 @@ Route::middleware(['auth:sanctum', 'throttle:60,1'])->prefix('v1')->group(functi
     Route::delete('notifications/{notification}',        [AppNotificationController::class, 'destroy']);
 
     Route::post('wallets/reorder', [WalletController::class, 'reorder']);
+    Route::post('wallets/{wallet}/adjust', [WalletController::class, 'adjust']);
     Route::apiResource('wallets', WalletController::class);
 
     Route::apiResource('categories', CategoryController::class)->except('show');

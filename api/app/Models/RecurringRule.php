@@ -74,12 +74,6 @@ class RecurringRule extends Model
         $base = $this->last_generated_at ?? null;
         $next = $base ? $this->advanceByFrequency($base) : $this->starts_at->copy();
 
-        // Avance jusqu'à aujourd'hui ou au futur si la date calculée est dans le passé
-        $today = Carbon::today();
-        while ($next->lt($today)) {
-            $next = $this->advanceByFrequency($next);
-        }
-
         if ($this->ends_at && $next->gt($this->ends_at)) {
             return null;
         }

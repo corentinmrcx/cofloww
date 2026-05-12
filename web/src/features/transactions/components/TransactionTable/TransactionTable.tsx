@@ -68,7 +68,9 @@ const TransactionItem = memo(({ tx, t, onOpen, onEdit, onDelete }: TransactionIt
         </div>
         <div className="flex items-center gap-1.5 mt-0.5">
           {tx.wallet && (
-            <span className="text-xs text-muted-foreground truncate">{tx.wallet.name}</span>
+            <span className="text-xs text-muted-foreground truncate">
+              {tx.wallet.name}{tx.wallet.institution ? ` · ${tx.wallet.institution}` : ''}
+            </span>
           )}
           <span className="text-xs text-muted-foreground shrink-0">· {formatDate(tx.date)}</span>
         </div>

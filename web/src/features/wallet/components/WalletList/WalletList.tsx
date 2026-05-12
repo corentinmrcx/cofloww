@@ -23,7 +23,7 @@ import { useReorderWallets } from '../../hooks/useReorderWallets'
 import type { Wallet } from '../../types/wallet.types'
 import trad from './trad.json'
 
-const SortableWalletCard = ({ wallet, onEdit, onDelete }: { wallet: Wallet; onEdit: () => void; onDelete: () => void }) => {
+const SortableWalletCard = ({ wallet, onEdit, onAdjust, onDelete }: { wallet: Wallet; onEdit: () => void; onAdjust: () => void; onDelete: () => void }) => {
   const navigate = useNavigate()
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: wallet.id,
@@ -37,6 +37,7 @@ const SortableWalletCard = ({ wallet, onEdit, onDelete }: { wallet: Wallet; onEd
         dragAttributes={attributes}
         isDragging={isDragging}
         onEdit={onEdit}
+        onAdjust={onAdjust}
         onDelete={onDelete}
         onClick={() => navigate(`/wallets/${wallet.id}`)}
       />
@@ -47,10 +48,11 @@ const SortableWalletCard = ({ wallet, onEdit, onDelete }: { wallet: Wallet; onEd
 interface WalletListProps {
   wallets: Wallet[]
   onEditClick: (wallet: Wallet) => void
+  onAdjustClick: (wallet: Wallet) => void
   onDeleteClick: (wallet: Wallet) => void
 }
 
-const WalletList = ({ wallets, onEditClick, onDeleteClick }: WalletListProps) => {
+const WalletList = ({ wallets, onEditClick, onAdjustClick, onDeleteClick }: WalletListProps) => {
   const t = useT(trad)
   const [items, setItems] = useState(wallets)
   const { mutate: reorder } = useReorderWallets()
@@ -87,6 +89,7 @@ const WalletList = ({ wallets, onEditClick, onDeleteClick }: WalletListProps) =>
               key={wallet.id}
               wallet={wallet}
               onEdit={() => onEditClick(wallet)}
+              onAdjust={() => onAdjustClick(wallet)}
               onDelete={() => onDeleteClick(wallet)}
             />
           ))}

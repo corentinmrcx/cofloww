@@ -23,9 +23,9 @@ interface RecurringRuleRowProps {
 
 const RecurringRuleRow = ({ rule, onEdit, onToggle, onDelete }: RecurringRuleRowProps) => {
   const t = useT(trad)
-  const { formatAmountShort, formatDate } = useFormatters()
+  const { formatAmount, formatDate } = useFormatters()
 
-  const amountDisplay = formatAmountShort(rule.amount)
+  const amountDisplay = formatAmount(rule.amount)
 
   const todayStr = new Date().toISOString().split('T')[0]
   const isToday   = rule.next_occurrence === todayStr

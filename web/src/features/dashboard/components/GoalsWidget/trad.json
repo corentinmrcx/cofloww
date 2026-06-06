@@ -1,0 +1,14 @@
+{
+  "fr": {
+    "title": "Objectifs",
+    "see_all": "Voir tout",
+    "see_all_label": "Voir tous les objectifs",
+    "empty": "Aucun objectif ce mois-ci"
+  },
+  "en": {
+    "title": "Goals",
+    "see_all": "See all",
+    "see_all_label": "See all goals",
+    "empty": "No goals this month"
+  }
+}

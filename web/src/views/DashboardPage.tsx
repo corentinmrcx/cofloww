@@ -5,9 +5,9 @@ import { useDashboard } from '../features/dashboard/hooks/useDashboard'
 import { MonthSummaryWidget }       from '../features/dashboard/components/MonthSummaryWidget'
 import { WalletsWidget }            from '../features/dashboard/components/WalletsWidget'
 import { BudgetsWidget }            from '../features/dashboard/components/BudgetsWidget'
+import { GoalsWidget }              from '../features/dashboard/components/GoalsWidget'
 import { InvestWidget }             from '../features/dashboard/components/InvestWidget'
 import { RecentTransactionsWidget } from '../features/dashboard/components/RecentTransactionsWidget'
-import { MiniBarChart }             from '../features/dashboard/components/MiniBarChart'
 import { TransactionModal }         from '../features/transactions/components/TransactionModal'
 import { useT } from '../components/T'
 import { Skeleton } from '../components/ui/skeleton'
@@ -18,9 +18,6 @@ const SkeletonCard = ({ className = '' }: { className?: string }) => (
   <Skeleton className={cn('rounded-xl', className)} />
 )
 
-// Wrapper qui rend toute la card cliquable.
-// Si le clic vient d'un élément interactif (a, button, input…) → on laisse faire.
-// Sinon → navigation vers `to`.
 const CardLink = ({ to, children, className = '' }: { to: string; children: React.ReactNode; className?: string }) => {
   const navigate = useNavigate()
 
@@ -62,10 +59,9 @@ const DashboardPage = () => {
 
   return (
     <>
-      {/* Layout bento : 1 col mobile → 3 cols desktop */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
 
-        {/* CTA — toujours pleine largeur */}
+        {/* CTA — pleine largeur */}
         <div className="lg:col-span-3">
           <button
             onClick={() => setShowModal(true)}
@@ -80,10 +76,12 @@ const DashboardPage = () => {
           <>
             <SkeletonCard className="h-40 lg:col-span-2" />
             <SkeletonCard className="h-40" />
-            <SkeletonCard className="h-52" />
+            <SkeletonCard className="h-40" />
+            <SkeletonCard className="h-40 lg:col-span-2" />
             <SkeletonCard className="h-52 lg:col-span-2" />
-            <SkeletonCard className="h-44" />
-            <SkeletonCard className="h-44 lg:col-span-2" />
+            <SkeletonCard className="h-52" />
+            <SkeletonCard className="h-14 lg:col-span-3" />
+            <SkeletonCard className="h-14 lg:col-span-3" />
           </>
         ) : (
           <>
@@ -95,13 +93,21 @@ const DashboardPage = () => {
               <InvestWidget data={data.investable} />
             </CardLink>
 
-            {/* Ligne 2 : Comptes (étroit) + Budgets (large) */}
+            {/* Ligne 2 : Comptes (étroit) + Derniers mouvements (large) */}
             <CardLink to="/wallets" className="lg:col-span-1">
               <WalletsWidget wallets={data.wallets} />
             </CardLink>
+            <CardLink to="/transactions" className="lg:col-span-2">
+              <RecentTransactionsWidget transactions={data.recent_transactions} />
+            </CardLink>
+
+            {/* Ligne 3 : Budgets (large) + Objectifs (étroit) */}
             <CardLink to="/budget" className="lg:col-span-2">
               <BudgetsWidget budgets={data.top_budgets} />
             </CardLink>
+            <div className="lg:col-span-1">
+              <GoalsWidget />
+            </div>
 
             {/* Teaser récurrences */}
             <div className="lg:col-span-3">
@@ -122,14 +128,6 @@ const DashboardPage = () => {
               </Link>
             </div>
 
-            {/* Ligne 3 : Derniers mouvements (large) + Tendance (étroit) */}
-            <CardLink to="/transactions" className="lg:col-span-2">
-              <RecentTransactionsWidget transactions={data.recent_transactions} />
-            </CardLink>
-            <CardLink to="/stats" className="lg:col-span-1">
-              <MiniBarChart data={data.monthly_trend} />
-            </CardLink>
-
             {/* Teaser stats */}
             <div className="lg:col-span-3">
               <Link
@@ -148,7 +146,6 @@ const DashboardPage = () => {
                 </span>
               </Link>
             </div>
-
           </>
         )}
       </div>

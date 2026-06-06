@@ -1,1 +1,0 @@
-export { MiniBarChart } from './MiniBarChart'

@@ -13,6 +13,7 @@ export const useUpdateTransaction = (id: string) => {
       queryClient.invalidateQueries({ queryKey: ['transactions'] })
       queryClient.invalidateQueries({ queryKey: ['dashboard'] })
       queryClient.invalidateQueries({ queryKey: ['wallets'] })
+      queryClient.invalidateQueries({ queryKey: ['goals'] })
     },
   })
 }

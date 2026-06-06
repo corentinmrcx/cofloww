@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AppNotificationController;
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\GoalController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\CategoryController;
@@ -50,6 +51,7 @@ Route::middleware(['auth:sanctum', 'throttle:60,1'])->prefix('v1')->group(functi
 
     Route::apiResource('recurring-rules', RecurringRuleController::class)->except('show');
     Route::apiResource('budgets', BudgetController::class)->except('show');
+    Route::apiResource('goals', GoalController::class)->except('show');
 
     Route::get('investments/compute', [InvestmentController::class, 'compute']);
 

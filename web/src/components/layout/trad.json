@@ -6,7 +6,8 @@
     "transactions": "Transactions",
     "budget":       "Budget",
     "investments":  "Investissements",
-    "stats":        "Statistiques"
+    "stats":        "Statistiques",
+    "goals":        "Objectifs"
   },
   "en": {
     "dashboard":    "Dashboard",
@@ -15,6 +16,7 @@
     "transactions": "Transactions",
     "budget":       "Budget",
     "investments":  "Investments",
-    "stats":        "Statistics"
+    "stats":        "Statistics",
+    "goals":        "Goals"
   }
 }

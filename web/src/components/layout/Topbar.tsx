@@ -16,6 +16,7 @@ const Topbar = () => {
     '/budget':       t('budget'),
     '/investments':  t('investments'),
     '/stats':        t('stats'),
+    '/goals':        t('goals'),
   }
 
   const title = pathTitles[pathname] ?? 'CoFloww'

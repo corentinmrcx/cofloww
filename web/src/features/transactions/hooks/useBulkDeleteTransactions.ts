@@ -11,6 +11,7 @@ export const useBulkDeleteTransactions = () => {
       queryClient.invalidateQueries({ queryKey: ['transactions'] })
       queryClient.invalidateQueries({ queryKey: ['wallets'] })
       queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+      queryClient.invalidateQueries({ queryKey: ['goals'] })
     },
   })
 }

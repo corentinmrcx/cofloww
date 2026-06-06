@@ -48,7 +48,14 @@
     "dashboard_stats_cta":      "Voir les statistiques →",
     "dashboard_recurring_title":"Transactions récurrentes",
     "dashboard_recurring_desc": "Abonnements, loyer, salaire… automatisez vos transactions régulières.",
-    "dashboard_recurring_cta":  "Gérer les récurrences →"
+    "dashboard_recurring_cta":  "Gérer les récurrences →",
+    "goals_title":              "Objectifs",
+    "goals_new":                "Nouvel objectif",
+    "goals_empty":              "Aucun objectif pour le moment",
+    "goals_create_first":       "Créer votre premier objectif",
+    "dashboard_goals_title":    "Objectifs d'épargne",
+    "dashboard_goals_desc":     "Transferts mensuels, projets à long terme… suivez vos progrès.",
+    "dashboard_goals_cta":      "Voir les objectifs →"
   },
   "en": {
     "loading":               "Loading…",
@@ -99,6 +106,13 @@
     "dashboard_stats_cta":      "View statistics →",
     "dashboard_recurring_title":"Recurring transactions",
     "dashboard_recurring_desc": "Subscriptions, rent, salary… automate your regular transactions.",
-    "dashboard_recurring_cta":  "Manage recurring →"
+    "dashboard_recurring_cta":  "Manage recurring →",
+    "goals_title":              "Goals",
+    "goals_new":                "New goal",
+    "goals_empty":              "No goals yet",
+    "goals_create_first":       "Create your first goal",
+    "dashboard_goals_title":    "Savings goals",
+    "dashboard_goals_desc":     "Monthly transfers, long-term projects… track your progress.",
+    "dashboard_goals_cta":      "View goals →"
   }
 }

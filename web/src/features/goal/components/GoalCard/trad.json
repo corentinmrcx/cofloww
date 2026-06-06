@@ -1,0 +1,20 @@
+{
+  "fr": {
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "this_month": "Ce mois-ci",
+    "total_progress": "Progression totale",
+    "of": "sur",
+    "remaining": "restant",
+    "until": "jusqu'à"
+  },
+  "en": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "this_month": "This month",
+    "total_progress": "Total progress",
+    "of": "of",
+    "remaining": "remaining",
+    "until": "until"
+  }
+}

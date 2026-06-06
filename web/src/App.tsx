@@ -14,6 +14,7 @@ const WalletDetailPage   = lazy(() => import('./views/WalletDetailPage').then(m 
 const TransactionsPage   = lazy(() => import('./views/TransactionsPage').then(m => ({ default: m.TransactionsPage })))
 const RecurringRulesPage = lazy(() => import('./views/RecurringRulesPage').then(m => ({ default: m.RecurringRulesPage })))
 const BudgetPage         = lazy(() => import('./views/BudgetPage').then(m => ({ default: m.BudgetPage })))
+const GoalsPage          = lazy(() => import('./views/GoalsPage').then(m => ({ default: m.GoalsPage })))
 const InvestmentPage     = lazy(() => import('./views/InvestmentPage').then(m => ({ default: m.InvestmentPage })))
 const StatsPage          = lazy(() => import('./views/StatsPage').then(m => ({ default: m.StatsPage })))
 const LoginPage          = lazy(() => import('./views/LoginPage').then(m => ({ default: m.LoginPage })))
@@ -56,6 +57,7 @@ const router = createBrowserRouter([
           { path: 'transactions',      element: <Suspense fallback={<PageLoader />}><TransactionsPage /></Suspense> },
           { path: 'recurring-rules',   element: <Suspense fallback={<PageLoader />}><RecurringRulesPage /></Suspense> },
           { path: 'budget',            element: <Suspense fallback={<PageLoader />}><BudgetPage /></Suspense> },
+          { path: 'goals',             element: <Suspense fallback={<PageLoader />}><GoalsPage /></Suspense> },
           { path: 'investments',       element: <Suspense fallback={<PageLoader />}><InvestmentPage /></Suspense> },
           { path: 'stats',             element: <Suspense fallback={<PageLoader />}><StatsPage /></Suspense> },
           { path: '*',                 element: <Navigate to="/" replace /> },

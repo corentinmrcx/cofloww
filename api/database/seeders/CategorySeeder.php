@@ -18,9 +18,8 @@ class CategorySeeder extends Seeder
         foreach ($categories as $data) {
             Category::withoutGlobalScopes()->updateOrCreate(
                 [
-                    'user_id'   => null,
-                    'slug'      => Str::slug($data['name']),
-                    'type'      => $data['type'],
+                    'user_id' => null,
+                    'slug'    => Str::slug($data['name']),
                 ],
                 [
                     'name'       => $data['name'],

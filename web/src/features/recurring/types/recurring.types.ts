@@ -15,6 +15,12 @@ export interface RecurringRuleCategory {
   icon: string | null
 }
 
+export interface RecurringRuleTag {
+  id: string
+  name: string
+  color: string | null
+}
+
 export interface RecurringRule {
   id: string
   label: string
@@ -32,6 +38,7 @@ export interface RecurringRule {
   category_id: string | null
   wallet: RecurringRuleWallet | null
   category: RecurringRuleCategory | null
+  tags: RecurringRuleTag[]
   created_at: string
   updated_at: string
 }
@@ -39,6 +46,7 @@ export interface RecurringRule {
 export interface CreateRecurringRulePayload {
   wallet_id: string
   category_id?: string | null
+  tag_ids?: string[]
   label: string
   amount: number
   type: TransactionType

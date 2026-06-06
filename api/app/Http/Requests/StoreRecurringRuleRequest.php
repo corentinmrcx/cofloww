@@ -32,6 +32,9 @@ class StoreRecurringRuleRequest extends FormRequest
             'day_of_month' => ['nullable', 'integer', 'min:1', 'max:31'],
             'day_of_week'  => ['nullable', 'integer', 'min:0', 'max:6'],
 
+            'tag_ids'      => ['nullable', 'array'],
+            'tag_ids.*'    => ['uuid', Rule::exists('tags', 'id')->where('user_id', $userId)],
+
             'starts_at'    => ['required', 'date'],
             'ends_at'      => ['nullable', 'date', 'after:starts_at'],
             'is_active'    => ['boolean'],

@@ -10,6 +10,7 @@ import { useCreateRecurringRule } from '../../hooks/useCreateRecurringRule'
 import { useUpdateRecurringRule } from '../../hooks/useUpdateRecurringRule'
 import { useWallets } from '../../../wallet/hooks/useWallets'
 import { CategorySelector } from '../../../category/components/CategorySelector'
+import { TagInput } from '../../../tag/components/TagInput'
 import { walletLabel } from '../../../../lib/format'
 import type { RecurringRule } from '../../types/recurring.types'
 import trad from './trad.json'
@@ -23,6 +24,7 @@ const schema = z.object({
   day_of_month: z.number().int().min(1).max(31).nullable().optional(),
   wallet_id:    z.string().min(1),
   category_id:  z.string().min(1).nullable().optional(),
+  tag_ids:      z.array(z.string().uuid()).optional(),
   starts_at:    z.string().min(1),
   ends_at:      z.string().nullable().optional(),
   is_active:    z.boolean(),
@@ -71,6 +73,7 @@ const RecurringRuleModal = ({ rule, onClose }: RecurringRuleModalProps) => {
           day_of_month: rule.day_of_month,
           wallet_id:    rule.wallet_id,
           category_id:  rule.category_id,
+          tag_ids:      rule.tags?.map(t => t.id) ?? [],
           starts_at:    rule.starts_at,
           ends_at:      rule.ends_at ?? null,
           is_active:    rule.is_active,
@@ -81,6 +84,7 @@ const RecurringRuleModal = ({ rule, onClose }: RecurringRuleModalProps) => {
           amount:    0,
           is_active: true,
           starts_at: new Date().toISOString().split('T')[0],
+          tag_ids:   [],
         },
   })
 
@@ -221,6 +225,17 @@ const RecurringRuleModal = ({ rule, onClose }: RecurringRuleModalProps) => {
                   onChange={v => field.onChange(v)}
                   clearable
                 />
+              )}
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium">{t('tags')}</label>
+            <Controller
+              name="tag_ids"
+              control={control}
+              render={({ field }: { field: { value: string[] | undefined; onChange: (v: string[]) => void } }) => (
+                <TagInput value={field.value ?? []} onChange={field.onChange} />
               )}
             />
           </div>

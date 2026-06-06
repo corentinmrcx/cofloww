@@ -32,6 +32,12 @@ class RecurringRuleResource extends JsonResource
                 'color' => $this->wallet->color,
             ]),
 
+            'tags' => $this->whenLoaded('tags', fn () => $this->tags->map(fn ($tag) => [
+                'id'    => $tag->id,
+                'name'  => $tag->name,
+                'color' => $tag->color,
+            ])),
+
             'category' => $this->whenLoaded('category', fn () => $this->category ? [
                 'id'    => $this->category->id,
                 'name'  => $this->category->name,

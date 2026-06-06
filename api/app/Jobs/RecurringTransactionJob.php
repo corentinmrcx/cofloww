@@ -21,6 +21,7 @@ class RecurringTransactionJob implements ShouldQueue
         $today = Carbon::today();
 
         RecurringRule::withoutGlobalScopes()
+            ->with('tags')
             ->where('is_active', true)
             ->where('starts_at', '<=', $today)
             ->where(fn ($q) => $q->whereNull('ends_at')->orWhere('ends_at', '>=', $today))
@@ -35,6 +36,7 @@ class RecurringTransactionJob implements ShouldQueue
                         $transactionService->store([
                             'wallet_id'         => $rule->wallet_id,
                             'category_id'       => $rule->category_id,
+                            'tag_ids'           => $rule->tags->pluck('id')->all(),
                             'label'             => $rule->label,
                             'amount'            => $rule->amount,
                             'type'              => $rule->type->value,

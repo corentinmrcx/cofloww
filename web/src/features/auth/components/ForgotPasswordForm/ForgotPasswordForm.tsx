@@ -16,7 +16,7 @@ const INPUT_CLASS = 'h-9 rounded-md border border-input bg-transparent px-3 text
 const ForgotPasswordForm = () => {
   const t = useT(trad)
   const { forgotPasswordSchema } = useAuthSchemas()
-  const { mutate: sendLink, isPending, error } = useForgotPassword()
+  const { mutate: sendLink, isPending } = useForgotPassword()
   const [sent, setSent] = useState(false)
 
   const { register, handleSubmit, formState: { errors } } = useForm<ForgotPasswordSchema>({
@@ -24,7 +24,10 @@ const ForgotPasswordForm = () => {
   })
 
   const onSubmit = (data: ForgotPasswordSchema) => {
-    sendLink(data.email, { onSuccess: () => setSent(true) })
+    sendLink(data.email, {
+      onSuccess: () => setSent(true),
+      onError:   () => setSent(true),
+    })
   }
 
   if (sent) {
@@ -78,8 +81,6 @@ const ForgotPasswordForm = () => {
           )}
         </div>
       </Form.Body>
-
-      <Form.Error message={error ? t('error_generic') : null} />
 
       <Form.Footer>
         <Button type="submit" disabled={isPending} fullWidth>

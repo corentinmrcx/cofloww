@@ -4,7 +4,7 @@ import { cn } from '../../../../lib/utils'
 import { useT } from '../../../../components/T'
 import { useCategories } from '../../hooks/useCategories'
 import { useCreateCategory } from '../../hooks/useCreateCategory'
-import type { Category, CategoryType, CreateCategoryPayload } from '../../types/category.types'
+import type { Category, CreateCategoryPayload } from '../../types/category.types'
 import trad from './trad.json'
 
 
@@ -13,11 +13,10 @@ const randomCategoryColor = () => '#' + Math.floor(Math.random() * 0xffffff).toS
 interface CategorySelectorProps {
   value: string | null
   onChange: (id: string | null) => void
-  type?: CategoryType
   clearable?: boolean
 }
 
-const CategorySelector = ({ value, onChange, type, clearable = false }: CategorySelectorProps) => {
+const CategorySelector = ({ value, onChange, clearable = false }: CategorySelectorProps) => {
   const t = useT(trad)
   const { data: categories = [] } = useCategories()
   const { mutate: createCategory, isPending: isCreating } = useCreateCategory()
@@ -26,7 +25,6 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
   const [search, setSearch] = useState('')
   const [view, setView] = useState<'list' | 'create'>('list')
   const [createName, setCreateName] = useState('')
-  const [createType, setCreateType] = useState<CategoryType>(type ?? 'expense')
   const [createColor, setCreateColor] = useState(randomCategoryColor)
 
   const ref = useRef<HTMLDivElement>(null)
@@ -49,9 +47,9 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
   }, [open, view])
 
   const filtered = useMemo(() => categories
-    .filter(c => (!type || c.type === type) && c.name.toLowerCase().includes(search.toLowerCase()))
+    .filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })),
-  [categories, type, search])
+  [categories, search])
 
   const exactMatch = filtered.some(c => c.name.toLowerCase() === search.toLowerCase())
   const selected = categories.find(c => c.id === value) ?? null
@@ -65,7 +63,6 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
 
   const openCreate = () => {
     setCreateName(search)
-    setCreateType(type ?? 'expense')
     setCreateColor(randomCategoryColor())
     setView('create')
   }
@@ -73,7 +70,6 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
   const handleSubmitCreate = () => {
     const payload: CreateCategoryPayload = {
       name: createName.trim(),
-      type: createType,
       color: createColor,
     }
     createCategory(payload, {
@@ -190,18 +186,6 @@ const CategorySelector = ({ value, onChange, type, clearable = false }: Category
                 placeholder={t('name_placeholder')}
                 className="h-8 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus:ring-1 focus:ring-ring"
               />
-
-              {!type && (
-                <select
-                  value={createType}
-                  onChange={e => setCreateType(e.target.value as CategoryType)}
-                  className="h-8 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus:ring-1 focus:ring-ring"
-                >
-                  <option value="expense">{t('type_expense')}</option>
-                  <option value="income">{t('type_income')}</option>
-                  <option value="transfer">{t('type_transfer')}</option>
-                </select>
-              )}
 
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">{t('color_label')}</span>

@@ -271,7 +271,6 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
                 <CategorySelector
                   value={field.value ?? null}
                   onChange={field.onChange}
-                  type={selectedType === 'transfer' ? undefined : selectedType}
                   clearable
                 />
               )}

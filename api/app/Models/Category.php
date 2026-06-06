@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\CategoryType;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +16,6 @@ class Category extends Model
         'user_id',
         'name',
         'slug',
-        'type',
         'color',
         'icon',
         'parent_id',
@@ -28,7 +26,6 @@ class Category extends Model
     protected function casts(): array
     {
         return [
-            'type'       => CategoryType::class,
             'is_system'  => 'boolean',
             'sort_order' => 'integer',
         ];

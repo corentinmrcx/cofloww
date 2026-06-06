@@ -1,10 +1,7 @@
-export type CategoryType = 'income' | 'expense' | 'transfer'
-
 export interface Category {
   id: string
   name: string
   slug: string
-  type: CategoryType
   color: string | null
   icon: string | null
   parent_id: string | null
@@ -16,7 +13,6 @@ export interface Category {
 
 export interface CreateCategoryPayload {
   name: string
-  type: CategoryType
   color?: string
   icon?: string
   parent_id?: string
@@ -24,7 +20,6 @@ export interface CreateCategoryPayload {
 
 export interface UpdateCategoryPayload {
   name?: string
-  type?: CategoryType
   color?: string | null
   icon?: string | null
 }

@@ -7,6 +7,7 @@ use App\Http\Requests\PreviewImportRequest;
 use App\Services\NotificationService;
 use App\Services\TransactionImportService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class TransactionImportController extends Controller
 {
@@ -34,7 +35,16 @@ class TransactionImportController extends Controller
         );
 
         $count = $result['imported'] ?? 0;
-        $this->notifications->importSuccess($request->user()->id, $count);
+
+        try {
+            $this->notifications->importSuccess($request->user()->id, $count);
+        } catch (\Throwable $e) {
+            Log::error('importSuccess notification failed', [
+                'user_id' => $request->user()->id,
+                'count'   => $count,
+                'error'   => $e->getMessage(),
+            ]);
+        }
 
         return response()->json($result);
     }

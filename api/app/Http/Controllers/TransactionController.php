@@ -11,6 +11,7 @@ use App\Services\NotificationService;
 use App\Services\TransactionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -33,7 +34,15 @@ class TransactionController extends Controller
     {
         $transaction = $this->service->store($request->validated(), $request->user()->id);
 
-        $this->notifications->checkBudgetAlerts($request->user()->id);
+        try {
+            $this->notifications->checkBudgetAlerts($request->user()->id);
+        } catch (\Throwable $e) {
+            Log::error('checkBudgetAlerts failed', [
+                'user_id'        => $request->user()->id,
+                'transaction_id' => $transaction->id,
+                'error'          => $e->getMessage(),
+            ]);
+        }
 
         return (new TransactionResource($transaction))->response()->setStatusCode(201);
     }

@@ -22,6 +22,15 @@ export const forgotPasswordSchema = (t: T) => z.object({
   email: z.email(t('email_invalid')),
 })
 
+export const resetPasswordSchema = (t: T) => z.object({
+  password:              z.string().min(8, t('password_min')),
+  password_confirmation: z.string().min(1, t('password_confirmation_required')),
+}).refine(
+  data => data.password === data.password_confirmation,
+  { message: t('password_mismatch'), path: ['password_confirmation'] },
+)
+
 export type LoginSchema          = z.infer<ReturnType<typeof loginSchema>>
 export type RegisterSchema       = z.infer<ReturnType<typeof registerSchema>>
 export type ForgotPasswordSchema = z.infer<ReturnType<typeof forgotPasswordSchema>>
+export type ResetPasswordSchema  = z.infer<ReturnType<typeof resetPasswordSchema>>

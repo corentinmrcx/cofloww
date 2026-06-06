@@ -1,0 +1,26 @@
+{
+  "fr": {
+    "title":                    "Nouveau mot de passe",
+    "description":              "Choisissez un mot de passe sécurisé pour votre compte.",
+    "password":                 "Nouveau mot de passe",
+    "password_placeholder":     "Minimum 8 caractères",
+    "confirmation":             "Confirmer le mot de passe",
+    "confirmation_placeholder": "Répétez le mot de passe",
+    "submit":                   "Réinitialiser le mot de passe",
+    "submitting":               "Réinitialisation…",
+    "error_generic":            "Le lien est invalide ou expiré. Faites une nouvelle demande.",
+    "back_to_login":            "Retour à la connexion"
+  },
+  "en": {
+    "title":                    "New password",
+    "description":              "Choose a secure password for your account.",
+    "password":                 "New password",
+    "password_placeholder":     "At least 8 characters",
+    "confirmation":             "Confirm password",
+    "confirmation_placeholder": "Repeat password",
+    "submit":                   "Reset password",
+    "submitting":               "Resetting…",
+    "error_generic":            "The link is invalid or expired. Please request a new one.",
+    "back_to_login":            "Back to sign in"
+  }
+}

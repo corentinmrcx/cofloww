@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useT } from '../../../components/T'
-import { loginSchema, registerSchema, forgotPasswordSchema } from './auth.schemas'
+import { loginSchema, registerSchema, forgotPasswordSchema, resetPasswordSchema } from './auth.schemas'
 import trad from './trad.json'
 
 export const useAuthSchemas = () => {
@@ -10,5 +10,6 @@ export const useAuthSchemas = () => {
     loginSchema:          loginSchema(t),
     registerSchema:       registerSchema(t),
     forgotPasswordSchema: forgotPasswordSchema(t),
+    resetPasswordSchema:  resetPasswordSchema(t),
   }), [t])
 }

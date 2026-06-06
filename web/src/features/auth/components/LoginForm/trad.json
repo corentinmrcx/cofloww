@@ -10,7 +10,8 @@
     "submitting":           "Connexion…",
     "no_account":           "Pas encore de compte ?",
     "register":             "S'inscrire",
-    "error_credentials":    "Email ou mot de passe incorrect."
+    "error_credentials":    "Email ou mot de passe incorrect.",
+    "password_reset_success": "Mot de passe réinitialisé avec succès. Vous pouvez vous connecter."
   },
   "en": {
     "title":                "Sign in",
@@ -23,6 +24,7 @@
     "submitting":           "Signing in…",
     "no_account":           "Don't have an account?",
     "register":             "Sign up",
-    "error_credentials":    "Invalid email or password."
+    "error_credentials":    "Invalid email or password.",
+    "password_reset_success": "Password reset successfully. You can now sign in."
   }
 }

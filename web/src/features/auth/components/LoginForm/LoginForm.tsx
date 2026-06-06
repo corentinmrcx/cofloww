@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import { Form } from '../../../../components/Form'
 import { Button } from '../../../../components/Button'
 import { T, useT } from '../../../../components/T'
@@ -13,6 +13,8 @@ const LoginForm = () => {
   const t = useT(trad)
   const { loginSchema } = useAuthSchemas()
   const { mutate: login, isPending, error } = useLogin()
+  const location = useLocation()
+  const passwordResetSuccess = location.state?.passwordReset === true
 
   const { register, handleSubmit, formState: { errors } } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -69,6 +71,11 @@ const LoginForm = () => {
         </div>
       </Form.Body>
 
+      {passwordResetSuccess && (
+        <p className="text-sm text-income bg-income/10 border border-income/20 rounded-md px-3 py-2 mt-4">
+          {t('password_reset_success')}
+        </p>
+      )}
       <Form.Error message={error ? t('error_credentials') : null} />
 
       <Form.Footer>

@@ -20,6 +20,7 @@ const StatsPage          = lazy(() => import('./views/StatsPage').then(m => ({ d
 const LoginPage          = lazy(() => import('./views/LoginPage').then(m => ({ default: m.LoginPage })))
 const RegisterPage       = lazy(() => import('./views/RegisterPage').then(m => ({ default: m.RegisterPage })))
 const ForgotPasswordPage = lazy(() => import('./views/ForgotPasswordPage').then(m => ({ default: m.ForgotPasswordPage })))
+const ResetPasswordPage  = lazy(() => import('./views/ResetPasswordPage').then(m => ({ default: m.ResetPasswordPage })))
 
 const PageLoader = () => (
   <div className="flex flex-col gap-4 p-4">
@@ -38,7 +39,8 @@ const router = createBrowserRouter([
         children: [
           { path: '/login',           element: <Suspense fallback={<PageLoader />}><LoginPage /></Suspense> },
           { path: '/register',        element: <Suspense fallback={<PageLoader />}><RegisterPage /></Suspense> },
-          { path: '/forgot-password', element: <Suspense fallback={<PageLoader />}><ForgotPasswordPage /></Suspense> },
+          { path: '/forgot-password',        element: <Suspense fallback={<PageLoader />}><ForgotPasswordPage /></Suspense> },
+          { path: '/password-reset/:token',  element: <Suspense fallback={<PageLoader />}><ResetPasswordPage /></Suspense> },
         ],
       },
     ],

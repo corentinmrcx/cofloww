@@ -15,6 +15,7 @@ class SendPasswordResetRequest extends FormRequest
     {
         return [
             'email' => ['required', 'email'],
+            'lang'  => ['sometimes', 'string', 'in:fr,en'],
         ];
     }
 }

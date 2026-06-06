@@ -1,4 +1,5 @@
 import { Pencil, Trash2, AlertTriangle } from 'lucide-react'
+import { useNavigate } from 'react-router'
 import { useT } from '../../../../components/T'
 import { ActionMenu } from '../../../../components/ActionMenu'
 import { useFormatters } from '../../../../lib/format'
@@ -30,10 +31,29 @@ interface BudgetCardProps {
 const BudgetCard = ({ budget, onEdit, onDelete }: BudgetCardProps) => {
   const t = useT(trad)
   const { formatAmountShort: formatAmount } = useFormatters()
+  const navigate = useNavigate()
   const pct = Math.min(budget.pct_used, 100)
 
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest('button, a, [role="button"]')) return
+    const params = new URLSearchParams()
+    if (budget.month) {
+      const lastDay = new Date(budget.year, budget.month, 0).getDate()
+      params.set('date_from', `${budget.year}-${String(budget.month).padStart(2, '0')}-01`)
+      params.set('date_to', `${budget.year}-${String(budget.month).padStart(2, '0')}-${lastDay}`)
+    } else {
+      params.set('date_from', `${budget.year}-01-01`)
+      params.set('date_to', `${budget.year}-12-31`)
+    }
+    budget.categories.forEach(c => params.append('category_ids', c.id))
+    navigate(`/transactions?${params.toString()}`)
+  }
+
   return (
-    <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-3">
+    <div
+      className="bg-card border border-border rounded-xl p-4 flex flex-col gap-3 cursor-pointer hover:shadow-md transition-shadow"
+      onClick={handleCardClick}
+    >
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex flex-wrap items-center gap-1.5 flex-1 min-w-0">

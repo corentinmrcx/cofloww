@@ -17,12 +17,13 @@ const DATE_CLASS =
 interface TransactionFiltersProps {
   filters: Filters
   onChange: (key: keyof Filters, value: string | undefined) => void
+  onCategoryChange: (ids: string[]) => void
   onReset: () => void
   hasActive: boolean
   activeCount: number
 }
 
-const TransactionFilters = ({ filters, onChange, onReset, hasActive, activeCount }: TransactionFiltersProps) => {
+const TransactionFilters = ({ filters, onChange, onCategoryChange, onReset, hasActive, activeCount }: TransactionFiltersProps) => {
   const t = useT(trad)
   const { data: wallets = [] } = useWallets()
   const { data: categories = [] } = useCategories()
@@ -106,18 +107,34 @@ const TransactionFilters = ({ filters, onChange, onReset, hasActive, activeCount
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="filter-category" className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('category')}</label>
-              <select
-                id="filter-category"
-                className={SELECT_CLASS}
-                value={filters.category_id ?? ''}
-                onChange={e => onChange('category_id', e.target.value || undefined)}
-              >
-                <option value="">{t('all_categories')}</option>
-                {categories.map(c => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
-                ))}
-              </select>
+              <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('category')}</label>
+              {categories.length === 0 ? (
+                <p className="text-sm text-muted-foreground">{t('no_categories')}</p>
+              ) : (
+                <div className="flex flex-col gap-0.5 max-h-36 overflow-y-auto">
+                  {categories.map(c => {
+                    const checked = filters.category_ids?.includes(c.id) ?? false
+                    return (
+                      <label key={c.id} className="flex items-center gap-2 text-sm cursor-pointer rounded px-1 py-1 hover:bg-accent">
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={e => {
+                            const current = filters.category_ids ?? []
+                            onCategoryChange(
+                              e.target.checked
+                                ? [...current, c.id]
+                                : current.filter(id => id !== c.id)
+                            )
+                          }}
+                          className="rounded border-input accent-primary"
+                        />
+                        {c.name}
+                      </label>
+                    )
+                  })}
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col gap-1.5">

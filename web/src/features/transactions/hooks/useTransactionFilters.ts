@@ -11,13 +11,13 @@ export const useTransactionFilters = () => {
   const rawStatus = searchParams.get('status')
 
   const filters: TransactionFilters = {
-    wallet_id:   searchParams.get('wallet_id')   ?? undefined,
-    category_id: searchParams.get('category_id') ?? undefined,
-    tag_id:      searchParams.get('tag_id')      ?? undefined,
-    type:        (rawType   && VALID_TYPES.includes(rawType as TransactionType))     ? rawType as TransactionType     : undefined,
-    status:      (rawStatus && VALID_STATUSES.includes(rawStatus as TransactionStatus)) ? rawStatus as TransactionStatus : undefined,
-    date_from:   searchParams.get('date_from')   ?? undefined,
-    date_to:     searchParams.get('date_to')     ?? undefined,
+    wallet_id:    searchParams.get('wallet_id')   ?? undefined,
+    category_ids: searchParams.getAll('category_ids').length > 0 ? searchParams.getAll('category_ids') : undefined,
+    tag_id:       searchParams.get('tag_id')      ?? undefined,
+    type:         (rawType   && VALID_TYPES.includes(rawType as TransactionType))       ? rawType as TransactionType     : undefined,
+    status:       (rawStatus && VALID_STATUSES.includes(rawStatus as TransactionStatus)) ? rawStatus as TransactionStatus : undefined,
+    date_from:    searchParams.get('date_from')   ?? undefined,
+    date_to:      searchParams.get('date_to')     ?? undefined,
   }
 
   const setFilter = (key: keyof TransactionFilters, value: string | undefined) => {
@@ -33,10 +33,23 @@ export const useTransactionFilters = () => {
     })
   }
 
+  const setCategoryIds = (ids: string[]) => {
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev)
+      next.delete('category_ids')
+      ids.forEach(id => next.append('category_ids', id))
+      next.delete('page')
+      return next
+    })
+  }
+
   const resetFilters = () => setSearchParams(new URLSearchParams())
 
-  const activeCount = Object.values(filters).filter(Boolean).length
+  const activeCount = Object.entries(filters).filter(([, value]) => {
+    if (Array.isArray(value)) return value.length > 0
+    return Boolean(value)
+  }).length
   const hasActiveFilters = activeCount > 0
 
-  return { filters, setFilter, resetFilters, hasActiveFilters, activeCount }
+  return { filters, setFilter, setCategoryIds, resetFilters, hasActiveFilters, activeCount }
 }

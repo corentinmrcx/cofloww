@@ -22,7 +22,7 @@ const TransactionsPage = () => {
     })
   }
 
-  const { filters, setFilter, resetFilters, hasActiveFilters, activeCount } = useTransactionFilters()
+  const { filters, setFilter, setCategoryIds, resetFilters, hasActiveFilters, activeCount } = useTransactionFilters()
   const { data, isPending } = useTransactions({ ...filters, page })
   const t = useT(trad)
 
@@ -44,6 +44,7 @@ const TransactionsPage = () => {
           <TransactionFilters
             filters={filters}
             onChange={setFilter}
+            onCategoryChange={setCategoryIds}
             onReset={resetFilters}
             hasActive={hasActiveFilters}
             activeCount={activeCount}

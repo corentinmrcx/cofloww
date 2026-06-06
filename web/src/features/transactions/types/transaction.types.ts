@@ -44,7 +44,7 @@ export interface Transaction {
 
 export interface TransactionFilters {
   wallet_id?: string
-  category_id?: string
+  category_ids?: string[]
   tag_id?: string
   type?: TransactionType
   status?: TransactionStatus

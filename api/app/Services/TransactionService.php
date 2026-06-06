@@ -16,7 +16,7 @@ class TransactionService
     {
         return Transaction::with(['wallet', 'category', 'tags'])
             ->when($filters['wallet_id'] ?? null, fn ($q, $v) => $q->byWallet($v))
-            ->when($filters['category_id'] ?? null, fn ($q, $v) => $q->byCategory($v))
+            ->when(!empty($filters['category_ids']), fn ($q) => $q->whereIn('category_id', $filters['category_ids']))
             ->when($filters['tag_id'] ?? null, fn ($q, $v) => $q->whereHas('tags', fn ($tq) => $tq->where('tags.id', $v)))
             ->when(isset($filters['type']) ? TransactionType::tryFrom($filters['type']) : null, fn ($q, $v) => $q->byType($v))
             ->when(isset($filters['status']) ? TransactionStatus::tryFrom($filters['status']) : null, fn ($q, $v) => $q->byStatus($v))
@@ -32,7 +32,7 @@ class TransactionService
     {
         return Transaction::with(['wallet', 'category'])
             ->when($filters['wallet_id'] ?? null, fn ($q, $v) => $q->byWallet($v))
-            ->when($filters['category_id'] ?? null, fn ($q, $v) => $q->byCategory($v))
+            ->when(!empty($filters['category_ids']), fn ($q) => $q->whereIn('category_id', $filters['category_ids']))
             ->when($filters['tag_id'] ?? null, fn ($q, $v) => $q->whereHas('tags', fn ($tq) => $tq->where('tags.id', $v)))
             ->when(isset($filters['type']) ? TransactionType::tryFrom($filters['type']) : null, fn ($q, $v) => $q->byType($v))
             ->when(isset($filters['status']) ? TransactionStatus::tryFrom($filters['status']) : null, fn ($q, $v) => $q->byStatus($v))

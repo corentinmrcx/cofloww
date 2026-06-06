@@ -9,6 +9,7 @@ import { MoneyInput } from '../../../../components/Input'
 import { CategorySelector } from '../../../category/components/CategorySelector'
 import { TagInput } from '../../../tag/components/TagInput'
 import { useWallets } from '../../../wallet/hooks/useWallets'
+import { useGoals } from '../../../goal/hooks/useGoals'
 import { useCreateTransaction } from '../../hooks/useCreateTransaction'
 import { useUpdateTransaction } from '../../hooks/useUpdateTransaction'
 import { useAutoTransferLabel } from '../../hooks/useAutoTransferLabel'
@@ -25,6 +26,7 @@ const schema = z.object({
   date:         z.string().min(1),
   wallet_id:    z.string().uuid(),
   to_wallet_id: z.string().uuid().nullable().optional(),
+  goal_id:      z.string().uuid().nullable().optional(),
   category_id:  z.string().uuid().nullable().optional(),
   tag_ids:      z.array(z.string().uuid()).optional(),
   notes:        z.string().nullable().optional(),
@@ -62,6 +64,8 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
   const { data: wallets } = useWallets()
   const walletList: Wallet[] = wallets ?? []
 
+  const { data: allGoals = [] } = useGoals()
+
   const { mutate: create, isPending: isCreating } = useCreateTransaction()
   const { mutate: update, isPending: isUpdating } = useUpdateTransaction(transaction?.id ?? '')
   const isPending = isCreating || isUpdating
@@ -78,6 +82,7 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
           date:         transaction.date,
           wallet_id:    transaction.wallet_id,
           to_wallet_id: transaction.to_wallet_id ?? null,
+          goal_id:      transaction.goal_id ?? null,
           category_id:  transaction.category_id ?? null,
           tag_ids:      transaction.tags?.map(t => t.id) ?? [],
           notes:        transaction.notes ?? '',
@@ -94,6 +99,16 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
   const selectedWalletId = watch('wallet_id')
   const selectedToWallet = watch('to_wallet_id')
   const currentLabel     = watch('label')
+
+  const goalsForWallet = allGoals.filter(g => g.wallet.id === selectedToWallet)
+
+  const prevToWalletRef = useRef<string | null | undefined>(undefined)
+  useEffect(() => {
+    if (prevToWalletRef.current !== undefined && prevToWalletRef.current !== selectedToWallet) {
+      setValue('goal_id', null)
+    }
+    prevToWalletRef.current = selectedToWallet
+  }, [selectedToWallet, setValue])
 
   useAutoTransferLabel({
     type:           selectedType,
@@ -219,6 +234,30 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
                 ))}
               </select>
               {errors.to_wallet_id && <p id="tx-to-wallet-error" className="text-xs text-destructive">{t('to_wallet_required')}</p>}
+            </div>
+          )}
+
+          {/* Objectif (transfert uniquement, si des goals ciblent le wallet destinataire) */}
+          {selectedType === 'transfer' && goalsForWallet.length > 0 && (
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="tx-goal" className="text-sm font-medium">{t('goal')}</label>
+              <Controller
+                name="goal_id"
+                control={control}
+                render={({ field }) => (
+                  <select
+                    id="tx-goal"
+                    value={field.value ?? ''}
+                    onChange={e => field.onChange(e.target.value || null)}
+                    className={INPUT_CLASS}
+                  >
+                    <option value="">{t('goal_placeholder')}</option>
+                    {goalsForWallet.map(g => (
+                      <option key={g.id} value={g.id}>{g.name}</option>
+                    ))}
+                  </select>
+                )}
+              />
             </div>
           )}
 

@@ -25,6 +25,7 @@ class TransactionResource extends JsonResource
             'wallet_id'          => $this->wallet_id,
             'category_id'        => $this->category_id,
             'to_wallet_id'       => $this->to_wallet_id,
+            'goal_id'            => $this->goal_id,
 
             'wallet'    => $this->whenLoaded('wallet', fn () => [
                 'id'          => $this->wallet->id,

@@ -26,6 +26,7 @@ class Transaction extends Model
         'wallet_id',
         'category_id',
         'to_wallet_id',
+        'goal_id',
         'label',
         'notes',
         'amount',

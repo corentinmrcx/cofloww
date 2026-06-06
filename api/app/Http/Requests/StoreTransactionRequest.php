@@ -29,6 +29,7 @@ class StoreTransactionRequest extends FormRequest
                 'different:wallet_id',
                 Rule::requiredIf(fn () => $this->input('type') === TransactionType::Transfer->value),
             ],
+            'goal_id'      => ['nullable', 'uuid', Rule::exists('goals', 'id')->where('user_id', $userId)],
             'tag_ids'      => ['nullable', 'array'],
             'tag_ids.*'    => ['uuid', Rule::exists('tags', 'id')->where('user_id', $userId)],
 

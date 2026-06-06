@@ -34,6 +34,7 @@ export interface Transaction {
   wallet_id: string
   category_id: string | null
   to_wallet_id: string | null
+  goal_id: string | null
   wallet: TransactionWallet | null
   category: TransactionCategory | null
   to_wallet: TransactionWallet | null

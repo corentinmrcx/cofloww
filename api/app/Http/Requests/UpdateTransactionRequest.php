@@ -28,6 +28,7 @@ class UpdateTransactionRequest extends FormRequest
                 Rule::exists('wallets', 'id')->where('user_id', $userId),
                 'different:wallet_id',
             ],
+            'goal_id'      => ['nullable', 'uuid', Rule::exists('goals', 'id')->where('user_id', $userId)],
             'tag_ids'      => ['nullable', 'array'],
             'tag_ids.*'    => ['uuid', Rule::exists('tags', 'id')->where('user_id', $userId)],
 

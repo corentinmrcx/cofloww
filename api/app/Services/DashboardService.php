@@ -216,7 +216,7 @@ class DashboardService
 
     private function recentTransactions(int $userId, int $limit): array
     {
-        return Transaction::withoutGlobalScopes()
+        return Transaction::withoutGlobalScope('user')
             ->where('user_id', $userId)
             ->with(['wallet:id,name,color', 'category:id,name,color,icon'])
             ->orderByDesc('date')

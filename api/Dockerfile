@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # install-php-extensions gère les libs système automatiquement
-RUN install-php-extensions pdo_pgsql mbstring bcmath pcntl zip gd
+RUN install-php-extensions pdo_pgsql mbstring bcmath pcntl zip gd redis
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 

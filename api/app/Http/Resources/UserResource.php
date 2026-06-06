@@ -17,7 +17,7 @@ class UserResource extends JsonResource
             'currency'   => $this->currency,
             'timezone'   => $this->timezone,
             'avatar_url' => $this->avatar
-                ? url('/api/v1/profile/avatar') . '?v=' . substr(md5($this->avatar), 0, 8)
+                ? secure_url('/api/v1/profile/avatar') . '?v=' . substr(md5($this->avatar), 0, 8)
                 : null,
             'settings'   => $this->settings ?? (object)[],
             'created_at' => $this->created_at,

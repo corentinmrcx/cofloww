@@ -166,7 +166,7 @@ const BulkActionBar = ({ selectedIds, transactions, onClearSelection, onSelectAl
         </button>
       </div>
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent>
+        <AlertDialogContent aria-describedby={undefined}>
           <AlertDialogHeader>
             <AlertDialogTitle>
               {t('delete_confirm').replace('{n}', String(selectedIds.length))}

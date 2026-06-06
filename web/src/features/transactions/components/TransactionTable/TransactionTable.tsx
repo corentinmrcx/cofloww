@@ -181,7 +181,7 @@ const TransactionTable = ({ result, isPending, page, onPageChange }: Transaction
       )}
 
       <AlertDialog open={!!deletingTx} onOpenChange={o => { if (!o) setDeletingTx(null) }}>
-        <AlertDialogContent>
+        <AlertDialogContent aria-describedby={undefined}>
           <AlertDialogHeader>
             <AlertDialogTitle>
               {t('delete_confirm').replace('{label}', deletingTx?.label ?? '')}

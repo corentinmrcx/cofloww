@@ -166,7 +166,7 @@ const TransactionDetail = ({ transaction: tx, onClose, onEdit }: TransactionDeta
         </div>
       </div>
     <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-      <AlertDialogContent>
+      <AlertDialogContent aria-describedby={undefined}>
         <AlertDialogHeader>
           <AlertDialogTitle>
             {t('delete_confirm').replace('{label}', tx.label)}

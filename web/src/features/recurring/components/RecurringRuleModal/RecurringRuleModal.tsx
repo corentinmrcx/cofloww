@@ -10,6 +10,7 @@ import { useCreateRecurringRule } from '../../hooks/useCreateRecurringRule'
 import { useUpdateRecurringRule } from '../../hooks/useUpdateRecurringRule'
 import { useWallets } from '../../../wallet/hooks/useWallets'
 import { CategorySelector } from '../../../category/components/CategorySelector'
+import { walletLabel } from '../../../../lib/format'
 import type { RecurringRule } from '../../types/recurring.types'
 import trad from './trad.json'
 
@@ -203,7 +204,7 @@ const RecurringRuleModal = ({ rule, onClose }: RecurringRuleModalProps) => {
             <select id="rr-wallet" {...register('wallet_id')} className={INPUT_CLASS} aria-describedby={errors.wallet_id ? 'rr-wallet-error' : undefined}>
               <option value="">{t('wallet_placeholder')}</option>
               {wallets.map(w => (
-                <option key={w.id} value={w.id}>{w.institution ? `${w.name} — ${w.institution}` : w.name}</option>
+                <option key={w.id} value={w.id}>{walletLabel(w)}</option>
               ))}
             </select>
             {errors.wallet_id && <p id="rr-wallet-error" className="text-xs text-destructive">{t('wallet_required')}</p>}

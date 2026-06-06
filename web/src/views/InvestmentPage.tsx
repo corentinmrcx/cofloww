@@ -7,7 +7,7 @@ import { WalletInvestmentRow } from '../features/investment/components/WalletInv
 import { List } from '../components/List'
 import { useT } from '../components/T'
 import { useLangStore } from '../stores/langStore'
-import { useFormatters } from '../lib/format'
+import { useFormatters, walletLabel } from '../lib/format'
 import { usePreferencesStore } from '../stores/preferencesStore'
 import { cn } from '../lib/utils'
 import trad from './trad.json'
@@ -123,7 +123,7 @@ const InvestmentPage = () => {
             >
               {wallets.map(w => (
                 <option key={w.id} value={w.id}>
-                  {w.name} — {fmt(w.balance)}
+                  {walletLabel(w)} — {fmt(w.balance)}
                 </option>
               ))}
             </select>

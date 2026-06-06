@@ -57,3 +57,6 @@ export const useFormatters = () => {
 
   return { formatAmount, formatAmountShort, formatDate, formatDateFull, currency, numLocale }
 }
+
+export const walletLabel = (wallet: { name: string; institution?: string | null }): string =>
+  wallet.institution ? `${wallet.name} — ${wallet.institution}` : wallet.name

@@ -3,7 +3,7 @@ import { X, Pencil, Trash2, ArrowRight, Tag } from 'lucide-react'
 import { useT } from '../../../../components/T/T'
 import { Separator } from '../../../../components/ui/separator'
 import { cn } from '../../../../lib/utils'
-import { useFormatters } from '../../../../lib/format'
+import { useFormatters, walletLabel } from '../../../../lib/format'
 import { useDeleteTransaction } from '../../hooks/useDeleteTransaction'
 import {
   AlertDialog,
@@ -98,13 +98,13 @@ const TransactionDetail = ({ transaction: tx, onClose, onEdit }: TransactionDeta
             <div className="flex items-center justify-between px-5 py-3 gap-3">
               <span className="text-sm text-muted-foreground shrink-0">{t('wallets')}</span>
               <div className="flex items-center gap-2 text-sm font-medium">
-                <span>{tx.wallet?.name ?? '—'}</span>
+                <span>{tx.wallet ? walletLabel(tx.wallet) : '—'}</span>
                 <ArrowRight size={14} className="text-muted-foreground shrink-0" />
-                <span>{tx.to_wallet.name}</span>
+                <span>{walletLabel(tx.to_wallet)}</span>
               </div>
             </div>
           ) : (
-            <Row label={t('wallet')} value={tx.wallet?.name ?? '—'} />
+            <Row label={t('wallet')} value={tx.wallet ? walletLabel(tx.wallet) : '—'} />
           )}
 
           {tx.category && (

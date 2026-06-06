@@ -5,7 +5,7 @@ import { ICONS } from '../../../../components/IconPicker'
 import { useT } from '../../../../components/T'
 import type { DashboardWallet } from '../../types/dashboard.types'
 
-import { useFormatters } from '../../../../lib/format'
+import { useFormatters, walletLabel } from '../../../../lib/format'
 import trad from './trad.json'
 
 interface SparklineProps {
@@ -77,7 +77,7 @@ const WalletsWidget = ({ wallets }: WalletsWidgetProps) => {
 
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate">
-                    {wallet.institution ? `${wallet.name} — ${wallet.institution}` : wallet.name}
+                    {walletLabel(wallet)}
                   </p>
                   <p className="text-xs text-muted-foreground tabular-nums">
                     {fmt(wallet.balance)}

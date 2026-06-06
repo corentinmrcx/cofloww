@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { SlidersHorizontal, X } from 'lucide-react'
 import { cn } from '../../../../lib/utils'
+import { walletLabel } from '../../../../lib/format'
 import { useT } from '../../../../components/T/T'
 import { useWallets } from '../../../wallet/hooks/useWallets'
 import { useCategories } from '../../../category/hooks/useCategories'
@@ -86,7 +87,7 @@ const TransactionFilters = ({ filters, onChange, onCategoryChange, onReset, hasA
               >
                 <option value="">{t('all_wallets')}</option>
                 {wallets.map(w => (
-                  <option key={w.id} value={w.id}>{w.name}</option>
+                  <option key={w.id} value={w.id}>{walletLabel(w)}</option>
                 ))}
               </select>
             </div>

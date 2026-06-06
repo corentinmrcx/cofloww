@@ -13,6 +13,7 @@ import { useCreateTransaction } from '../../hooks/useCreateTransaction'
 import { useUpdateTransaction } from '../../hooks/useUpdateTransaction'
 import { useAutoTransferLabel } from '../../hooks/useAutoTransferLabel'
 import { cn } from '../../../../lib/utils'
+import { walletLabel } from '../../../../lib/format'
 import type { Transaction } from '../../types/transaction.types'
 import type { Wallet } from '../../../wallet/types/wallet.types'
 import trad from './trad.json'
@@ -198,7 +199,7 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
               <option value="">{t('wallet_placeholder')}</option>
               {walletList.map((w: Wallet) => (
                 <option key={w.id} value={w.id}>
-                  {w.institution ? `${w.name} — ${w.institution}` : w.name}
+                  {walletLabel(w)}
                 </option>
               ))}
             </select>
@@ -213,7 +214,7 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
                 <option value="">{t('wallet_placeholder')}</option>
                 {walletList.filter((w: Wallet) => w.id !== selectedWalletId).map((w: Wallet) => (
                   <option key={w.id} value={w.id}>
-                    {w.institution ? `${w.name} — ${w.institution}` : w.name}
+                    {walletLabel(w)}
                   </option>
                 ))}
               </select>

@@ -97,8 +97,10 @@ class BudgetService
         $spentMap = $this->buildSpentMap($budgets, $userId);
 
         return $budgets->each(function (Budget $budget) use ($spentMap): void {
-            $spent             = $spentMap[$budget->id] ?? 0;
-            $budget->spent     = abs($spent);
+            $net               = $spentMap[$budget->id] ?? 0;
+            // net = revenus (+) - dépenses (-) ; la dépense consommée = -net, plancher à 0
+            // (un revenu dans une catégorie budgétée agit comme un bonus)
+            $budget->spent     = max(0, -$net);
             $budget->remaining = max(0, $budget->amount - $budget->spent);
             $budget->pct_used  = $budget->amount > 0
                 ? round($budget->spent / $budget->amount * 100, 1)
@@ -127,7 +129,7 @@ class BudgetService
                 DB::raw('SUM(amount) AS total'),
             ])
             ->where('user_id', $userId)
-            ->where('type', 'expense')
+            ->whereIn('type', ['expense', 'income'])
             ->whereIn('category_id', $allCategoryIds)
             ->whereNull('deleted_at')
             ->groupBy('category_id', 'yr', 'mo')

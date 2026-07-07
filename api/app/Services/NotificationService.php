@@ -50,18 +50,20 @@ class NotificationService
         $spending = DB::table('transactions')
             ->where('user_id', $userId)
             ->whereNull('deleted_at')
-            ->where('type', 'expense')
+            ->whereIn('type', ['expense', 'income'])
             ->whereIn('category_id', $catIds)
             ->whereBetween('date', [
                 $now->copy()->startOfMonth()->toDateString(),
                 $now->copy()->endOfMonth()->toDateString(),
             ])
-            ->selectRaw('category_id, ABS(SUM(amount)) AS total')
+            ->selectRaw('category_id, SUM(amount) AS total')
             ->groupBy('category_id')
             ->pluck('total', 'category_id');
 
         foreach ($budgets as $budget) {
-            $spent = $budget->categories->sum(fn ($c) => (int) ($spending[$c->id] ?? 0));
+            // net = revenus (+) - dépenses (-) ; consommé = -net, plancher à 0 (revenu = bonus)
+            $net   = $budget->categories->sum(fn ($c) => (int) ($spending[$c->id] ?? 0));
+            $spent = max(0, -$net);
             $pct   = $budget->amount > 0 ? ($spent / $budget->amount * 100) : 0;
 
             if ($pct < $budget->alert_threshold_pct) continue;

@@ -2,6 +2,7 @@
   "fr": {
     "title_add": "Nouvelle transaction",
     "title_edit": "Modifier la transaction",
+    "title_duplicate": "Dupliquer la transaction",
     "type": "Type",
     "type_income": "Revenu",
     "type_expense": "Dépense",
@@ -38,6 +39,7 @@
   "en": {
     "title_add": "New transaction",
     "title_edit": "Edit transaction",
+    "title_duplicate": "Duplicate transaction",
     "type": "Type",
     "type_income": "Income",
     "type_expense": "Expense",

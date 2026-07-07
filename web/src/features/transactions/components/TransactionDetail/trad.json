@@ -11,6 +11,7 @@
     "type_expense":   "Dépense",
     "type_transfer":  "Transfert",
     "edit":           "Modifier",
+    "duplicate":      "Dupliquer",
     "delete":         "Supprimer",
     "delete_confirm": "Supprimer \"{label}\" ?",
     "cancel":         "Annuler"
@@ -27,6 +28,7 @@
     "type_expense":   "Expense",
     "type_transfer":  "Transfer",
     "edit":           "Edit",
+    "duplicate":      "Duplicate",
     "delete":         "Delete",
     "delete_confirm": "Delete \"{label}\"?",
     "cancel":         "Cancel"

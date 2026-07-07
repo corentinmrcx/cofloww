@@ -1,5 +1,5 @@
 import { memo, useState } from 'react'
-import { Pencil, Trash2, ArrowUpDown } from 'lucide-react'
+import { Pencil, Trash2, ArrowUpDown, Copy } from 'lucide-react'
 import { cn } from '../../../../lib/utils'
 import { useFormatters } from '../../../../lib/format'
 import { useT } from '../../../../components/T/T'
@@ -34,10 +34,11 @@ interface TransactionItemProps {
   t: (k: string) => string
   onOpen: () => void
   onEdit: () => void
+  onDuplicate: () => void
   onDelete: () => void
 }
 
-const TransactionItem = memo(({ tx, t, onOpen, onEdit, onDelete }: TransactionItemProps) => {
+const TransactionItem = memo(({ tx, t, onOpen, onEdit, onDuplicate, onDelete }: TransactionItemProps) => {
   const { formatAmount, formatDate } = useFormatters()
   const isIncome = tx.type === 'income'
   const isPending = tx.status === 'pending'
@@ -101,8 +102,9 @@ const TransactionItem = memo(({ tx, t, onOpen, onEdit, onDelete }: TransactionIt
       <div className="shrink-0" onClick={e => e.stopPropagation()}>
         <ActionMenu
           items={[
-            { label: t('edit'),   icon: Pencil, onClick: onEdit },
-            { label: t('delete'), icon: Trash2, onClick: onDelete, destructive: true },
+            { label: t('edit'),      icon: Pencil, onClick: onEdit },
+            { label: t('duplicate'), icon: Copy,   onClick: onDuplicate },
+            { label: t('delete'),    icon: Trash2, onClick: onDelete, destructive: true },
           ]}
         />
       </div>
@@ -114,6 +116,7 @@ const TransactionTable = ({ result, isPending, page, onPageChange }: Transaction
   const t = useT(trad)
   const [detailTx, setDetailTx] = useState<Transaction | null>(null)
   const [editingTx, setEditingTx] = useState<Transaction | null>(null)
+  const [duplicatingTx, setDuplicatingTx] = useState<Transaction | null>(null)
   const [deletingTx, setDeletingTx] = useState<Transaction | null>(null)
   const { mutate: deleteTransaction } = useDeleteTransaction()
 
@@ -142,6 +145,7 @@ const TransactionTable = ({ result, isPending, page, onPageChange }: Transaction
             t={t}
             onOpen={() => setDetailTx(tx)}
             onEdit={() => setEditingTx(tx)}
+            onDuplicate={() => setDuplicatingTx(tx)}
             onDelete={() => setDeletingTx(tx)}
           />
         ))}
@@ -170,6 +174,7 @@ const TransactionTable = ({ result, isPending, page, onPageChange }: Transaction
           transaction={detailTx}
           onClose={() => setDetailTx(null)}
           onEdit={() => { setEditingTx(detailTx); setDetailTx(null) }}
+          onDuplicate={() => { setDuplicatingTx(detailTx); setDetailTx(null) }}
         />
       )}
 
@@ -177,6 +182,14 @@ const TransactionTable = ({ result, isPending, page, onPageChange }: Transaction
         <TransactionModal
           transaction={editingTx}
           onClose={() => setEditingTx(null)}
+        />
+      )}
+
+      {duplicatingTx && (
+        <TransactionModal
+          transaction={duplicatingTx}
+          duplicate
+          onClose={() => setDuplicatingTx(null)}
         />
       )}
 

@@ -43,12 +43,14 @@ const INPUT_CLASS =
 
 interface TransactionModalProps {
   transaction?: Transaction
+  duplicate?: boolean
   onClose: () => void
 }
 
-const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
+const TransactionModal = ({ transaction, duplicate = false, onClose }: TransactionModalProps) => {
   const t = useT(trad)
-  const isEdit = transaction !== undefined
+  const isEdit  = transaction !== undefined && !duplicate
+  const prefill = transaction !== undefined
   const closeRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
@@ -74,7 +76,7 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
 
   const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: isEdit
+    defaultValues: prefill
       ? {
           type:         transaction.type,
           label:        transaction.label,
@@ -144,7 +146,7 @@ const TransactionModal = ({ transaction, onClose }: TransactionModalProps) => {
       >
         <div className="flex items-center justify-between mb-6">
           <h2 id="tx-modal-title" className="text-base font-semibold">
-            {t(isEdit ? 'title_edit' : 'title_add')}
+            {t(isEdit ? 'title_edit' : duplicate ? 'title_duplicate' : 'title_add')}
           </h2>
           <button
             ref={closeRef}

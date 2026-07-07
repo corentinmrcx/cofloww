@@ -4,6 +4,7 @@ import { Plus } from 'lucide-react'
 import { useTransactions } from '../features/transactions/hooks/useTransactions'
 import { useTransactionFilters } from '../features/transactions/hooks/useTransactionFilters'
 import { TransactionTable } from '../features/transactions/components/TransactionTable'
+import { TransactionSearch } from '../features/transactions/components/TransactionSearch'
 import { TransactionFilters } from '../features/transactions/components/TransactionFilters'
 import { TransactionModal } from '../features/transactions/components/TransactionModal'
 import { useT } from '../components/T'
@@ -38,9 +39,13 @@ const TransactionsPage = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">{t('tx_title')}</h1>
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="text-xl font-semibold shrink-0">{t('tx_title')}</h1>
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <TransactionSearch
+            value={filters.search ?? ''}
+            onChange={v => setFilter('search', v)}
+          />
           <TransactionFilters
             filters={filters}
             onChange={setFilter}

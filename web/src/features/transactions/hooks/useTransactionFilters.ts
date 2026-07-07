@@ -18,6 +18,7 @@ export const useTransactionFilters = () => {
     status:       (rawStatus && VALID_STATUSES.includes(rawStatus as TransactionStatus)) ? rawStatus as TransactionStatus : undefined,
     date_from:    searchParams.get('date_from')   ?? undefined,
     date_to:      searchParams.get('date_to')     ?? undefined,
+    search:       searchParams.get('search')      ?? undefined,
   }
 
   const setFilter = (key: keyof TransactionFilters, value: string | undefined) => {
@@ -45,7 +46,8 @@ export const useTransactionFilters = () => {
 
   const resetFilters = () => setSearchParams(new URLSearchParams())
 
-  const activeCount = Object.entries(filters).filter(([, value]) => {
+  const activeCount = Object.entries(filters).filter(([key, value]) => {
+    if (key === 'search') return false
     if (Array.isArray(value)) return value.length > 0
     return Boolean(value)
   }).length

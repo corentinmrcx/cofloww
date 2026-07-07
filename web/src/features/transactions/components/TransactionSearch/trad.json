@@ -1,0 +1,10 @@
+{
+  "fr": {
+    "search_placeholder": "Rechercher une transaction…",
+    "search_clear": "Effacer la recherche"
+  },
+  "en": {
+    "search_placeholder": "Search a transaction…",
+    "search_clear": "Clear search"
+  }
+}
